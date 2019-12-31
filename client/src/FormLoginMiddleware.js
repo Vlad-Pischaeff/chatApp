@@ -8,5 +8,8 @@ export default async function fetchData(data, fn) {
   const json = await response.json();
   if (json.length !== 0) {
     fn()
+    return true
+  } else {
+    return false
   }
 }

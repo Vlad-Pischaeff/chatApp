@@ -5,6 +5,7 @@ import fetchData from './FormLoginMiddleware'
 export default function FormLogIn({forms}) {
     const [userName, setUserName] = useState(localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')).name: '')
     const [userPassword, setUserPassword] = useState(localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')).password: '')
+    const [verify, setVerify] = useState(true)
     const {dispatchLogin} = useContext(Context)
     const alert = useRef('')
     const remember = useRef('')
@@ -30,9 +31,13 @@ export default function FormLogIn({forms}) {
         type: 'validate',
         payload: ''
       })}
-      fetchData(data, clb)
-      if ((forms.login) !== 'hide')
-        alert.current.innerHTML = 'No such user or password'
+
+      async function checkUser() {
+        let valid = await fetchData(data, clb)
+        valid ? setVerify(true) : setVerify(false)
+      }
+
+      checkUser()
     }
 
     const registerUser = () => {
@@ -47,6 +52,8 @@ export default function FormLogIn({forms}) {
         localStorage.setItem('currentUser', JSON.stringify({name: userName, password: userPassword}))
       }
     }
+
+    let alertText = verify ? '\xa0' : 'No such user or password'
 
     return (
       <div className={`container ${forms.login}`}>
@@ -82,7 +89,7 @@ export default function FormLogIn({forms}) {
             </div>
   
             <div className="card-action col s12">
-              <p className="center-align red-text" ref={alert}>&nbsp;</p>
+              <p className="center-align red-text" ref={alert}>{alertText}</p>
               <p className="center-align">Not registered? <a style={{cursor: "pointer"}} 
                 onClick={registerUser}>sign in</a></p>
             </div>

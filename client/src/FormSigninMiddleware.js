@@ -14,11 +14,9 @@ export default async function fetchData(data, fn) {
       headers: { 'Content-Type': 'application/json' }
     });
     json = await response.json();
-    console.log('adduser true -- ', json)
     fn()
     return true
   } else {
-    console.log('adduser false -- ', json)
     return false
   }
 }
