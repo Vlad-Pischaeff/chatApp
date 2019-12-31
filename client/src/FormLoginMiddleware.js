@@ -1,4 +1,4 @@
-export default async function fetchData(data, fn) {
+export default async function fetchData(data) {
   const url = 'http://localhost:3001/api/users';
   const response = await fetch(url, {
     method: 'POST', 
@@ -6,10 +6,5 @@ export default async function fetchData(data, fn) {
     headers: { 'Content-Type': 'application/json' }
   });
   const json = await response.json();
-  if (json.length !== 0) {
-    fn()
-    return true
-  } else {
-    return false
-  }
+  return json;
 }

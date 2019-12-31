@@ -3,8 +3,8 @@ import {Context} from './context'
 import fetchData from './FormLoginMiddleware'
 
 export default function FormLogIn({forms}) {
-    const [userName, setUserName] = useState(localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')).name: '')
-    const [userPassword, setUserPassword] = useState(localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')).password: '')
+    const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
+    const [userPassword, setUserPassword] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).password: '')
     const [verify, setVerify] = useState(true)
     const {dispatchLogin} = useContext(Context)
     const alert = useRef('')
@@ -13,8 +13,8 @@ export default function FormLogIn({forms}) {
     const passwordRef = useRef('')
 
     useEffect(() => {
-      if (localStorage.getItem('currentUser') === null ) {
-        localStorage.setItem('currentUser', JSON.stringify({name: '', password: ''})) 
+      if (localStorage.getItem('savedUser') === null ) {
+        localStorage.setItem('savedUser', JSON.stringify({name: '', password: ''})) 
       }
       nameRef.current.value = userName
       passwordRef.current.value = userPassword
@@ -26,18 +26,22 @@ export default function FormLogIn({forms}) {
         password: userPassword,
         method: 'validate'
       }
-      const clb = () => {
-        dispatchLogin({
-        type: 'validate',
-        payload: ''
-      })}
 
-      async function checkUser() {
-        let valid = await fetchData(data, clb)
-        valid ? setVerify(true) : setVerify(false)
+      async function check() {
+        let users = await fetchData(data)
+        if (users.length !== 0) {
+          dispatchLogin({
+            type: 'validate',
+            payload: ''
+          })
+          setVerify(true)
+          localStorage.setItem('currentUser', JSON.stringify(users[0]))
+        } else {
+          setVerify(false)
+        }
       }
 
-      checkUser()
+      check()
     }
 
     const registerUser = () => {
@@ -49,7 +53,7 @@ export default function FormLogIn({forms}) {
 
     const rememberUser = () => {
       if (remember.current.checked === true) {
-        localStorage.setItem('currentUser', JSON.stringify({name: userName, password: userPassword}))
+          localStorage.setItem('savedUser', JSON.stringify({name: userName, password: userPassword}))
       }
     }
 

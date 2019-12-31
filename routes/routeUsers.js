@@ -10,10 +10,10 @@ module.exports = (app) => {
 
   app.post(`/api/users`, async (req, res) => {
     let users;
+    // console.log('request', req.params, req.body)
     switch (req.body.method) {
       case 'add':
         users = await Users.create(req.body);
-        // console.log('users create -- ', req.body);
         return res.status(201).send({
           error: false,
           users
