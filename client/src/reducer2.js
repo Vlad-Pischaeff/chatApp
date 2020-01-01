@@ -1,21 +1,18 @@
 export default function(state, action) {
-  // let users = action.payload.users
-  // let userName = action.payload.userName
-  // let userPassword = action.payload.userPassword
-  console.log('reducer2 state -- ', state, 'action --', action.payload)
+  // console.log('reducer2 state -- ', state, 'action --', action.payload)
   switch (action.type) {
 
-    case 'validate':
+    case 'HIDE_LOGIN':
       state.login = 'hide'
       state.chat = ''
       return {...state};
 
-    case 'check':
+    case 'HIDE_SIGNIN':
       state.signin = 'hide'
       state.chat = ''
       return {...state}
 
-    case 'register':
+    case 'OPEN_SIGNIN':
       state.login = 'hide'
       state.signin = ''
       return {...state}

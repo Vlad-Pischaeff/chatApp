@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef} from 'react'
 import {Context} from './context'
-import fetchData from './FormSigninMiddleware'
+import fetchData from './FormMiddleware'
 
 export default function FormSignIn({forms}) {
     const [userName, setUserName] = useState('')
@@ -16,15 +16,21 @@ export default function FormSignIn({forms}) {
         password: userPassword,
         method: 'check'
       }
-      let clb = () => {
-        dispatchLogin({
-          type: 'check',
-          payload: ''
-        })
-      }
+
       async function checkUser() {
-        let test = await fetchData(data, clb)
-        setVerify(test)
+        let users = await fetchData(data)
+        if (users.length === 0) {
+          data.method = 'add'
+          users = await fetchData(data)
+          localStorage.setItem('currentUser', JSON.stringify(users.users))
+          dispatchLogin({
+            type: 'HIDE_SIGNIN',
+            payload: ''
+          })
+          setVerify(true)
+        } else {
+          setVerify(false)
+        }
       }
 
       try {
@@ -36,7 +42,7 @@ export default function FormSignIn({forms}) {
 
     const rememberUser = () => {
       if (remember.current.checked === true) {
-        localStorage.setItem('currentUser', JSON.stringify({name: userName, password: userPassword}))
+        localStorage.setItem('savedUser', JSON.stringify({name: userName, password: userPassword}))
       }
     }
     

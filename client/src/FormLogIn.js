@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchData from './FormLoginMiddleware'
+import fetchData from './FormMiddleware'
 
 export default function FormLogIn({forms}) {
     const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
@@ -31,7 +31,7 @@ export default function FormLogIn({forms}) {
         let users = await fetchData(data)
         if (users.length !== 0) {
           dispatchLogin({
-            type: 'validate',
+            type: 'HIDE_LOGIN',
             payload: ''
           })
           setVerify(true)
@@ -46,7 +46,7 @@ export default function FormLogIn({forms}) {
 
     const registerUser = () => {
       dispatchLogin({
-        type: 'register',
+        type: 'OPEN_SIGNIN',
         payload: ''
       })
     }
