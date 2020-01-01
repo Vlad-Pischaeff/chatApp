@@ -46,7 +46,7 @@ export default function FormLogIn({forms}) {
 
     const registerUser = () => {
       dispatchLogin({
-        type: 'OPEN_SIGNIN',
+        type: 'OPEN_SIGNUP',
         payload: ''
       })
     }
@@ -95,7 +95,7 @@ export default function FormLogIn({forms}) {
             <div className="card-action col s12">
               <p className="center-align red-text" ref={alert}>{alertText}</p>
               <p className="center-align">Not registered? <a style={{cursor: "pointer"}} 
-                onClick={registerUser}>sign in</a></p>
+                onClick={registerUser}>sign up</a></p>
             </div>
   
           </form>

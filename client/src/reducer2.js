@@ -7,14 +7,14 @@ export default function(state, action) {
       state.chat = ''
       return {...state};
 
-    case 'HIDE_SIGNIN':
-      state.signin = 'hide'
+    case 'HIDE_SIGNUP':
+      state.signup = 'hide'
       state.chat = ''
       return {...state}
 
-    case 'OPEN_SIGNIN':
+    case 'OPEN_SIGNUP':
       state.login = 'hide'
-      state.signin = ''
+      state.signup = ''
       return {...state}
   
     default:
