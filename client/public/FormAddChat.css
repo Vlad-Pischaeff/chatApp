@@ -1,0 +1,64 @@
+.add-card-wrap-img {
+  height: 15rem;
+  overflow: auto;
+  display: grid;  
+  grid-template-rows:  5vw 5vw 5vw 5vw; 
+  grid-template-columns: 5vw 5vw 5vw 5vw;
+  grid-gap: 1vw;
+}
+.add-card-wrap-img img {
+  width: 5vw;
+  opacity: 0.8;
+}
+.add-card-wrap-img img:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+/* modal add room background */
+.add-card-modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  transition: opacity .3s ease-in-out;
+  overflow: auto;
+}
+.border {
+  border: 4px solid #009688;
+}
+.add-card-close {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  width: 2rem;
+  height: 2rem;
+/*   border-radius: 1rem; */
+  background: transparent; /* hsla(0, 0%, 75%, 0.0); add */
+  /*z-index:1;*/
+}
+.add-card-close:hover {
+  background: hsl(0, 0%, 45%);
+  cursor: pointer;
+}
+.add-card-close:hover:before,
+.add-card-close:hover:after {
+  background: hsl(0, 0%, 95%);
+}
+.add-card-close:before, 
+.add-card-close:after {
+  position: absolute;
+  top: 0rem;
+  right: 1rem;
+  content: '';
+  height: 2rem;
+  width: 1px;
+  background: hsl(0, 0%, 45%);
+}
+.add-card-close:before {
+  transform: rotate(45deg);
+}
+.add-card-close:after {
+  transform: rotate(-45deg);
+}

@@ -16,6 +16,14 @@ export default function(state, action) {
       state.login = 'hide'
       state.signup = ''
       return {...state}
+
+    case 'HIDE_ADDROOM':
+      state.addroom = 'hide'
+      return {...state}
+
+    case 'SHOW_ADDROOM':
+      state.addroom = ''
+      return {...state}
   
     default:
       return state

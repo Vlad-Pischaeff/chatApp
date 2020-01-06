@@ -1,5 +1,5 @@
 export default async function fetchData(data) {
-  const url = 'http://localhost:3001/api/users';
+  const url = 'http://localhost:3001/api/rooms';
   const response = await fetch(url, {
     method: 'POST', 
     body: JSON.stringify(data), 
