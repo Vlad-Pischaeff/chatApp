@@ -38,10 +38,7 @@ export default function FormAddChat({forms}) {
       async function fetchAddRoom() {
         let rooms = await fetchData(data)
         if (!rooms.error) {
-          dispatchLogin({
-            type: 'HIDE_ADDROOM',
-            payload: ''
-          })
+          closeDialog()
         }
       }
 
