@@ -14,7 +14,7 @@ const schema = new Schema({
     required: true
   },
   owner: {
-    type: String
+    type: Object
   },
   folowers: {
     type: Number

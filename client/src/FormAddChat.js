@@ -15,12 +15,12 @@ export default function FormAddChat({forms}) {
 
   useEffect(() => {
     const url = 'http://localhost:3001/api/roomimg';
-    async function fetchGet() {
+    async function fetchAvatars() {
       const response = await fetch(url);
       const json = await response.json();
       setAvatars(json);
     }
-    fetchGet();
+    fetchAvatars();
   }, [])
 
   const addRoom = () => {
@@ -32,6 +32,7 @@ export default function FormAddChat({forms}) {
         name: roomName,
         description: roomDescription,
         avatar: `./img/room/${roomAvatar}`,
+        owner: localStorage.getItem('currentUser'),
         method: 'add'
       }
 

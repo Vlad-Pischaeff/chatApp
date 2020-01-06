@@ -7,7 +7,7 @@ import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
 
 export default function App() {
-  const [forms, dispatchLogin] = useReducer(loginReducer, {login:'hide', signup:'hide', chat:'', addroom: 'hide'})
+  const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide'})
 
   return (
     <Context.Provider value={{dispatchLogin}}>
