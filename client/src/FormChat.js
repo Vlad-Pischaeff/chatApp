@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 
-export default function FormChat({forms}) {
+export default function FormChat({forms, rooms}) {
   const {dispatchLogin} = useContext(Context)
 
   const addRoom = () => {
@@ -11,6 +11,13 @@ export default function FormChat({forms}) {
       payload: ''
     })
   }
+
+  const elements = [...rooms]
+  const element = elements.map(n => {
+    return  <li key={n._id}>
+                <ChatRoomThumb room={n}/>
+            </li>
+  }) 
 
   return (
     <div className={`row ${forms.chat}`}>
@@ -30,7 +37,7 @@ export default function FormChat({forms}) {
           </section>
           <div className="wrap h-85">
             <ul>
-              <li><ChatRoomThumb /></li>
+              {element}
             </ul>
           </div>
         </section>

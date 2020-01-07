@@ -1,0 +1,67 @@
+.r-wrap {
+  width: 95%;
+  opacity: 0.8;
+  overflow: hidden;
+  display: grid;  
+  grid-template-rows:  2rem 1rem 1rem; 
+  grid-template-columns: 4rem 1fr 1fr 1fr 3rem;
+  margin: 0.5rem 0;
+  box-shadow: 5px 5px 10px -8px rgba(3,59,85,0.55);
+  border-radius: 0 0 0 1.5rem;
+}
+.r-wrap img {
+  height: 4rem;
+  max-width: 4rem;
+}
+.r-wrap:hover {
+  cursor: pointer;
+  color: #004d40;
+  opacity: 1;
+}
+.r-img {
+  grid-row: 1/4; 
+  grid-column: 1/2;   
+} 
+.r-name {
+  grid-row: 1/2; 
+  grid-column: 2/5;   
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  padding: 3px 6px; 
+}
+.r-desc {
+  grid-row: 2/4; 
+  grid-column: 2/5;   
+  font-size: 0.7rem;
+  margin: 0 6px;
+  color: grey;
+  line-height: 0.9rem;
+}
+.r-time {
+  grid-row: 1/2; 
+  grid-column: 5/6;   
+  text-align: center;
+  font-size: 0.7rem;
+}
+.r-users {
+  grid-row: 2/3; 
+  grid-column: 5/6;   
+}
+.r-msgs {
+  grid-row: 3/4; 
+  grid-column: 5/6;   
+}
+.r-users span,
+.r-msgs span {
+  font-size: 0.7rem;
+  position: relative;
+  bottom: 6px;
+  padding: 0 0 0 4px;
+}
+.r-users i,
+.r-msgs i {
+  position: relative;
+  bottom: 4px;
+}
