@@ -1,12 +1,14 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchData from './FormMiddleware'
+import fetchUser from './FormMiddleware'
+import fetchRoom from './FormAddChatMiddleware'
+
 
 export default function FormLogIn({forms}) {
     const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
     const [userPassword, setUserPassword] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).password: '')
     const [verify, setVerify] = useState(true)
-    const {dispatchLogin} = useContext(Context)
+    const {dispatchLogin, dispatchRooms} = useContext(Context)
     const alert = useRef('')
     const remember = useRef('')
     const nameRef = useRef('')
@@ -21,26 +23,37 @@ export default function FormLogIn({forms}) {
     }, [])
 
     const checkUser = () => {
-      const data = {
+      const dataUser = {
         name: userName,
         password: userPassword,
         method: 'validate'
       }
 
+      const dataRoom = {
+        method: 'check'
+      }
+
       async function check() {
-        let users = await fetchData(data)
+        let users = await fetchUser(dataUser)
         if (users.length !== 0) {
           dispatchLogin({
             type: 'HIDE_LOGIN',
             payload: ''
           })
+          // fetch list of owner rooms
+          dataRoom.id = users[0]._id
+          let rooms = await fetchRoom(dataRoom)
+          dispatchRooms({
+            type: 'GET_OWNER_ROOMS',
+            payload: rooms
+          })
+          // fetch list of owner rooms
           setVerify(true)
           localStorage.setItem('currentUser', JSON.stringify(users[0]))
         } else {
           setVerify(false)
         }
       }
-
       check()
     }
 

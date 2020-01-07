@@ -1,4 +1,4 @@
-export default async function fetchData(data) {
+export default async function fetchRoom(data) {
   const url = 'http://localhost:3001/api/rooms';
   const response = await fetch(url, {
     method: 'POST', 

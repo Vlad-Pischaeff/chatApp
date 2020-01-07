@@ -23,7 +23,8 @@ module.exports = (app) => {
           rooms
         })
       case 'check':
-        rooms = await Rooms.find({'name': req.body.name})
+        // console.log('id', req.body.name)
+        rooms = await Rooms.find({'owner.id':req.body.id })
         return res.status(200).send(rooms)
       case 'validate':
         rooms = await Rooms.find({'name': req.body.name, 'password': req.body.description})

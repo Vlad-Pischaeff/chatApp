@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef} from 'react'
 import {Context} from './context'
-import fetchData from './FormMiddleware'
+import fetchUser from './FormMiddleware'
 
 export default function FormSignIn({forms}) {
     const [userName, setUserName] = useState('')
@@ -18,10 +18,10 @@ export default function FormSignIn({forms}) {
       }
 
       async function checkUser() {
-        let users = await fetchData(data)
+        let users = await fetchUser(data)
         if (users.length === 0) {
           data.method = 'add'
-          users = await fetchData(data)
+          users = await fetchUser(data)
           localStorage.setItem('currentUser', JSON.stringify(users.users))
           dispatchLogin({
             type: 'HIDE_SIGNUP',

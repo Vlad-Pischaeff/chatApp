@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchData from './FormAddChatMiddleware'
+import fetchRoom from './FormAddChatMiddleware'
 
 export default function FormAddChat({forms}) {
   const [roomName, setRoomName] = useState('')
@@ -8,7 +8,7 @@ export default function FormAddChat({forms}) {
   const [roomAvatar, setRoomAvatar] = useState('')
   const [avatars, setAvatars] = useState([])
   const [avatarClass, setAvatarClass] = useState([])
-  const {dispatchLogin} = useContext(Context)
+  const {dispatchLogin,dispatchRooms} = useContext(Context)
   const nameRef = useRef('')
   const descriptionRef = useRef('')
   const alertRef = useRef('')
@@ -28,17 +28,26 @@ export default function FormAddChat({forms}) {
       alertRef.current.innerHTML = 'Please fill required fields'
     } else {
       alertRef.current.innerHTML = ''
+      let user = JSON.parse(localStorage.getItem('currentUser'))
       let data = {
         name: roomName,
         description: roomDescription,
         avatar: `./img/room/${roomAvatar}`,
-        owner: localStorage.getItem('currentUser'),
+        owner: {
+          id: user._id,
+          name: user.name
+        },
         method: 'add'
       }
 
       async function fetchAddRoom() {
-        let rooms = await fetchData(data)
+        let rooms = await fetchRoom(data)
+        console.log('add rooms', rooms);
         if (!rooms.error) {
+          dispatchRooms({
+            type: 'GET_ADDED_OWNER_ROOMS',
+            payload: rooms.rooms
+          })
           closeDialog()
         }
       }

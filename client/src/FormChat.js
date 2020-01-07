@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useEffect, useRef} from 'react'
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 
@@ -6,7 +6,6 @@ export default function FormChat({forms}) {
   const {dispatchLogin} = useContext(Context)
 
   const addRoom = () => {
-    // console.log('click on add chat icon')
     dispatchLogin({
       type: 'SHOW_ADDROOM',
       payload: ''

@@ -14,10 +14,11 @@ const schema = new Schema({
     required: true
   },
   owner: {
-    type: Object
+    id: {type: String},
+    name: {type: String}
   },
   folowers: {
-    type: Number
+    type: Array
   }
 })
 
