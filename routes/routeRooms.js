@@ -24,10 +24,19 @@ module.exports = (app) => {
         })
       case 'check':
         // console.log('id', req.body.name)
-        rooms = await Rooms.find({'owner.id':req.body.id })
+        rooms = await Rooms.find({'owner.id':req.body.id})
         return res.status(200).send(rooms)
-      case 'validate':
-        rooms = await Rooms.find({'name': req.body.name, 'password': req.body.description})
+      case 'search':
+        rooms = await Rooms.find({$and: [ { 'name': 
+                                            { $regex: req.body.name, $options: "i" } 
+                                          }, 
+                                          { 'owner.id': 
+                                            { $not: 
+                                              { $regex: req.body.owner, $options: "i" }
+                                            }
+                                          }
+                                        ] 
+                                  });
         return res.status(200).send(rooms)
     }
   });

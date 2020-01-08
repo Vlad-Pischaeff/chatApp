@@ -62,3 +62,10 @@
 .add-card-close:after {
   transform: rotate(-45deg);
 }
+/*form AddRoom definition */
+.add-room-wrap {
+  height: 25rem;
+  overflow: auto;
+  display: block;  
+  background: #f8f8f8;
+}

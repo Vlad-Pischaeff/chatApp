@@ -1,8 +1,12 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
+import fetchRoom from './FormAddChatMiddleware'
+import FormFindedRooms from './FormFindedRooms'
 
 export default function FormChat({forms, rooms}) {
+  const [roomName, setRoomName] = useState('')
+  const [findedRooms, setFindedRooms] = useState('')
   const {dispatchLogin} = useContext(Context)
 
   const addRoom = () => {
@@ -10,6 +14,27 @@ export default function FormChat({forms, rooms}) {
       type: 'SHOW_ADDROOM',
       payload: ''
     })
+  }
+
+  const searchRoom = () => {
+    if (roomName !== '') {
+       const data = {
+        owner: JSON.parse(localStorage.getItem('currentUser'))._id,
+        name: roomName,
+        method: 'search'
+      }
+
+      async function search() {
+        const rooms = await fetchRoom(data)
+        setFindedRooms(rooms)
+      }
+
+      search()
+      dispatchLogin({
+        type: 'SHOW_FINDEDROOM',
+        payload: ''
+      })
+    }
   }
 
   const elements = [...rooms]
@@ -26,14 +51,12 @@ export default function FormChat({forms, rooms}) {
         <section className="col s4 orange lighten-5 h-100">
           <section className="h-wrap">
             <div className="input-field">
-              <input id="icon_prefix" type="text" className="validate" />
+              <input id="icon_prefix" type="text" className="validate" 
+                onChange = {event => setRoomName(event.target.value)} />
               <label htmlFor="icon_prefix">Search chatroom</label>
             </div>
-            <i className="material-icons">search</i>
-            <i className="material-icons"
-              onClick = {addRoom} >
-              library_add
-            </i>
+            <i className="material-icons" onClick = {searchRoom}>search</i>
+            <i className="material-icons" onClick = {addRoom}>library_add</i>
           </section>
           <div className="wrap h-85">
             <ul>
@@ -68,6 +91,7 @@ export default function FormChat({forms, rooms}) {
           </section>
         </section>
       </main>
+      <FormFindedRooms forms={forms} findedRooms={findedRooms}/>
     </div>
   )
 }

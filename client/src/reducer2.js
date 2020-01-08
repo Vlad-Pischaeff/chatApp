@@ -24,6 +24,14 @@ export default function(state, action) {
     case 'SHOW_ADDROOM':
       state.addroom = ''
       return {...state}
+
+    case 'SHOW_FINDEDROOM':
+      state.findedroom = ''
+      return {...state}
+
+    case 'HIDE_FINDEDROOM':
+      state.findedroom = 'hide'
+      return {...state}
   
     default:
       return state
