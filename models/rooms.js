@@ -17,7 +17,7 @@ const schema = new Schema({
     id: String,
     name: String  
   },
-  folowers: 
+  followers: 
     [String]
 })
 

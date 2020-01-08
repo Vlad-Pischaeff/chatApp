@@ -21,11 +21,11 @@ module.exports = (app) => {
         return res.status(201).send({
           error: false,
           rooms
-        })
+        });
       case 'check':
         // console.log('id', req.body.name)
-        rooms = await Rooms.find({'owner.id':req.body.id})
-        return res.status(200).send(rooms)
+        rooms = await Rooms.find({'owner.id':req.body.id});
+        return res.status(200).send(rooms);
       case 'search':
         rooms = await Rooms.find({$and: [ { 'name': 
                                             { $regex: req.body.name, $options: "i" } 
@@ -35,14 +35,20 @@ module.exports = (app) => {
                                               { $regex: req.body.owner, $options: "i" }
                                             }
                                           },
-                                          { 'folowers':
+                                          { 'followers':
                                             { $not:
                                               { $regex: req.body.owner, $options: "i" }
                                             }
                                           }
                                         ] 
                                   });
-        return res.status(200).send(rooms)
+        return res.status(200).send(rooms);
+      case 'follow':
+        rooms = await Rooms.update({ '_id':req.body.id }, { $push: {
+                                                            followers: req.body.user_id
+                                                            }
+                                                          });
+        return res.status(200).send(rooms);
     }
   });
 }
