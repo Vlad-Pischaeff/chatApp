@@ -4,6 +4,7 @@ import ChatRoomThumb from './ChatRoomThumb'
 
 export default function FormFindedRooms({forms, findedRooms}) {
   const {dispatchLogin} = useContext(Context)
+  const [followedRooms, setFollowedRooms] = useState([])
 
   const closeDialog = () => {
     dispatchLogin({
@@ -13,11 +14,14 @@ export default function FormFindedRooms({forms, findedRooms}) {
   }
   
   // console.log('findedRooms', findedRooms)
+  const addToRooms = (user) => {
+
+  }
 
   const elements = [...findedRooms]
   const element = elements.map(n => {
     return  <li key={n._id}>
-                <ChatRoomThumb room={n}/>
+                <ChatRoomThumb room={n} onClick={() => addToRooms(n._id)} />
             </li>
   })
 
