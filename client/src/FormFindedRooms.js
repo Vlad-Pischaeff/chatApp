@@ -33,7 +33,7 @@ export default function FormFindedRooms({forms, findedRooms}) {
             <div className="add-card-close" onClick={closeDialog}></div>
             
             <section className="add-room-wrap">
-              {element}
+              <ul> {element} </ul>
             </section>
     
             <footer className="card-action col s12 center-align" style={{"marginBottom": "1rem"}}>

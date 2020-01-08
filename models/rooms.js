@@ -14,12 +14,11 @@ const schema = new Schema({
     required: true
   },
   owner: {
-    id: {type: String},
-    name: {type: String}
+    id: String,
+    name: String  
   },
-  folowers: {
-    type: Array
-  }
+  folowers: 
+    [String]
 })
 
 module.exports = model('Rooms', schema)

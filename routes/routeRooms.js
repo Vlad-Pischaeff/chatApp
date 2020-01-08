@@ -34,6 +34,11 @@ module.exports = (app) => {
                                             { $not: 
                                               { $regex: req.body.owner, $options: "i" }
                                             }
+                                          },
+                                          { 'folowers':
+                                            { $not:
+                                              { $regex: req.body.owner, $options: "i" }
+                                            }
                                           }
                                         ] 
                                   });
