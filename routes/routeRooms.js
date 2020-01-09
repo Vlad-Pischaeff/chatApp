@@ -49,11 +49,13 @@ module.exports = (app) => {
                                   });
         return res.status(200).send(rooms);
       case 'follow':
-        // console.log('follow', req.body.id, req.body.user_id)
-        rooms = [...req.body.id]
-        rooms.forEach(async (value) => {
-          let room = await Rooms.updateOne( { _id: value }, { $push: { followers: req.body.user_id } } )
-        });
+        let keys = [...req.body.id]
+        rooms = await Rooms.updateMany( { _id: keys }, { $push: { followers: req.body.user_id } })
+        rooms = await Rooms.find( {$or: [ 
+                                          { 'owner.id': req.body.user_id },
+                                          { 'followers': req.body.user_id }
+                                        ]
+                                  });
         return res.status(200).send(rooms);
     }
   });
