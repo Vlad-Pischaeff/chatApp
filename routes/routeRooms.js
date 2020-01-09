@@ -24,7 +24,12 @@ module.exports = (app) => {
         });
       case 'check':
         // console.log('id', req.body.name)
-        rooms = await Rooms.find({'owner.id':req.body.id});
+        rooms = await Rooms.find( {$or: [ 
+                                          { 'owner.id': req.body.id },
+                                          { 'followers': req.body.id }
+                                        ]
+                                  }
+                                );
         return res.status(200).send(rooms);
       case 'search':
         rooms = await Rooms.find({$and: [ { 'name': 
@@ -44,10 +49,11 @@ module.exports = (app) => {
                                   });
         return res.status(200).send(rooms);
       case 'follow':
-        rooms = await Rooms.update({ '_id':req.body.id }, { $push: {
-                                                            followers: req.body.user_id
-                                                            }
-                                                          });
+        // console.log('follow', req.body.id, req.body.user_id)
+        rooms = [...req.body.id]
+        rooms.forEach(async (value) => {
+          let room = await Rooms.updateOne( { _id: value }, { $push: { followers: req.body.user_id } } )
+        });
         return res.status(200).send(rooms);
     }
   });

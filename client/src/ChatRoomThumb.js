@@ -1,10 +1,12 @@
 import React, {useState, useContext, useRef} from 'react'
 import {Context} from './context'
 
-export default function ChatRoomThumb({room}) {
+export default function ChatRoomThumb({room, bg}) {
 
+  const def = bg === undefined ? 'r-wrap' : bg
+  // console.log('definition', def, bg)
   return (
-    <div className="r-wrap">
+    <div className={def}>
       <div className="r-img"><img src ={room.avatar}/></div>
       <div className="r-name"><b>{room.name}</b></div>
       <div className="r-time grey-text text-darken-3">

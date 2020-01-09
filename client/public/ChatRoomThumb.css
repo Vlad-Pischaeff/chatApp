@@ -9,6 +9,9 @@
   box-shadow: 5px 5px 10px -8px rgba(3,59,85,0.55);
   border-radius: 0 0 0 1.5rem;
 }
+.r-wrap-bg {
+  background: rgba(36,126,100,0.2);
+}
 .r-wrap img {
   height: 4rem;
   max-width: 4rem;

@@ -9,6 +9,8 @@ export default function(state, action) {
       // console.log('state', state)
       // console.log('payload', action.payload)
       return [...state, action.payload]
+    case 'GET_UPDATED_OWNER_ROOMS':
+      return [...action.payload]
     case 'remove':
       return state.filter(n => n.id !== action.payload )
     case 'init':
