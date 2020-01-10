@@ -71,6 +71,7 @@ export default function FormChat({forms, rooms}) {
                 <ChatRoomThumb room={n} bg={n.owner.id === owner ? `r-wrap-bg-owner ${sel}` : `r-wrap-bg-follow ${sel}`} />
             </li>
   }) 
+  const unfollowedRoomName = "some room name..."
 
   return (
     <div className={`row ${forms.chat}`}>
@@ -127,7 +128,7 @@ export default function FormChat({forms, rooms}) {
       <div id="modal1" className="modal" >
         <div className="modal-content">
           <h4>Do you want to unsubscribe from...</h4>
-          <p>A bunch of text</p>
+          <p>{unfollowedRoomName}</p>
         </div>
         <div className="modal-footer">
           <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
