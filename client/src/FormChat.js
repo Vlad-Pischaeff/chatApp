@@ -7,7 +7,14 @@ import FormFindedRooms from './FormFindedRooms'
 export default function FormChat({forms, rooms}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
+  const [currentRoom, setCurrentRoom] = useState('')
   const {dispatchLogin} = useContext(Context)
+
+  const user = JSON.parse(localStorage.getItem('currentUser'))
+  const owner = user._id
+  const userAvatar = user.avatar
+
+  console.log('current room', currentRoom.name)
 
   const addRoom = () => {
     dispatchLogin({
@@ -19,7 +26,7 @@ export default function FormChat({forms, rooms}) {
   const searchRoom = () => {
     if (roomName !== '') {
        const data = {
-        owner: JSON.parse(localStorage.getItem('currentUser'))._id,
+        owner: owner,
         name: roomName,
         method: 'search'
       }
@@ -36,11 +43,27 @@ export default function FormChat({forms, rooms}) {
       })
     }
   }
+  
+  const showToast = (event, room) => {
+    // if (room.owner.id !== owner) {
+    //   event.preventDefault()
+    //   var toastHTML = `<span>Unsubscribe from the room ${room.name}</span><button class="btn-flat toast-action">Do</button>`;
+    //   window.M.toast({
+    //     html: toastHTML, 
+    //     displayLength: 4000
+    //   })
+    // }
+  }
+  const chooseElement = (item) => {
+    localStorage.setItem('currentRoom', JSON.stringify(item))
+    setCurrentRoom(item)
+  }
 
   const elements = [...rooms]
   const element = elements.map(n => {
-    return  <li key={n._id}>
-                <ChatRoomThumb room={n}/>
+    let sel = n._id === currentRoom._id ? 'r-wrap-selected' : ''
+    return  <li key={n._id} onContextMenu={(e) => showToast(e, n)} onClick={() => chooseElement(n)}>
+                <ChatRoomThumb room={n} bg={n.owner.id === owner ? `r-wrap-bg-owner ${sel}` : `r-wrap-bg-follow ${sel}`} />
             </li>
   }) 
 
@@ -55,8 +78,8 @@ export default function FormChat({forms, rooms}) {
                 onChange = {event => setRoomName(event.target.value)} />
               <label htmlFor="icon_prefix">Search chatroom</label>
             </div>
-            <i className="material-icons" onClick = {searchRoom}>search</i>
-            <i className="material-icons" onClick = {addRoom}>library_add</i>
+            <i className="material-icons" onClick={searchRoom}>search</i>
+            <i className="material-icons" onClick={addRoom}>library_add</i>
           </section>
           <div className="wrap h-85">
             <ul>
@@ -72,6 +95,7 @@ export default function FormChat({forms, rooms}) {
               <label htmlFor="icon_prefix">Search users</label>
             </div>
             <i className="material-icons">search</i>
+            <img className="user-avatar" src={userAvatar} />
           </section>
             <div className="divider"></div>
           <section className="h-75">chat field

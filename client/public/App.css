@@ -110,3 +110,8 @@ i:hover {
   cursor: pointer;
 }
 /* chat room styles */
+.user-avatar {
+  max-height: 5rem;
+  max-width: 5rem;
+  padding: 0 0 0 0.5rem;
+}

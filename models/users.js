@@ -8,7 +8,8 @@ const schema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  avatar : String
 })
 
 module.exports = model('Users', schema)

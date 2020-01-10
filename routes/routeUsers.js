@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Users = mongoose.model('Users');
 
+const path = require('path');
+const fs = require('fs');
+
 module.exports = (app) => {
 
   app.get(`/api/users`, async (req, res) => {
@@ -8,9 +11,15 @@ module.exports = (app) => {
     return res.status(200).send(users);
   });
 
+  app.get(`/api/userimg`, async (req, res) => {
+    const directoryPath = path.join(__dirname, '..', 'client', 'public', 'img', 'user');
+    let directoryContent = await fs.readdirSync(directoryPath);
+    return res.status(200).send(directoryContent);
+  });
+
   app.post(`/api/users`, async (req, res) => {
     let users;
-    // console.log('request', req.params, req.body)
+    console.log('request', req.params, req.body)
     switch (req.body.method) {
       case 'add':
         users = await Users.create(req.body);

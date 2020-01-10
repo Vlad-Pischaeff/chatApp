@@ -93,52 +93,49 @@ export default function FormAddChat({forms}) {
 
   return (
     <div className={`add-card-modal-bg ${forms.addroom}`}>
-      <div className="container">
-        <div className="row">
-          <h4 className="center-align">&nbsp;</h4>
+      <div className="container row">
+        <h4 className="center-align">&nbsp;</h4>
 
-          <form className="col s6 offset-s3 card">
-            <div className="card-content">
-              
-              <span className="card-title center-align">Enter Your new chat room credentials</span>
-              
-              <div className="add-card-close" onClick={closeDialog}></div>
+        <form className="col s6 offset-s3 card">
+          <main className="card-content">
+            
+            <span className="card-title center-align">Enter Your new chat room credentials</span>
+            <div className="add-card-close" onClick={closeDialog}></div>
 
-              <div className="input-field col s12">
-                <input id="roomname" type="text" data-length="20" ref={nameRef}
-                  onChange = {event => setRoomName(event.target.value)}
-                  onFocus = {() => alertRef.current.innerHTML = ''} />
-                <label htmlFor="roomname">ChatRoom name</label>
+            <section className="input-field col s12">
+              <input id="roomname" type="text" data-length="20" ref={nameRef}
+                onChange = {event => setRoomName(event.target.value)}
+                onFocus = {() => alertRef.current.innerHTML = ''} />
+              <label htmlFor="roomname">ChatRoom name</label>
+            </section>
+
+            <section className="input-field col s12">
+              <input type="text" id="roomdesc" className="validate" data-length="40" ref={descriptionRef}
+                onChange = {event => setRoomDescription(event.target.value)}
+                onFocus = {() => alertRef.current.innerHTML = ''} />
+              <label htmlFor="roomdesc">ChatRoom description</label>
+            </section>
+
+            <section className="col s12">
+              <div className="add-card-wrap-img">
+                {avatarsMap}
               </div>
+            </section>
 
-              <div className="input-field col s12">
-                <input type="text" id="roomdesc" className="validate" data-length="40" ref={descriptionRef}
-                  onChange = {event => setRoomDescription(event.target.value)}
-                  onFocus = {() => alertRef.current.innerHTML = ''} />
-                <label htmlFor="roomdesc">ChatRoom description</label>
-              </div>
+            <footer className="card-action col s12 center-align" style={{marginBottom: "1rem"}}>
+              <a className="waves-effect waves-light btn-large" 
+                onClick = {addRoom}>
+                Add room
+              </a>
+            </footer>
 
-              <div className="col s12">
-                <div className="add-card-wrap-img">
-                  {avatarsMap}
-                </div>
-              </div>
+          </main>
 
-              <div className="card-action col s12 center-align" style={{marginBottom: "1rem"}}>
-                <a className="waves-effect waves-light btn-large" 
-                  onClick = {addRoom}>
-                  Add room
-                </a>
-              </div>
+          <div className="card-action col s12">
+            <p className="center-align red-text" ref={alertRef}></p>
+          </div>
 
-            </div>
-
-            <div className="card-action col s12">
-              <p className="center-align red-text" ref={alertRef}></p>
-            </div>
-
-          </form>
-        </div>
+        </form>
       </div>
     </div>
   )

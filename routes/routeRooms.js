@@ -57,6 +57,14 @@ module.exports = (app) => {
                                         ]
                                   });
         return res.status(200).send(rooms);
+      case 'unfollow':
+        rooms = await Rooms.update( { _id: req.body.id }, { $pull: { followers: req.body.user_id } })
+        rooms = await Rooms.find( {$or: [ 
+                                          { 'owner.id': req.body.user_id },
+                                          { 'followers': req.body.user_id }
+                                        ]
+                                  });
+        return res.status(200).send(rooms);
     }
   });
 }

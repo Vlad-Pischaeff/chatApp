@@ -1,25 +1,39 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import fetchUser from './FormMiddleware'
 
 export default function FormSignIn({forms}) {
     const [userName, setUserName] = useState('')
     const [userPassword, setUserPassword] = useState('')
+    const [userAvatar, setUserAvatar] = useState('')
+    const [avatars, setAvatars] = useState([])
+    const [avatarClass, setAvatarClass] = useState([])
     const [verify, setVerify] = useState(true)
     const {dispatchLogin} = useContext(Context)
     const alert = useRef('')
     const remember = useRef('')
     
+    useEffect(() => {
+      const url = 'http://localhost:3001/api/userimg';
+      async function fetchAvatars() {
+        const response = await fetch(url);
+        const json = await response.json();
+        setAvatars(json);
+      }
+      fetchAvatars();
+    }, [])
+
     const addUser = () => {
       let data = {
         name: userName,
         password: userPassword,
+        avatar: `./img/user/${userAvatar}`,
         method: 'check'
       }
 
       async function checkUser() {
         let users = await fetchUser(data)
-        if (users.length === 0) {
+         if (users.length === 0) {
           data.method = 'add'
           users = await fetchUser(data)
           localStorage.setItem('currentUser', JSON.stringify(users.users))
@@ -33,10 +47,14 @@ export default function FormSignIn({forms}) {
         }
       }
 
-      try {
-        checkUser()
-      } catch(err) {
-        console.log(err)
+      if ((userName === '') || (userPassword === '')) {
+        setVerify(false)
+      } else {
+        try {
+          checkUser()
+        } catch(err) {
+          console.log(err)
+        }
       }
     }
 
@@ -46,6 +64,19 @@ export default function FormSignIn({forms}) {
       }
     }
     
+    const setClass = (n, index) => {
+      setUserAvatar(n)
+      setAvatarClass(avatars.map((n, i) => {
+          return i === index ? 'border' : ''
+        }))
+    }
+
+    const avatarsMap = avatars.map((n, i) => {
+      return  <div key={`${i}`} onClick={() => setClass(n, i)}>
+                <img src={`./img/user/${n}`} className={`${avatarClass[i]}`}/>
+              </div>
+    })
+
     let containerClass = (verify && (forms.signup === 'hide')) ? 'container hide' : 'container'
     let alertText = verify ? '\xa0' : 'Such user is already exists OR incorrect name or password'
 
@@ -55,34 +86,42 @@ export default function FormSignIn({forms}) {
           <h4 className="center-align">My App</h4>
         
           <form className="col s6 offset-s3 card">
-            <div className="card-content">
+            <main className="card-content">
+
               <span className="card-title center-align">Enter Your credentials</span>
-              <div className="input-field col s12">
+
+              <section className="input-field col s12">
                 <input type="text" id="username" className="validate" 
                   onChange = {event => setUserName(event.target.value)} 
                   onFocus = {() => setVerify(true)} />
                 <label htmlFor="username">Username</label>
-              </div>
+              </section>
   
-              <div className="input-field col s12">
+              <section className="input-field col s12">
                 <input type="password" id="password" className="validate" 
                   onChange = {event => setUserPassword(event.target.value)} 
-                  onFocus = {() =>  setVerify(true)}
+                  onFocus = {() => setVerify(true)}
                   />
                 <label htmlFor="password">Password</label>
-              </div>
+              </section>
+
+              <section className="col s12">
+                <div className="add-card-wrap-img">
+                  {avatarsMap}
+                </div>
+              </section>
   
-              <div className="col s12" style={{marginBottom: "1rem"}}>
-                <a className="waves-effect waves-light btn-large left" 
-                    onClick = {addUser}>
+              <footer className="col s12" style={{margin: "1rem 0"}}>
+                <a className="waves-effect waves-light btn-large left" onClick={addUser}>
                     Sign up
                 </a>
                 <label htmlFor="remember-me-s" className="right">
                   <input type="checkbox" id="remember-me-s" ref={remember} onClick={rememberUser} />
                   <span>Remember me</span>
                 </label>
-              </div>
-            </div>
+              </footer>
+
+            </main>
   
             <div className="card-action col s12">
               <p className="center-align red-text" ref={alert}>{alertText}</p>

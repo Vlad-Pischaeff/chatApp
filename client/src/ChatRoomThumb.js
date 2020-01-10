@@ -1,10 +1,9 @@
 import React, {useState, useContext, useRef} from 'react'
-import {Context} from './context'
 
 export default function ChatRoomThumb({room, bg}) {
 
-  const def = bg === undefined ? 'r-wrap' : bg
-  // console.log('definition', def, bg)
+  const def = bg === undefined ? 'r-wrap' : `r-wrap ${bg}`
+
   return (
     <div className={def}>
       <div className="r-img"><img src ={room.avatar}/></div>

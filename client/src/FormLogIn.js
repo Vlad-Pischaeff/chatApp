@@ -78,32 +78,36 @@ export default function FormLogIn({forms}) {
           <h4 className="center-align">My App</h4>
         
           <form className="col s6 offset-s3 card">
-            <div className="card-content">
+            <main className="card-content">
+
               <span className="card-title center-align">Enter Your credentials</span>
-              <div className="input-field col s12">
-                <input type="text" id="username" className="validate"  ref={nameRef}
+
+              <section className="input-field col s12">
+                <input type="text" id="username" className="validate" ref={nameRef}
                   onChange = {event => setUserName(event.target.value)} 
                   onFocus = {() => alert.current.innerHTML='&nbsp;'} />
                 <label htmlFor="username">Username</label>
-              </div>
+              </section>
   
-              <div className="input-field col s12">
-                <input type="password" id="password" className="validate"  ref={passwordRef}
+              <section className="input-field col s12">
+                <input type="password" id="password" className="validate" ref={passwordRef}
                   onChange = {event => setUserPassword(event.target.value)} 
                   onFocus = {() => alert.current.innerHTML='&nbsp;'}
                   />
                 <label htmlFor="password">Password</label>
-              </div>
+              </section>
   
-              <div className="col s12" style={{marginBottom: "1rem"}}>
-                <a className="waves-effect waves-light btn-large left" 
-                    onClick = {checkUser}>Log in</a>
+              <footer className="col s12" style={{marginBottom: "1rem"}}>
+                <a className="waves-effect waves-light btn-large left" onClick={checkUser}>
+                  Log in
+                </a>
                 <label htmlFor="remember-me" className="right">
                   <input type="checkbox" id="remember-me" ref={remember} onClick={rememberUser} />
                   <span>Remember me</span>
                 </label>
-              </div>
-            </div>
+              </footer>
+
+            </main>
   
             <div className="card-action col s12">
               <p className="center-align red-text" ref={alert}>{alertText}</p>

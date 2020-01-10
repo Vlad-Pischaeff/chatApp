@@ -2,12 +2,8 @@ export default function(state, action) {
   console.log('reducer1 state', state, 'action', action.payload)
   switch (action.type) {
     case 'GET_OWNER_ROOMS':
-      // console.log('state', state)
-      // console.log('payload', action.payload)
       return [...state, ...action.payload]
     case 'GET_ADDED_OWNER_ROOMS':
-      // console.log('state', state)
-      // console.log('payload', action.payload)
       return [...state, action.payload]
     case 'GET_UPDATED_OWNER_ROOMS':
       return [...action.payload]
