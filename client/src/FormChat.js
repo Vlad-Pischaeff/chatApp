@@ -7,14 +7,12 @@ import FormFindedRooms from './FormFindedRooms'
 export default function FormChat({forms, rooms}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
-  const [currentRoom, setCurrentRoom] = useState('')
+  const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')))
   const {dispatchLogin} = useContext(Context)
 
   const user = JSON.parse(localStorage.getItem('currentUser'))
   const owner = user._id
   const userAvatar = user.avatar
-
-  console.log('current room', currentRoom.name)
 
   const addRoom = () => {
     dispatchLogin({
@@ -44,16 +42,23 @@ export default function FormChat({forms, rooms}) {
     }
   }
   
-  const showToast = (event, room) => {
-    // if (room.owner.id !== owner) {
-    //   event.preventDefault()
-    //   var toastHTML = `<span>Unsubscribe from the room ${room.name}</span><button class="btn-flat toast-action">Do</button>`;
-    //   window.M.toast({
-    //     html: toastHTML, 
-    //     displayLength: 4000
-    //   })
-    // }
+  const unfollowRoom = () => {
+    console.log('unsubscribe')
   }
+
+  const showToast = (event, room) => {
+    if (room.owner.id !== owner) {
+      event.preventDefault()
+      let options = {
+        onCloseStart: unfollowRoom
+      }
+      let elems = document.querySelectorAll('.modal');
+      let instances = window.M.Modal.init(elems, options);
+      console.log('elems', elems, instances)
+      instances[0].open();
+    }
+  }
+
   const chooseElement = (item) => {
     localStorage.setItem('currentRoom', JSON.stringify(item))
     setCurrentRoom(item)
@@ -115,7 +120,20 @@ export default function FormChat({forms, rooms}) {
           </section>
         </section>
       </main>
+
       <FormFindedRooms forms={forms} findedRooms={findedRooms}/>
+
+      {/* <!-- Modal Structure --> */}
+      <div id="modal1" className="modal" >
+        <div className="modal-content">
+          <h4>Do you want to unsubscribe from...</h4>
+          <p>A bunch of text</p>
+        </div>
+        <div className="modal-footer">
+          <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+      </div>
+      {/* <!-- Modal Structure --> */}
     </div>
   )
 }
