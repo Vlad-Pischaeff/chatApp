@@ -10,6 +10,7 @@ export default function FormChat({forms, rooms, currUser}) {
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
   const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')) || '')
   const {dispatchLogin, dispatchRooms} = useContext(Context)
+  const modalUnfollow = useRef('')
 
   const addRoom = () => {
     dispatchLogin({
@@ -66,6 +67,7 @@ export default function FormChat({forms, rooms, currUser}) {
     setUnfollowedRoom(room)
     if (room.owner.id !== currUser._id) {
       let elems = document.querySelectorAll('.modal');
+      // console.log('modal --', elems, modalUnfollow)
       let instances = window.M.Modal.init(elems);
       instances[0].open();
     } 
@@ -90,7 +92,8 @@ export default function FormChat({forms, rooms, currUser}) {
     <div className={`row ${forms.chat}`}>
       <h4 className="center-align">My App</h4>
       <main className="card col s10 offset-s1 h-40rem" style={{padding: "0.5rem"}}>
-        <section className="col s4 orange lighten-5 h-100">
+        {/* <section className="col s4 orange lighten-5 h-100"> */}
+        <section className="col s4 h-100">
           <section className="h-wrap">
             <div className="input-field">
               <input id="icon_prefix" type="text" className="validate" 
@@ -138,7 +141,7 @@ export default function FormChat({forms, rooms, currUser}) {
       <FormFindedRooms forms={forms} findedRooms={findedRooms} currUser={currUser}/>
 
       {/* <!-- Modal Structure --> */}
-      <div id="modal1" className="modal" >
+      <div id="modal1" className="modal" ref={modalUnfollow}>
         <div className="modal-content">
           <h4>Do you want to unsubscribe from...</h4>
           <p>{unfollowedRoom.name}</p>

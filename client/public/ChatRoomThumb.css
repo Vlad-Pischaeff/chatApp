@@ -6,7 +6,7 @@
   grid-template-rows:  2rem 1rem 1rem; 
   grid-template-columns: 4rem 1fr 1fr 1fr 3rem;
   margin: 0.5rem 0;
-  box-shadow: 5px 5px 10px -8px rgba(3,59,85,0.55);
+  box-shadow: 5px 5px 10px -5px rgba(3,59,85,0.55);
   border-radius: 0 0 0 1.5rem;
 }
 .r-wrap-selected {
@@ -16,7 +16,7 @@
   background: rgba(36, 126, 99, 0.2);
 }
 .r-wrap-bg-owner {
-  background: rgba(56, 158, 199, 0.2);
+  background: rgba(170, 247, 250, 0.2);
 }
 .r-wrap-bg-follow {
   background: rgba(223, 186, 87, 0.2);
