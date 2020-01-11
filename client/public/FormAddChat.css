@@ -5,6 +5,7 @@
   grid-template-rows:  5vw 5vw 5vw 5vw; 
   grid-template-columns: 5vw 5vw 5vw 5vw;
   grid-gap: 1vw;
+  background: #eef2fd;
 }
 .add-card-wrap-img img {
   max-width: 5vw;

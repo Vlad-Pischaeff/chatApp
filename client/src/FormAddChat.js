@@ -2,7 +2,7 @@ import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import fetchRoom from './FormAddChatMiddleware'
 
-export default function FormAddChat({forms}) {
+export default function FormAddChat({forms, currUser}) {
   const [roomName, setRoomName] = useState('')
   const [roomDescription, setRoomDescription] = useState('')
   const [roomAvatar, setRoomAvatar] = useState('')
@@ -28,14 +28,14 @@ export default function FormAddChat({forms}) {
       alertRef.current.innerHTML = 'Please fill required fields'
     } else {
       alertRef.current.innerHTML = ''
-      let user = JSON.parse(localStorage.getItem('currentUser'))
+
       let data = {
         name: roomName,
         description: roomDescription,
         avatar: `./img/room/${roomAvatar}`,
         owner: {
-          id: user._id,
-          name: user.name
+          id: currUser._id,
+          name: currUser.name
         },
         method: 'add'
       }
@@ -88,8 +88,6 @@ export default function FormAddChat({forms}) {
               <img src={`./img/room/${n}`} className={`${avatarClass[i]}`}/>
             </div>
   })
-
-  // console.log('avatar', roomAvatar, avatarClass, roomName, roomDescription);
 
   return (
     <div className={`add-card-modal-bg ${forms.addroom}`}>

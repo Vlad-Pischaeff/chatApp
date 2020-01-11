@@ -8,7 +8,7 @@ export default function FormLogIn({forms}) {
     const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
     const [userPassword, setUserPassword] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).password: '')
     const [verify, setVerify] = useState(true)
-    const {dispatchLogin, dispatchRooms} = useContext(Context)
+    const {dispatchLogin, dispatchRooms, dispatchCurrUser} = useContext(Context)
     const alert = useRef('')
     const remember = useRef('')
     const nameRef = useRef('')
@@ -49,7 +49,11 @@ export default function FormLogIn({forms}) {
           })
           // fetch list of owner rooms
           setVerify(true)
-          localStorage.setItem('currentUser', JSON.stringify(users[0]))
+          // localStorage.setItem('currentUser', JSON.stringify(users[0]))
+          dispatchCurrUser({
+            type: 'SET_CURRENT_USER',
+            payload: users[0] 
+          })
         } else {
           setVerify(false)
         }
@@ -73,8 +77,8 @@ export default function FormLogIn({forms}) {
     let alertText = verify ? '\xa0' : 'No such user or password'
 
     return (
-      <div className={`container ${forms.login}`}>
-        <div className="row">
+      <div className={`row container ${forms.login}`}>
+        {/* <div className="row"> */}
           <h4 className="center-align">My App</h4>
         
           <form className="col s6 offset-s3 card">
@@ -116,7 +120,7 @@ export default function FormLogIn({forms}) {
             </div>
   
           </form>
-        </div>
+        {/* </div> */}
       </div>
     )
 }

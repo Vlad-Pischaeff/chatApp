@@ -9,7 +9,7 @@ export default function FormSignIn({forms}) {
     const [avatars, setAvatars] = useState([])
     const [avatarClass, setAvatarClass] = useState([])
     const [verify, setVerify] = useState(true)
-    const {dispatchLogin} = useContext(Context)
+    const {dispatchLogin, dispatchCurrUser} = useContext(Context)
     const alert = useRef('')
     const remember = useRef('')
     
@@ -36,7 +36,10 @@ export default function FormSignIn({forms}) {
          if (users.length === 0) {
           data.method = 'add'
           users = await fetchUser(data)
-          localStorage.setItem('currentUser', JSON.stringify(users.users))
+          dispatchCurrUser({
+            type: 'SET_CURRENT_USER',
+            payload: users.users 
+          })
           dispatchLogin({
             type: 'HIDE_SIGNUP',
             payload: ''
@@ -77,12 +80,11 @@ export default function FormSignIn({forms}) {
               </div>
     })
 
-    let containerClass = (verify && (forms.signup === 'hide')) ? 'container hide' : 'container'
+    let containerClass = (verify && (forms.signup === 'hide')) ? 'row container hide' : 'row container'
     let alertText = verify ? '\xa0' : 'Such user is already exists OR incorrect name or password'
 
     return (
       <div className={containerClass}>
-        <div className="row">
           <h4 className="center-align">My App</h4>
         
           <form className="col s6 offset-s3 card">
@@ -100,8 +102,7 @@ export default function FormSignIn({forms}) {
               <section className="input-field col s12">
                 <input type="password" id="password" className="validate" 
                   onChange = {event => setUserPassword(event.target.value)} 
-                  onFocus = {() => setVerify(true)}
-                  />
+                  onFocus = {() => setVerify(true)} />
                 <label htmlFor="password">Password</label>
               </section>
 
@@ -128,7 +129,6 @@ export default function FormSignIn({forms}) {
             </div>
   
           </form>
-        </div>
       </div>
     )
 }

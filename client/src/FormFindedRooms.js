@@ -3,7 +3,7 @@ import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 import fetchRoom from './FormAddChatMiddleware'
 
-export default function FormFindedRooms({forms, findedRooms}) {
+export default function FormFindedRooms({forms, findedRooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const [followedRooms, setFollowedRooms] = useState([])
 
@@ -24,8 +24,8 @@ export default function FormFindedRooms({forms, findedRooms}) {
   }
 
   const followRoom = () => {
-    const user = JSON.parse(localStorage.getItem('currentUser'))
-
+    // const user = JSON.parse(localStorage.getItem('currentUser'))
+    const user = currUser
     async function fetchFollowRoom() {
       let data = {
         id: followedRooms,
