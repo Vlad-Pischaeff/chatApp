@@ -8,6 +8,8 @@ require('./models/users');
 require('./models/rooms');
 
 const app = express()
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 // const chatRouter = require('./routes/routes')
 // app.engine('html', require('ejs').renderFile);
 
@@ -26,7 +28,7 @@ async function start() {
       useFindAndModify: false,
       useUnifiedTopology: true
     })
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`)
     })
   } catch (e) {
@@ -35,3 +37,16 @@ async function start() {
 }
 
 start()
+
+io.on('connection', socket => {
+  console.log('User connected')
+  
+  socket.on('username', (name) => {
+    console.log('user: ', name)
+    io.sockets.emit('user logined', name)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})

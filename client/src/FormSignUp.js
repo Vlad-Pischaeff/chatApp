@@ -35,7 +35,11 @@ export default function FormSignIn({forms}) {
         let users = await fetchUser(data)
          if (users.length === 0) {
           data.method = 'add'
-          users = await fetchUser(data)
+          try {
+            users = await fetchUser(data)
+          } catch(e) {
+            console.log('users', e)
+          }
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users.users 
@@ -53,11 +57,7 @@ export default function FormSignIn({forms}) {
       if ((userName === '') || (userPassword === '')) {
         setVerify(false)
       } else {
-        try {
-          checkUser()
-        } catch(err) {
-          console.log(err)
-        }
+        checkUser()
       }
     }
 

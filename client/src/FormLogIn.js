@@ -1,4 +1,5 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
+import socketIOClient from "socket.io-client"
 import {Context} from './context'
 import fetchUser from './FormMiddleware'
 import fetchRoom from './FormAddChatMiddleware'
@@ -21,6 +22,11 @@ export default function FormLogIn({forms}) {
       nameRef.current.value = userName
       passwordRef.current.value = userPassword
     }, [])
+
+    const sendIO = (user) => {
+      const socket = socketIOClient("http://localhost:3001");
+      socket.emit('username', user)
+    }
 
     const checkUser = () => {
       const dataUser = {
@@ -49,7 +55,7 @@ export default function FormLogIn({forms}) {
           })
           // fetch list of owner rooms
           setVerify(true)
-          // localStorage.setItem('currentUser', JSON.stringify(users[0]))
+          sendIO(users[0])
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users[0] 

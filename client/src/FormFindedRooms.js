@@ -32,34 +32,17 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
         user_id: user._id,
         method: 'follow'
       }
-      let rooms = await fetchRoom(data)
-      // console.log('updated followed rooms', rooms)
+      try {
+        var rooms = await fetchRoom(data)
+      } catch(e) {
+        console.log('follow error', e)
+      }
       dispatchRooms({
         type: 'GET_UPDATED_OWNER_ROOMS',
         payload: rooms
       })
     }
-
-    // async function updateRooms() {
-    //   let data = {
-    //     id: user._id,
-    //     method: 'check'
-    //   }
-    //   let rooms = await fetchRoom(data)
-    //   console.log('updated rooms', rooms)
-    //   dispatchRooms({
-    //     type: 'GET_UPDATED_OWNER_ROOMS',
-    //     payload: rooms
-    //   })
-    // }
-
-    try {
-      fetchFollowRoom()
-      // updateRooms()
-    } catch(err) {
-      console.log(err)
-    }
-
+    fetchFollowRoom()
     closeDialog()
   }
 

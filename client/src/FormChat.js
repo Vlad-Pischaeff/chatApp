@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
+import socketIOClient from "socket.io-client"
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 import fetchRoom from './FormAddChatMiddleware'
@@ -11,6 +12,12 @@ export default function FormChat({forms, rooms, currUser}) {
   const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')) || '')
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
+  
+  const socket = socketIOClient("http://localhost:3001")
+  // console.log('chat app window', forms, rooms, currUser)
+  socket.on('user logined', (user) => {
+    if (currUser) console.log('user logined --', user)
+  })
 
   const addRoom = () => {
     dispatchLogin({
@@ -48,18 +55,18 @@ export default function FormChat({forms, rooms, currUser}) {
     }
 
     async function fetchAddRoom() {
-      let rooms = await fetchRoom(data)
+      try {
+        let rooms = await fetchRoom(data)
+      } catch(e) {
+        console.log('error', e)
+      }
       dispatchRooms({
           type: 'GET_UPDATED_OWNER_ROOMS',
           payload: rooms
       })
     }
 
-    try {
-      fetchAddRoom()
-    } catch(err) {
-      console.log(err)
-    }
+    fetchAddRoom()
   }
 
   const showModal = (event, room) => {
@@ -67,7 +74,6 @@ export default function FormChat({forms, rooms, currUser}) {
     setUnfollowedRoom(room)
     if (room.owner.id !== currUser._id) {
       let elems = document.querySelectorAll('.modal');
-      // console.log('modal --', elems, modalUnfollow)
       let instances = window.M.Modal.init(elems);
       instances[0].open();
     } 
