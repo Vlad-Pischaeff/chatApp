@@ -43,7 +43,7 @@ io.on('connection', socket => {
   
   socket.on('username', (name) => {
     console.log('user: ', name)
-    io.sockets.emit('user logined', name)
+    io.emit('user logined', name)
   })
 
   socket.on('disconnect', () => {
