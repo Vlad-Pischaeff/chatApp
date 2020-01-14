@@ -8,9 +8,11 @@
   margin: 0.5rem 0;
   box-shadow: 5px 5px 10px -5px rgba(3,59,85,0.55);
   border-radius: 0 0 0 1.5rem;
+  transition: all 0.2s ease-out;
 }
 .r-wrap-selected {
-  box-shadow: 5px 5px 10px -5px rgba(175, 64, 0, 0.95);
+  box-shadow: 5px 5px 10px -7px rgba(202, 74, 0, 0.95);
+  transform: translate( 2px, 2px);
 }
 .r-wrap-bg-select {
   background: rgba(36, 126, 99, 0.2);
@@ -52,7 +54,10 @@
   font-size: 0.7rem;
   margin: 0 6px;
   color: grey;
-  line-height: 0.9rem;
+  /* line-height: 0.9rem; */
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
 }
 .r-time {
   grid-row: 1/2; 
