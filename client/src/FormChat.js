@@ -17,11 +17,19 @@ export default function FormChat({forms, rooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   
-  // const socket = socketIOClient("http://localhost:3001")
-  // console.log('chat app window', currentRoom, messages)
-  // socket.on('user logined', (user) => {
-  //   if (currUser) console.log('user logined --', user, 'currUser', currUser)
+  const socket = socketIOClient("http://localhost:3001")
+
+  // socket.on('connection', socket => {
+  //   socket.on('news', function (data) {
+  //     console.log('news', data);
+  //     // socket.emit('my other event', { my: 'data' });
+  //   });
+  //   // socket.emit('USER: SENDED MESSAGE', { msg: message });
   // })
+  
+  const sendIO = (message) => {
+    socket.emit('USER: SENDED MESSAGE', message)
+  }
 
   const addRoom = () => {
     dispatchLogin({
@@ -98,6 +106,7 @@ export default function FormChat({forms, rooms, currUser}) {
       try {
         let msgs = await fetchMsgs(data)
         setMessages([...messages, msgs.msgs])
+        sendIO(msgs.msgs)
       } catch(e) {
         console.log('error', e)
       }
@@ -166,7 +175,7 @@ export default function FormChat({forms, rooms, currUser}) {
           </section>
             <div className="divider"></div>
             
-          <section className="h-70">
+          <section className="h-70 h-msgs">
             <ul>
               {parsedMsgs}
             </ul>

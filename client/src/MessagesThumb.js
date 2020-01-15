@@ -6,17 +6,17 @@ export default function MessagesThumb ({msg, user, room}) {
   
   return (
     <section className={`${attr}-wrap`}>
-      <div>
-        <img src={msg.user_avatar} />
-      </div>
+      <img src={msg.user_avatar} />
+      <span className={`${attr}-arrow`}></span>
       <article className={`${attr}-wrap-msg`}>
         <div className={`${attr}-time`}>
+          <p>{msg.user_name}</p>
           <p>{msg.data}</p>
         </div>
         <div className={`${attr}-msg`}>
           <p>{msg.text}</p>
         </div>
       </article>
-    </section>  
+    </section> 
   )
 }

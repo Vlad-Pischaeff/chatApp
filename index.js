@@ -42,11 +42,21 @@ start()
 
 io.on('connection', socket => {
   console.log('User connected')
+
+  socket.emit('news', { hello: 'world' });
   
-  socket.on('username', (name) => {
-    console.log('user: ', name)
-    io.emit('user logined', name)
+  socket.on('username', (data) => {
+    console.log('user name', data)
   })
+
+  socket.on('USER: SENDED MESSAGE', (data) => {
+    console.log('USER: SENDED MESSAGE', data)
+  })
+
+  // socket.on('USER: SENDED MESSAGE', (msg) => {
+  //   console.log('SERVER RECIEVED MESSAGE', msg)
+  //   io.emit('SERVER: USER SENDED MESSAGE', msg)
+  // })
 
   socket.on('disconnect', () => {
     console.log('user disconnected')

@@ -55,7 +55,7 @@ export default function FormLogIn({forms}) {
           })
           // fetch list of owner rooms
           setVerify(true)
-          // sendIO(users[0])
+          sendIO(users[0])
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users[0] 

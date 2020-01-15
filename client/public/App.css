@@ -115,3 +115,8 @@ i:hover {
   max-width: 5rem;
   padding: 0 0 0 0.5rem;
 }
+.h-msgs {
+  overflow-Y: auto;
+  overflow-X: hidden;
+  padding: 0 1.5rem 0 0;
+}
