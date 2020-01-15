@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react'
+import React, {useReducer, useEffect} from 'react'
 import {Context} from './context'
 import roomsReducer from './reducer1'
 import loginReducer from './reducer2'
@@ -15,7 +15,10 @@ export default function App() {
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
   
   // console.log('App states', rooms, currUser)
-  
+  useEffect(() => {
+    console.log('change current user', currUser)
+  }, [currUser])
+
   return (
     <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchCurrUser}}>
         <FormLogIn forms={forms}/>

@@ -55,7 +55,7 @@ export default function FormLogIn({forms}) {
           })
           // fetch list of owner rooms
           setVerify(true)
-          sendIO(users[0])
+          // sendIO(users[0])
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users[0] 
@@ -108,7 +108,7 @@ export default function FormLogIn({forms}) {
               </section>
   
               <footer className="col s12" style={{marginBottom: "1rem"}}>
-                <a className="waves-effect waves-light btn-large left" onClick={checkUser}>
+                <a href="#!" className="waves-effect waves-light btn-large left" onClick={checkUser}>
                   Log in
                 </a>
                 <label htmlFor="remember-me" className="right">
@@ -121,7 +121,7 @@ export default function FormLogIn({forms}) {
   
             <div className="card-action col s12">
               <p className="center-align red-text" ref={alert}>{alertText}</p>
-              <p className="center-align">Not registered? <a style={{cursor: "pointer"}} 
+              <p className="center-align">Not registered? <a href="#!" style={{cursor: "pointer"}} 
                 onClick={registerUser}>sign up</a></p>
             </div>
   

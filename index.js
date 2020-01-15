@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3001
 // IMPORT MODELS
 require('./models/users');
 require('./models/rooms');
+require('./models/messages');
 
 const app = express()
 const server = require('http').createServer(app);
@@ -20,6 +21,7 @@ app.use(cors());
 //IMPORT ROUTES
 require('./routes/routeUsers')(app);
 require('./routes/routeRooms')(app);
+require('./routes/routeMessages')(app);
 
 async function start() {
   try {

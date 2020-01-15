@@ -2,22 +2,26 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import socketIOClient from "socket.io-client"
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
+import MessagesThumb from './MessagesThumb'
 import fetchRoom from './FormAddChatMiddleware'
+import fetchMsgs from './FormAddMsgsMiddleware'
 import FormFindedRooms from './FormFindedRooms'
 
 export default function FormChat({forms, rooms, currUser}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState('')
   const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')) || '')
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   
-  const socket = socketIOClient("http://localhost:3001")
-  // console.log('chat app window', forms, rooms, currUser)
-  socket.on('user logined', (user) => {
-    if (currUser) console.log('user logined --', user)
-  })
+  // const socket = socketIOClient("http://localhost:3001")
+  // console.log('chat app window', currentRoom, messages)
+  // socket.on('user logined', (user) => {
+  //   if (currUser) console.log('user logined --', user, 'currUser', currUser)
+  // })
 
   const addRoom = () => {
     dispatchLogin({
@@ -33,12 +37,10 @@ export default function FormChat({forms, rooms, currUser}) {
         name: roomName,
         method: 'search'
       }
-
       async function search() {
         const rooms = await fetchRoom(data)
         setFindedRooms(rooms)
       }
-
       search()
       dispatchLogin({
         type: 'SHOW_FINDEDROOM',
@@ -53,19 +55,17 @@ export default function FormChat({forms, rooms, currUser}) {
       user_id: currUser._id,
       method: 'unfollow'
     }
-
     async function fetchAddRoom() {
       try {
         let rooms = await fetchRoom(data)
+        dispatchRooms({
+          type: 'GET_UPDATED_OWNER_ROOMS',
+          payload: rooms
+        })
       } catch(e) {
         console.log('error', e)
       }
-      dispatchRooms({
-          type: 'GET_UPDATED_OWNER_ROOMS',
-          payload: rooms
-      })
     }
-
     fetchAddRoom()
   }
 
@@ -82,14 +82,55 @@ export default function FormChat({forms, rooms, currUser}) {
   const chooseElement = (item) => {
     localStorage.setItem('currentRoom', JSON.stringify(item))
     setCurrentRoom(item)
+    checkMessages(item)
+  }
+
+  const addMessage = () => {
+    let data = {
+      text: message,
+      user_id: currUser._id,
+      user_name: currUser.name,
+      user_avatar: currUser.avatar,
+      room_id: currentRoom._id,
+      method: 'add'
+    }
+    async function addMsg() {
+      try {
+        let msgs = await fetchMsgs(data)
+        setMessages([...messages, msgs.msgs])
+      } catch(e) {
+        console.log('error', e)
+      }
+    }
+    addMsg()
+  }
+
+  const checkMessages = (room) => {
+    let data = {
+      room_id: room._id,
+      method: 'check'
+    }
+    async function chkMsg() {
+      try {
+        let msgs = await fetchMsgs(data)
+        setMessages(msgs)
+      } catch(e) {
+        console.log('error', e)
+      }
+    }
+    chkMsg()
   }
 
   const elements = [...rooms]
-  const element = elements.map(n => {
+  const r_element = elements.map(n => {
     let selected = n._id === currentRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
                 <ChatRoomThumb room={n} bg={selected} currUser={currUser}/>
             </li>
+  })
+  const m_element = [...messages]
+  const parsedMsgs = m_element.map(n => {
+    return  <li key={n._id}><MessagesThumb msg={n} user={currUser} room={currentRoom}/></li>
   }) 
  
   return (
@@ -109,12 +150,12 @@ export default function FormChat({forms, rooms, currUser}) {
           </section>
           <section className="wrap h-85">
             <ul>
-              {element}
+              {r_element}
             </ul>
           </section>
         </section>
 
-        <article className="col s8 blue lighten-5 h-100 ">
+        <article className="col s8 h-100 ">
           <section className="h-15 h-wrap">
             <div className="input-field col s12">
               <input id="icon_prefix" type="text" className="validate"/>
@@ -124,18 +165,19 @@ export default function FormChat({forms, rooms, currUser}) {
             <img className="user-avatar" src={currUser.avatar} />
           </section>
             <div className="divider"></div>
-          <section className="h-75">chat field
+            
+          <section className="h-70">
             <ul>
-              <li>one</li>
-              <li>two</li>
-              <li>three</li>
+              {parsedMsgs}
             </ul>
           </section>
+
             <div className="divider"></div>
-          <section >
+          <section>
             <div className="input-field">
-              <i className="material-icons prefix">send</i>
-              <input id="icon_prefix" type="text" className="validate"/>
+              <i className="material-icons prefix" onClick={addMessage}>send</i>
+              <input id="icon_prefix" type="text" className="validate"
+                onChange = {(event) => setMessage(event.target.value)}/>
               <label htmlFor="icon_prefix">Send message</label>
             </div>
           </section>

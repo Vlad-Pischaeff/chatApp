@@ -121,7 +121,7 @@ export default function FormAddChat({forms, currUser}) {
             </section>
 
             <footer className="card-action col s12 center-align" style={{marginBottom: "1rem"}}>
-              <a className="waves-effect waves-light btn-large" 
+              <a href="#!" className="waves-effect waves-light btn-large" 
                 onClick = {addRoom}>
                 Add room
               </a>

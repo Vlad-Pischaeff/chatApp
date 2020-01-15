@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 import fetchRoom from './FormAddChatMiddleware'
@@ -6,7 +6,7 @@ import fetchRoom from './FormAddChatMiddleware'
 export default function FormFindedRooms({forms, findedRooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const [followedRooms, setFollowedRooms] = useState([])
-
+ 
   const closeDialog = () => {
     dispatchLogin({
       type: 'HIDE_FINDEDROOM',
@@ -24,12 +24,10 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
   }
 
   const followRoom = () => {
-    // const user = JSON.parse(localStorage.getItem('currentUser'))
-    const user = currUser
     async function fetchFollowRoom() {
       let data = {
         id: followedRooms,
-        user_id: user._id,
+        user_id: currUser._id,
         method: 'follow'
       }
       try {
@@ -54,7 +52,7 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
               : 'r-wrap r-wrap-bg'
   
     return  <li key={n._id} onClick={() => addToRooms(n._id)} >
-                <ChatRoomThumb room={n} bg={bg}/>
+                <ChatRoomThumb room={n} bg={bg} currUser={currUser}/>
             </li>
   })
 
@@ -74,7 +72,7 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
             </section>
     
             <footer className="card-action col s12 center-align" style={{"marginBottom": "1rem"}}>
-              <a className="waves-effect waves-light btn-large" onClick={followRoom} >
+              <a href="#!" className="waves-effect waves-light btn-large" onClick={followRoom} >
                 Follow
               </a>
             </footer>

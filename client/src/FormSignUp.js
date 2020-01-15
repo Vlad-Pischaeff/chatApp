@@ -113,7 +113,7 @@ export default function FormSignIn({forms}) {
               </section>
   
               <footer className="col s12" style={{margin: "1rem 0"}}>
-                <a className="waves-effect waves-light btn-large left" onClick={addUser}>
+                <a href="#!" className="waves-effect waves-light btn-large left" onClick={addUser}>
                     Sign up
                 </a>
                 <label htmlFor="remember-me-s" className="right">
