@@ -86,11 +86,9 @@ export default function FormChat({forms, rooms, currUser}) {
 
   const elements = [...rooms]
   const element = elements.map(n => {
-    let sel = n._id === currentRoom._id ? 'r-wrap-selected' : ''
+    let selected = n._id === currentRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
-                <ChatRoomThumb room={n} bg={n.owner.id === currUser._id 
-                                          ? `r-wrap-bg-owner ${sel}` 
-                                          : `r-wrap-bg-follow ${sel}`} />
+                <ChatRoomThumb room={n} bg={selected} currUser={currUser}/>
             </li>
   }) 
  

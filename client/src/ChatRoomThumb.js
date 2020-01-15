@@ -1,11 +1,14 @@
 import React, {useState, useContext, useRef} from 'react'
 
-export default function ChatRoomThumb({room, bg}) {
+export default function ChatRoomThumb({room, bg, currUser}) {
 
-  const def = bg === undefined ? 'r-wrap' : `r-wrap ${bg}`
-
+  const attr = room.owner.id === currUser._id 
+                              ? `r-wrap r-wrap-bg-owner ${bg}` 
+                              : `r-wrap r-wrap-bg-follow ${bg}`  
+  // const def = bg === undefined ? 'r-wrap' : `r-wrap ${attr}`
+  
   return (
-    <div className={def}>
+    <div className={attr}>
       <div className="r-img"><img src ={room.avatar}/></div>
       <div className="r-name"><b>{room.name}</b></div>
       <div className="r-time grey-text text-darken-3">

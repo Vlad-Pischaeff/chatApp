@@ -8,11 +8,11 @@
   margin: 0.5rem 0;
   box-shadow: 5px 5px 10px -5px rgba(3,59,85,0.55);
   border-radius: 0 0 0 1.5rem;
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
 }
 .r-wrap-selected {
-  box-shadow: 5px 5px 10px -7px rgba(202, 74, 0, 0.95);
-  transform: translate( 2px, 2px);
+  box-shadow: 5px 5px 10px -6px rgba(202, 74, 0, 0.95);
+  transform: translate( 3px, 3px);
 }
 .r-wrap-bg-select {
   background: rgba(36, 126, 99, 0.2);
