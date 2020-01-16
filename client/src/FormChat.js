@@ -17,7 +17,7 @@ export default function FormChat({forms, rooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   const msg = useRef('')
-  const socket = socketIOClient(":3001", {secure: true})
+  const socket = socketIOClient("http://localhost:3001", {secure: true})
 
   useEffect(() => {
     checkMessages(currentRoom)

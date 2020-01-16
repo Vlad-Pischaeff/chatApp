@@ -11,7 +11,7 @@ require('./models/messages');
 
 const app = express()
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io').listen(server);
 // const chatRouter = require('./routes/routes')
 // app.engine('html', require('ejs').renderFile);
 
