@@ -43,7 +43,7 @@ async function start() {
       console.log('SERVER ERRORS', e)
   }
 }
-console.log(`ENVIRONMENT`, process.env)
+// console.log(`ENVIRONMENT`, process.env)
 start()
 
 io.on('connection', socket => {
