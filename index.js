@@ -2,7 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const PORT = process.env.PORT || 3001
+// const PORT = process.env.PORT || 3001
+const PORT = 3001
 // IMPORT MODELS
 require('./models/users');
 require('./models/rooms');
@@ -26,15 +27,16 @@ require('./routes/routeMessages')(app);
 
 async function start() {
   try {
-    // await mongoose.connect('mongodb+srv://vlad:123321@cluster0-pfbwp.mongodb.net/chatapp?retryWrites=true&w=majority', 
-    //   {
-    //     useNewUrlParser: true,
-    //     useFindAndModify: false,
-    //     useUnifiedTopology: true,
-    //     socketTimeoutMS: 30000,
-    //     keepAlive: 300000
-    //   }
-    // )
+    await mongoose.connect('mongodb+srv://vlad:123321@cluster0-pfbwp.mongodb.net/chatapp?retryWrites=true&w=majority', 
+      {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+        socketTimeoutMS: 30000,
+        keepAlive: 300000
+      },
+      () => { console.log('connected to db')
+    )
   
     server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`)
