@@ -35,7 +35,7 @@ async function start() {
         socketTimeoutMS: 30000,
         keepAlive: 300000
       },
-      () => { console.log('connected to db')
+      () => { console.log('connected to db')}
     )
   
     server.listen(PORT, () => {
