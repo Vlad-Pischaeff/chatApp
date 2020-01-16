@@ -29,14 +29,14 @@ var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 
 
 async function start() {
   try {
-     await mongoose.connect('mongodb+srv://vlad:123321@cluster0-pfbwp.mongodb.net/chatapp', options
-    //  {
-  //     useNewUrlParser: true,
-  //     useFindAndModify: false,
-  //     useUnifiedTopology: true,
-  //     socketTimeoutMS: 30000,
-  //     keepAlive: 300000
-  // }
+     await mongoose.connect('mongodb+srv://vlad:123321@cluster0-pfbwp.mongodb.net/chatapp', 
+    {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+      socketTimeoutMS: 30000,
+      keepAlive: 300000
+    }
   )
   
     server.listen(PORT, () => {
