@@ -37,13 +37,13 @@ async function start() {
     // )
   
     server.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`, process.env)
+      console.log(`Server started on port ${PORT}`)
     })
   } catch (e) {
       console.log('SERVER ERRORS', e)
   }
 }
-
+console.log(`ENVIRONMENT`, process.env)
 start()
 
 io.on('connection', socket => {
