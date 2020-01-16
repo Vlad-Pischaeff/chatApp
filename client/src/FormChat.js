@@ -16,17 +16,17 @@ export default function FormChat({forms, rooms, currUser}) {
   const [currentRoom, setCurrentRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')) || '')
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
-  
+  const msg = useRef('')
   const socket = socketIOClient("http://localhost:3001")
 
-  // socket.on('connection', socket => {
-  //   socket.on('news', function (data) {
-  //     console.log('news', data);
-  //     // socket.emit('my other event', { my: 'data' });
-  //   });
-  //   // socket.emit('USER: SENDED MESSAGE', { msg: message });
-  // })
-  
+  useEffect(() => {
+    checkMessages(currentRoom)
+  }, [])
+
+  socket.on('SERVER: UPDATE ROOM', function (data) {
+    if (data.room_id === currentRoom._id) checkMessages(currentRoom)
+  });
+
   const sendIO = (message) => {
     socket.emit('USER: SENDED MESSAGE', message)
   }
@@ -112,6 +112,7 @@ export default function FormChat({forms, rooms, currUser}) {
       }
     }
     addMsg()
+    msg.current.value = ''
   }
 
   const checkMessages = (room) => {
@@ -146,7 +147,6 @@ export default function FormChat({forms, rooms, currUser}) {
     <div className={`row ${forms.chat}`}>
       <h4 className="center-align">My App</h4>
       <main className="card col s10 offset-s1 h-40rem" style={{padding: "0.5rem"}}>
-        {/* <section className="col s4 orange lighten-5 h-100"> */}
         <section className="col s4 h-100">
           <section className="h-wrap">
             <div className="input-field">
@@ -185,7 +185,7 @@ export default function FormChat({forms, rooms, currUser}) {
           <section>
             <div className="input-field">
               <i className="material-icons prefix" onClick={addMessage}>send</i>
-              <input id="icon_prefix" type="text" className="validate"
+              <input id="icon_prefix" type="text" className="validate" ref={msg}
                 onChange = {(event) => setMessage(event.target.value)}/>
               <label htmlFor="icon_prefix">Send message</label>
             </div>

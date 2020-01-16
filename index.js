@@ -50,13 +50,9 @@ io.on('connection', socket => {
   })
 
   socket.on('USER: SENDED MESSAGE', (data) => {
-    console.log('USER: SENDED MESSAGE', data)
+    // console.log('USER: SENDED MESSAGE', data)
+    socket.broadcast.emit('SERVER: UPDATE ROOM', { room_id: data.room_id });
   })
-
-  // socket.on('USER: SENDED MESSAGE', (msg) => {
-  //   console.log('SERVER RECIEVED MESSAGE', msg)
-  //   io.emit('SERVER: USER SENDED MESSAGE', msg)
-  // })
 
   socket.on('disconnect', () => {
     console.log('user disconnected')

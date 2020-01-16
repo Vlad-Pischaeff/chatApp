@@ -5,7 +5,7 @@
 }
 .m-wrap:hover,
 .my-wrap:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
   opacity: 1;
 }
 .m-msg p, .m-time p,

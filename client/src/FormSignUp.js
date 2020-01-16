@@ -5,7 +5,7 @@ import fetchUser from './FormMiddleware'
 export default function FormSignIn({forms}) {
     const [userName, setUserName] = useState('')
     const [userPassword, setUserPassword] = useState('')
-    const [userAvatar, setUserAvatar] = useState('')
+    const [userAvatar, setUserAvatar] = useState('./img/user00.jpg')
     const [avatars, setAvatars] = useState([])
     const [avatarClass, setAvatarClass] = useState([])
     const [verify, setVerify] = useState(true)

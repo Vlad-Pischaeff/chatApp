@@ -23,10 +23,10 @@ export default function FormLogIn({forms}) {
       passwordRef.current.value = userPassword
     }, [])
 
-    const sendIO = (user) => {
-      const socket = socketIOClient("http://localhost:3001");
-      socket.emit('username', user)
-    }
+    // const sendIO = (user) => {
+    //   const socket = socketIOClient("http://localhost:3001");
+    //   socket.emit('username', user)
+    // }
 
     const checkUser = () => {
       const dataUser = {
@@ -55,7 +55,7 @@ export default function FormLogIn({forms}) {
           })
           // fetch list of owner rooms
           setVerify(true)
-          sendIO(users[0])
+          // sendIO(users[0])
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users[0] 
