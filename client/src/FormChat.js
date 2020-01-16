@@ -115,6 +115,12 @@ export default function FormChat({forms, rooms, currUser}) {
     msg.current.value = ''
   }
 
+  const sendMessage = (e) => {
+    if (e.key === 'Enter') {
+      addMessage()
+    }
+  }
+
   const checkMessages = (room) => {
     let data = {
       room_id: room._id,
@@ -173,7 +179,6 @@ export default function FormChat({forms, rooms, currUser}) {
             <i className="material-icons">search</i>
             <img className="user-avatar" src={currUser.avatar} />
           </section>
-            <div className="divider"></div>
             
           <section className="h-70 h-msgs">
             <ul>
@@ -181,14 +186,14 @@ export default function FormChat({forms, rooms, currUser}) {
             </ul>
           </section>
 
-            <div className="divider"></div>
-          <section>
-            <div className="input-field">
-              <i className="material-icons prefix" onClick={addMessage}>send</i>
+          <section className="h-wrap">
+            <div className="input-field w-90">
               <input id="icon_prefix" type="text" className="validate" ref={msg}
-                onChange = {(event) => setMessage(event.target.value)}/>
+                onChange = {(event) => setMessage(event.target.value)}
+                onKeyPress = {sendMessage}/>
               <label htmlFor="icon_prefix">Send message</label>
             </div>
+            <i className="material-icons prefix" onClick={addMessage}>send</i>
           </section>
         </article>
       </main>

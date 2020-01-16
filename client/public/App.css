@@ -101,6 +101,8 @@
 .h-15 { height: 15%; }
 .h-10 { height: 10%; }
 .wrap { overflow: auto; }
+.w-100 { width: 100%; }
+.w-90 { width: 90%; }
 .h-wrap {
   display: flex;
   align-items: center;
@@ -119,4 +121,5 @@ i:hover {
   overflow-Y: auto;
   overflow-X: hidden;
   padding: 0 1.5rem 0 0;
+  background: #f4f9ff;
 }

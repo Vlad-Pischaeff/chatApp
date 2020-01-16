@@ -17,6 +17,7 @@ const io = require('socket.io')(server);
 // app.use(chatRouter)
 app.use(bodyParser.json());
 app.use(cors());
+// app.disable('X-Content-Type-Options');
 
 //IMPORT ROUTES
 require('./routes/routeUsers')(app);
