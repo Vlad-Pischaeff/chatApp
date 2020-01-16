@@ -1,5 +1,6 @@
 const proxy = require('http-proxy-middleware')
+const port = process.env.PORT || 3001
 
 module.exports = function(app) {
-    app.use(proxy('/api/*', { target: 'http://localhost:3001', ws: true }))
+    app.use(proxy('/api/*', { target: `http://localhost:${port}`, ws: true }))
 }

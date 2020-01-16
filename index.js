@@ -24,9 +24,6 @@ require('./routes/routeUsers')(app);
 require('./routes/routeRooms')(app);
 require('./routes/routeMessages')(app);
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };       
-
 async function start() {
   try {
     // await mongoose.connect('mongodb+srv://vlad:123321@cluster0-pfbwp.mongodb.net/chatapp?retryWrites=true&w=majority', 
