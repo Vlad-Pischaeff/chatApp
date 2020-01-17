@@ -5,7 +5,6 @@ export default function ChatRoomThumb({room, bg, currUser}) {
   const attr = room.owner.id === currUser._id 
                               ? `r-wrap r-wrap-bg-owner ${bg}` 
                               : `r-wrap r-wrap-bg-follow ${bg}`  
-  // const def = bg === undefined ? 'r-wrap' : `r-wrap ${attr}`
   
   return (
     <div className={attr}>

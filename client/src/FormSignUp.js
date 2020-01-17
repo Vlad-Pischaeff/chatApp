@@ -1,6 +1,7 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import fetchUser from './FormMiddleware'
+require('dotenv').config()
 
 export default function FormSignIn({forms}) {
     const [userName, setUserName] = useState('')
@@ -14,7 +15,7 @@ export default function FormSignIn({forms}) {
     const remember = useRef('')
     
     useEffect(() => {
-      const url = 'http://localhost:3001/api/userimg';
+      const url = `http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/userimg`;
       async function fetchAvatars() {
         const response = await fetch(url);
         const json = await response.json();

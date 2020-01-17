@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
+// console.log('ENV', env)
 const PORT = process.env.REACT_APP_PORT || 3001
 
 // IMPORT MODELS
@@ -50,20 +51,20 @@ async function start() {
 start()
 
 io.on('connection', socket => {
-  console.log('User connected')
+  // console.log('User connected')
 
-  socket.emit('news', { hello: 'world' });
+  // socket.emit('news', { hello: 'world' });
   
-  socket.on('username', (data) => {
-    console.log('user name', data)
-  })
+  // socket.on('username', (data) => {
+  //   console.log('user name', data)
+  // })
 
   socket.on('USER: SENDED MESSAGE', (data) => {
     // console.log('USER: SENDED MESSAGE', data)
     socket.broadcast.emit('SERVER: UPDATE ROOM', { room_id: data.room_id });
   })
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
+  // socket.on('disconnect', () => {
+  //   console.log('user disconnected')
+  // })
 })

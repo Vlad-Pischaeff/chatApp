@@ -1,6 +1,7 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import fetchRoom from './FormAddChatMiddleware'
+require('dotenv').config()
 
 export default function FormAddChat({forms, currUser}) {
   const [roomName, setRoomName] = useState('')
@@ -14,7 +15,7 @@ export default function FormAddChat({forms, currUser}) {
   const alertRef = useRef('')
 
   useEffect(() => {
-    const url = 'http://localhost:3001/api/roomimg';
+    const url = `http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/roomimg`;
     async function fetchAvatars() {
       const response = await fetch(url);
       const json = await response.json();

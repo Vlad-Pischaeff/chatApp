@@ -6,6 +6,7 @@ import MessagesThumb from './MessagesThumb'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
 import FormFindedRooms from './FormFindedRooms'
+require('dotenv').config()
 
 export default function FormChat({forms, rooms, currUser}) {
   const [roomName, setRoomName] = useState('')
@@ -17,7 +18,7 @@ export default function FormChat({forms, rooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   const msg = useRef('')
-  const socket = socketIOClient("http://192.168.140.68:3001", {secure: true})
+  const socket = socketIOClient(`http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}`, {secure: true})
 
   useEffect(() => {
     checkMessages(currentRoom)
