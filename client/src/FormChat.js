@@ -17,7 +17,7 @@ export default function FormChat({forms, rooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   const msg = useRef('')
-  const socket = socketIOClient("http://localhost:3001", {secure: true})
+  const socket = socketIOClient("http://192.168.140.68:3001", {secure: true})
 
   useEffect(() => {
     checkMessages(currentRoom)
@@ -163,7 +163,7 @@ export default function FormChat({forms, rooms, currUser}) {
             <i className="material-icons" onClick={searchRoom}>search</i>
             <i className="material-icons" onClick={addRoom}>library_add</i>
           </section>
-          <section className="wrap h-85">
+          <section className="wrap h-85 h-msgs">
             <ul>
               {r_element}
             </ul>
