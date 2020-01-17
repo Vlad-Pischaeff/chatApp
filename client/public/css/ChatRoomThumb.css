@@ -6,12 +6,12 @@
   grid-template-rows:  2rem 1rem 1rem; 
   grid-template-columns: 4rem 1fr 1fr 1fr 3rem;
   margin: 0.5rem 0;
-  box-shadow: 5px 5px 10px -5px rgba(3,59,85,0.55);
+  box-shadow: 5px 5px 16px -5px rgba(3,59,85,0.55);
   border-radius: 0 0 0 1.5rem;
   transition: all 0.1s ease-out;
 }
 .r-wrap-selected {
-  box-shadow: 5px 5px 10px -6px rgba(202, 74, 0, 0.95);
+  box-shadow: 5px 5px 8px -5px rgb(206, 41, 0);
   transform: translate( 3px, 3px);
 }
 .r-wrap-bg-select {
