@@ -14,8 +14,6 @@ const app = express()
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 // const chatRouter = require('./routes/routes')
-// app.engine('html', require('ejs').renderFile);
-
 // app.use(chatRouter)
 app.use(bodyParser.json());
 app.use(cors());
@@ -47,11 +45,6 @@ async function start() {
 }
 
 start()
-
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
 
 io.on('connection', socket => {
   // console.log('User connected')
