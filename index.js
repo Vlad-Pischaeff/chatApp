@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const WebSocket  = require('ws');
 require('dotenv').config()
 const PORT = process.env.REACT_APP_PORT || 3001
 
@@ -12,7 +13,8 @@ require('./models/messages');
 
 const app = express()
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+// const io = require('socket.io').listen(server);
+const wss = new WebSocket.Server({ server });
 // const chatRouter = require('./routes/routes')
 // app.use(chatRouter)
 app.use(bodyParser.json());
@@ -46,18 +48,30 @@ async function start() {
 
 start()
 
-io.on('connection', socket => {
-  // console.log('User connected')
-  
-  // socket.on('username', (data) => {
-  //   console.log('user name', data)
+wss.on('connection', (socket, req) => {
+  console.log('User connected', req.connection.remoteAddress)
+
+  socket.on('message', (message) => {
+    let data = JSON.parse(message)   
+
+    if (data['USER: SENDED MESSAGE']) {
+      wss.clients.forEach(function each(client) {
+        let resp = JSON.stringify({'SERVER: UPDATE ROOM': data['USER: SENDED MESSAGE'].room_id})
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(resp);
+        }
+      });
+    }
+  });
+
+  // socket.on('USER: SENDED MESSAGE', (data) => {
+  //   socket.broadcast.emit('SERVER: UPDATE ROOM', { room_id: data.room_id });
   // })
 
-  socket.on('USER: SENDED MESSAGE', (data) => {
-    socket.broadcast.emit('SERVER: UPDATE ROOM', { room_id: data.room_id });
-  })
+  socket.send(JSON.stringify({'Hi there, I am a WebSocket server' : 'server'}));
 
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected')
-  // })
+  socket.on('close', function close() {
+    console.log('User disconnected');
+  });
 })
+

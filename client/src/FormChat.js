@@ -6,9 +6,9 @@ import MessagesThumb from './MessagesThumb'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
 import FormFindedRooms from './FormFindedRooms'
-require('dotenv').config()
+// require('dotenv').config()
 
-export default function FormChat({forms, rooms, currUser}) {
+export default function FormChat({forms, rooms, currUser, socket}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
@@ -18,18 +18,25 @@ export default function FormChat({forms, rooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   const modalUnfollow = useRef('')
   const msg = useRef('')
-  const socket = socketIOClient(`http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}`, {secure: true})
+  const [roommsg, setRoommsg] = useState([])
 
   useEffect(() => {
     checkMessages(currentRoom)
   }, [])
 
-  socket.on('SERVER: UPDATE ROOM', function (data) {
-    if (data.room_id === currentRoom._id) checkMessages(currentRoom)
-  });
+  socket.onmessage = evt => {
+    const message = JSON.parse(evt.data)
+    if (message['SERVER: UPDATE ROOM'] === currentRoom._id) {
+      checkMessages(currentRoom)
+    } else {
+      let arr = [...roommsg, message['SERVER: UPDATE ROOM']]
+      setRoommsg(arr)
+    }
+  }
 
   const sendIO = (message) => {
-    socket.emit('USER: SENDED MESSAGE', message)
+    let req = JSON.stringify({'USER: SENDED MESSAGE': message})
+    socket.send(req)
   }
 
   const addRoom = () => {
@@ -92,6 +99,9 @@ export default function FormChat({forms, rooms, currUser}) {
     localStorage.setItem('currentRoom', JSON.stringify(item))
     setCurrentRoom(item)
     checkMessages(item)
+    let arr = roommsg.filter(n => n !== item._id)
+    console.log('CHHOSE ELEMENT', item._id, arr)
+    setRoommsg(arr)
   }
 
   const addMessage = () => {
@@ -142,7 +152,7 @@ export default function FormChat({forms, rooms, currUser}) {
   const r_element = elements.map(n => {
     let selected = n._id === currentRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
-                <ChatRoomThumb room={n} bg={selected} currUser={currUser}/>
+                <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={roommsg}/>
             </li>
   })
   const m_element = [...messages]
@@ -156,13 +166,13 @@ export default function FormChat({forms, rooms, currUser}) {
       <main className="card col s10 offset-s1 h-40rem" style={{padding: "0.5rem"}}>
         <section className="col s4 h-100">
           <section className="h-wrap">
-            <div className="input-field">
+            <div className="input-field w-100">
               <input id="icon_prefix" type="text" className="validate" 
                 onChange = {event => setRoomName(event.target.value)} />
               <label htmlFor="icon_prefix">Search chatroom</label>
             </div>
-            <i className="material-icons" onClick={searchRoom}>search</i>
-            <i className="material-icons" onClick={addRoom}>library_add</i>
+            <i className="material-icons mrgn-03" onClick={searchRoom}>search</i>
+            <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
           </section>
           <section className="wrap h-85 h-msgs">
             <ul>
@@ -173,11 +183,11 @@ export default function FormChat({forms, rooms, currUser}) {
 
         <article className="col s8 h-100 ">
           <section className="h-15 h-wrap">
-            <div className="input-field col s12">
+            <div className="input-field w-100">
               <input id="icon_prefix" type="text" className="validate"/>
               <label htmlFor="icon_prefix">Search users</label>
             </div>
-            <i className="material-icons">search</i>
+            <i className="material-icons mrgn-03">search</i>
             <img className="user-avatar" src={currUser.avatar} />
           </section>
             

@@ -52,7 +52,7 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
               : 'r-wrap r-wrap-bg'
   
     return  <li key={n._id} onClick={() => addToRooms(n._id)} >
-                <ChatRoomThumb room={n} bg={bg} currUser={currUser}/>
+                <ChatRoomThumb room={n} bg={bg} currUser={currUser} roommsg={[]}/>
             </li>
   })
 

@@ -1,11 +1,15 @@
 import React, {useState, useContext, useRef} from 'react'
 
-export default function ChatRoomThumb({room, bg, currUser}) {
+export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
 
   const attr = room.owner.id === currUser._id 
                               ? `r-wrap r-wrap-bg-owner ${bg}` 
                               : `r-wrap r-wrap-bg-follow ${bg}`  
   const users = room.followers.length
+  // console.log('srvroom', roommsg)
+  let msg = 'tiny material-icons hide'
+  if ((roommsg.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected'))
+    msg = 'tiny material-icons'
   
   return (
     <div className={attr}>
@@ -20,8 +24,8 @@ export default function ChatRoomThumb({room, bg, currUser}) {
         <span>{users}</span>
       </div>
       <div className="r-msgs green-text text-darken-3">
-        <i className="tiny material-icons">send</i>
-        <span>35</span>
+        <i className={msg}>send</i>
+        {/* <span></span> */}
       </div>
     </div>
   )
