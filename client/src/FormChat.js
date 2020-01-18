@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
-import socketIOClient from "socket.io-client"
+// import socketIOClient from "socket.io-client"
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 import MessagesThumb from './MessagesThumb'
