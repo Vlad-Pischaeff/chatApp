@@ -15,6 +15,7 @@ export default function App() {
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
   // const [socket, setSocket] = useState(new WebSocket(url))
+  const [socket, setSocket] = useState((url))
   
   // useEffect(() => {
   //   socket.onopen = () => {
