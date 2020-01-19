@@ -7,10 +7,16 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
                               : `r-wrap r-wrap-bg-follow ${bg}`  
   const users = room.followers.length
   // console.log('srvroom', roommsg)
+  let cnt = 'hide'
+  let count = 0
   let msg = 'tiny material-icons hide'
-  if ((roommsg.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected'))
+  if ((roommsg.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected')) {
     msg = 'tiny material-icons'
-  
+    let arr = roommsg.filter(n => n === room._id)
+    count = arr.length
+    cnt = ''
+  }
+
   return (
     <div className={attr}>
       <div className="r-img"><img src ={room.avatar}/></div>
@@ -25,7 +31,7 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
       </div>
       <div className="r-msgs green-text text-darken-3">
         <i className={msg}>send</i>
-        {/* <span></span> */}
+        <span className={cnt}>{count}</span>
       </div>
     </div>
   )

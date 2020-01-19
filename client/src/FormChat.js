@@ -100,7 +100,7 @@ export default function FormChat({forms, rooms, currUser, socket}) {
     setCurrentRoom(item)
     checkMessages(item)
     let arr = roommsg.filter(n => n !== item._id)
-    console.log('CHHOSE ELEMENT', item._id, arr)
+    // console.log('CHOSE ELEMENT', item._id, arr)
     setRoommsg(arr)
   }
 
