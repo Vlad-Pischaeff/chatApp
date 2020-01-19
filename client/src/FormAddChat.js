@@ -15,7 +15,7 @@ export default function FormAddChat({forms, currUser}) {
   const alertRef = useRef('')
 
   useEffect(() => {
-    const url = `https://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/roomimg`;
+    const url = `http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/roomimg`;
     async function fetchAvatars() {
       const response = await fetch(url);
       const json = await response.json();
