@@ -14,17 +14,17 @@ export default function App() {
   const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
-  const [socket, setSocket] = useState(new WebSocket(url))
+  // const [socket, setSocket] = useState(new WebSocket(url))
   
-  useEffect(() => {
-    socket.onopen = () => {
-      console.log('APP client connected')
-    }
-  }, [])
+  // useEffect(() => {
+  //   socket.onopen = () => {
+  //     console.log('APP client connected')
+  //   }
+  // }, [])
 
-  socket.onclose = () => {
-    setSocket(new WebSocket(url))
-  }
+  // socket.onclose = () => {
+  //   setSocket(new WebSocket(url))
+  // }
 
   return (
     <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchCurrUser}}>
