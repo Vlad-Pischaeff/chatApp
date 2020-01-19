@@ -15,7 +15,7 @@ export default function FormSignIn({forms}) {
     const remember = useRef('')
     
     useEffect(() => {
-      const url = `http://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/userimg`;
+      const url = `https://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}/api/userimg`;
       async function fetchAvatars() {
         const response = await fetch(url);
         const json = await response.json();
