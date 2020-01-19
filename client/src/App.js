@@ -8,24 +8,25 @@ import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
 require('dotenv').config()
-const url = `wss://${process.env.REACT_APP_ENDPOINT}:${process.env.REACT_APP_PORT}`
+const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}`
 
 export default function App() {
   const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
-  // const [socket, setSocket] = useState(new WebSocket(url))
-  const [socket, setSocket] = useState((url))
-  
-  // useEffect(() => {
-  //   socket.onopen = () => {
-  //     console.log('APP client connected')
-  //   }
-  // }, [])
+  const [socket, setSocket] = useState(new WebSocket(url))
 
-  // socket.onclose = () => {
-  //   setSocket(new WebSocket(url))
-  // }
+  // var HOST = location.origin.replace(/^http/, 'ws')
+  // console.log('HOST', window.location.origin)
+  useEffect(() => {
+    socket.onopen = () => {
+      console.log('APP client connected')
+    }
+  }, [])
+
+  socket.onclose = () => {
+    setSocket(new WebSocket(url))
+  }
 
   return (
     <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchCurrUser}}>

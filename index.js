@@ -12,7 +12,7 @@ require('./models/rooms');
 require('./models/messages');
 
 const app = express()
-const server = require('https').createServer(app);
+const server = require('http').createServer(app);
 // const io = require('socket.io').listen(server);
 const wss = new WebSocket.Server({ server });
 // const chatRouter = require('./routes/routes')

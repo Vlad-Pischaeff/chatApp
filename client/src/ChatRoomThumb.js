@@ -9,11 +9,11 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
   // console.log('srvroom', roommsg)
   let cnt = 'hide'
   let count = 0
-  let msg = 'tiny material-icons hide'
+  // let msg = `tiny material-icons ${cnt}`
   if ((roommsg.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected')) {
-    msg = 'tiny material-icons'
-    let arr = roommsg.filter(n => n === room._id)
-    count = arr.length
+    // msg = 'tiny material-icons'
+    count = roommsg.filter(n => n === room._id).length
+    // count = arr.length
     cnt = ''
   }
 
@@ -30,7 +30,7 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
         <span>{users}</span>
       </div>
       <div className="r-msgs green-text text-darken-3">
-        <i className={msg}>send</i>
+        <i className={`tiny material-icons ${cnt}`}>send</i>
         <span className={cnt}>{count}</span>
       </div>
     </div>
