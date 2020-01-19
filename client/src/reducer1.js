@@ -1,5 +1,5 @@
 export default function(state, action) {
-  console.log('reducer1 state', state, 'action', action.payload)
+  console.log('MANAGE RMS reducer1 state', state, 'action', action.payload)
   switch (action.type) {
     case 'GET_OWNER_ROOMS':
       return [...state, ...action.payload]

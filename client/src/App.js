@@ -3,6 +3,8 @@ import {Context} from './context'
 import roomsReducer from './reducer1'
 import loginReducer from './reducer2'
 import userReducer from './reducer3'
+import msgsReducer from './reducer4'
+import currRoomReducer from './reducer5'
 import FormLogIn from './FormLogIn'
 import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
@@ -13,11 +15,13 @@ const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}`
 export default function App() {
   const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
+  const [messages, dispatchMsgs] = useReducer(msgsReducer, '')
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
+  const [currentRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom') || ''))
   const [socket, setSocket] = useState(new WebSocket(url))
 
-  // var HOST = location.origin.replace(/^http/, 'ws')
-  // console.log('HOST', window.location.origin)
+  console.log('STATE MSGS', messages)
+
   useEffect(() => {
     socket.onopen = () => {
       console.log('APP client connected')
@@ -29,10 +33,10 @@ export default function App() {
   }
 
   return (
-    <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchCurrUser}}>
+    <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchMsgs, dispatchCurrUser, dispatchCurrRoom}}>
         <FormLogIn forms={forms}/>
         <FormSignUp forms={forms}/>
-        <FormChat forms={forms} rooms={rooms} currUser={currUser} socket={socket}/>
+        <FormChat forms={forms} rooms={rooms} messages={messages} currUser={currUser} socket={socket} currentRoom={currentRoom} />
         <FormAddChat forms={forms} currUser={currUser}/>
         {/* <FormFindedRooms forms={forms}/> */}
     </Context.Provider>
