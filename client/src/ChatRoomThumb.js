@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React from 'react'
 
 export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
 
@@ -16,7 +16,7 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
 
   return (
     <div className={attr}>
-      <div className="r-img"><img src ={room.avatar}/></div>
+      <div className="r-img"><img src ={room.avatar} alt={room.avatar} /></div>
       <div className="r-name"><b>{room.name}</b></div>
       <div className="r-time grey-text text-darken-3">
         <span>12:03</span>

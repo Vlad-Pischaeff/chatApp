@@ -4,19 +4,19 @@ import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
-export default function FormChatRooms({rooms, socket, currUser, currentRoom}) {
+export default function FormChatRooms({rooms, socket, currUser, currRoom}) {
   const {dispatchRooms, dispatchMsgs, dispatchCurrRoom} = useContext(Context)
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
   const [roommsg, setRoommsg] = useState([])
 
   useEffect(() => {
-    checkMessages(currentRoom)
+    checkMessages(currRoom)
   }, [])
 
   socket.onmessage = evt => {
     const message = JSON.parse(evt.data)
-    if (message['SERVER: UPDATE ROOM'] === currentRoom._id) {
-      checkMessages(currentRoom)
+    if (message['SERVER: UPDATE ROOM'] === currRoom._id) {
+      checkMessages(currRoom)
     } else {
       let arr = [...roommsg, message['SERVER: UPDATE ROOM']]
       setRoommsg(arr)
@@ -84,7 +84,7 @@ export default function FormChatRooms({rooms, socket, currUser, currentRoom}) {
 
   const elements = [...rooms]
   const r_element = elements.map(n => {
-    let selected = n._id === currentRoom._id ? 'r-wrap-selected' : ''
+    let selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
                 <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={roommsg}/>
             </li>

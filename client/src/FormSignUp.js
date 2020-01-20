@@ -77,7 +77,7 @@ export default function FormSignIn({forms}) {
 
     const avatarsMap = avatars.map((n, i) => {
       return  <div key={`${i}`} onClick={() => setClass(n, i)}>
-                <img src={`./img/user/${n}`} className={`${avatarClass[i]}`}/>
+                <img src={`./img/user/${n}`} className={`${avatarClass[i]}`} alt={n} />
               </div>
     })
 

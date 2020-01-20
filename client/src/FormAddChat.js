@@ -86,7 +86,7 @@ export default function FormAddChat({forms, currUser}) {
   const avatarsMap = avatars.map((n, i) => {
     return  <div key={`${i}`} id={`roomavatar${i}`}  
               onClick={() => setClass(n, i)}>
-              <img src={`./img/room/${n}`} className={`${avatarClass[i]}`}/>
+              <img src={`./img/room/${n}`} className={`${avatarClass[i]}`} alt={n} />
             </div>
   })
 

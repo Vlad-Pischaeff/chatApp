@@ -1,13 +1,13 @@
-import React, {useState, useContext, useRef} from 'react'
+import React from 'react'
 
-export default function MessagesThumb ({msg, user, room}) {
+export default function MessagesThumb ({msg, user}) {
 
   const attr = msg.user_id === user._id ? `my` : 'm'
   let d = msg.data.replace(/T/g,' ').slice(0, -8)
 
   return (
     <section className={`${attr}-wrap`}>
-      <img src={msg.user_avatar} />
+      <img src={msg.user_avatar} alt={msg.user_avatar} />
       <span className={`${attr}-arrow`}></span>
       <article className={`${attr}-wrap-msg`}>
         <div className={`${attr}-time`}>

@@ -6,7 +6,7 @@ import fetchMsgs from './FormAddMsgsMiddleware'
 import FormFindedRooms from './FormFindedRooms'
 import FormChatRooms from './FormChatRooms'
 
-export default function FormChat({forms, rooms, messages, currUser, socket, currentRoom}) {
+export default function FormChat({forms, rooms, messages, currUser, socket, currRoom}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
   const [message, setMessage] = useState('')
@@ -50,7 +50,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       user_id: currUser._id,
       user_name: currUser.name,
       user_avatar: currUser.avatar,
-      room_id: currentRoom._id,
+      room_id: currRoom._id,
       method: 'add'
     }
     async function addMsg() {
@@ -96,7 +96,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
           </section>
           <section className="wrap h-85 h-msgs">
-            <FormChatRooms rooms={rooms} socket={socket} currUser={currUser} currentRoom={currentRoom} />
+            <FormChatRooms rooms={rooms} socket={socket} currUser={currUser} currRoom={currRoom} />
           </section>
         </section>
 
@@ -107,7 +107,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
               <label htmlFor="icon_prefix">Search users</label>
             </div>
             <i className="material-icons mrgn-03">search</i>
-            <img className="user-avatar" src={currUser.avatar} />
+            <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             
           <section className="h-70 h-msgs">

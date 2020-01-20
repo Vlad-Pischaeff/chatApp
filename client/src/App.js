@@ -17,7 +17,7 @@ export default function App() {
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
   const [messages, dispatchMsgs] = useReducer(msgsReducer, '')
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
-  const [currentRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom') || ''))
+  const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom') || ''))
   const [socket, setSocket] = useState(new WebSocket(url))
 
   console.log('STATE MSGS', messages)
@@ -36,7 +36,7 @@ export default function App() {
     <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchMsgs, dispatchCurrUser, dispatchCurrRoom}}>
         <FormLogIn forms={forms}/>
         <FormSignUp forms={forms}/>
-        <FormChat forms={forms} rooms={rooms} messages={messages} currUser={currUser} socket={socket} currentRoom={currentRoom} />
+        <FormChat forms={forms} rooms={rooms} messages={messages} currUser={currUser} socket={socket} currRoom={currRoom} />
         <FormAddChat forms={forms} currUser={currUser}/>
         {/* <FormFindedRooms forms={forms}/> */}
     </Context.Provider>
