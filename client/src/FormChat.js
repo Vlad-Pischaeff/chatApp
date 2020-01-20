@@ -107,6 +107,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
               <label htmlFor="icon_prefix">Search users</label>
             </div>
             <i className="material-icons mrgn-03">search</i>
+            <img className="user-avatar" src={currRoom.avatar} alt="current room" />
             <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             
@@ -114,6 +115,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <ul>
               {parsedMsgs}
             </ul>
+            <p className="curr-room-name">Current Room: <b>{currRoom.name}</b></p>
           </section>
 
           <section className="h-wrap">

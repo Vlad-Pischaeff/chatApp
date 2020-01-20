@@ -10,7 +10,7 @@ import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
 require('dotenv').config()
-const url = `wss://${window.location.hostname}:${process.env.REACT_APP_PORT}`
+const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}`
 
 export default function App() {
   const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
