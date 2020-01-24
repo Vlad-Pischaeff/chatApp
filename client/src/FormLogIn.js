@@ -4,7 +4,7 @@ import fetchUser from './FormMiddleware'
 import fetchRoom from './FormAddChatMiddleware'
 
 
-export default function FormLogIn({forms}) {
+export default function FormLogIn({forms, socket}) {
     const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
     const [userPassword, setUserPassword] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).password: '')
     const [verify, setVerify] = useState(true)
@@ -53,7 +53,9 @@ export default function FormLogIn({forms}) {
             type: 'SET_CURRENT_USER',
             payload: users[0] 
           })
-        } else {
+          let req = JSON.stringify({'USER: LOGINED': users[0]})
+          socket.send(req)
+         } else {
           setVerify(false)
         }
       }

@@ -63,6 +63,7 @@
 }
 .m-wrap img {
   margin: 0 0.3rem 0 0;
+  cursor: pointer;
 }
 .m-wrap-msg {
   border-radius: 0 0 0 1.5rem;

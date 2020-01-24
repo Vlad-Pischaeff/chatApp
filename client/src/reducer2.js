@@ -1,5 +1,5 @@
 export default function(state, action) {
-  console.log('MANAGE FORMS reducer2 state -- ', state, 'action --', action.payload)
+  // console.log('MANAGE FORMS reducer2 state -- ', state, 'action --', action.payload)
   switch (action.type) {
 
     case 'HIDE_LOGIN':

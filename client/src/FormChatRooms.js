@@ -4,24 +4,9 @@ import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
-export default function FormChatRooms({rooms, socket, currUser, currRoom}) {
-  const {dispatchRooms, dispatchMsgs, dispatchCurrRoom} = useContext(Context)
+export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) {
+  const {dispatchRooms, dispatchMsgs, dispatchCurrRoom, dispatchNewMessages} = useContext(Context)
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
-  const [roommsg, setRoommsg] = useState([])
-
-  useEffect(() => {
-    checkMessages(currRoom)
-  }, [])
-
-  socket.onmessage = evt => {
-    const message = JSON.parse(evt.data)
-    if (message['SERVER: UPDATE ROOM'] === currRoom._id) {
-      checkMessages(currRoom)
-    } else {
-      let arr = [...roommsg, message['SERVER: UPDATE ROOM']]
-      setRoommsg(arr)
-    }
-  }
 
   const chooseElement = (item) => {
     dispatchCurrRoom({
@@ -29,8 +14,12 @@ export default function FormChatRooms({rooms, socket, currUser, currRoom}) {
       payload: item
     })
     checkMessages(item)
-    let arr = roommsg.filter(n => n !== item._id)
-    setRoommsg(arr)
+    // remove current room id from list of new messages
+    let arr = newMessages.filter(n => n !== item._id)
+    dispatchNewMessages({
+      type: 'SET_NEW_MSGS',
+      payload: arr
+    })
   }
 
   const checkMessages = (room) => {
@@ -86,7 +75,7 @@ export default function FormChatRooms({rooms, socket, currUser, currRoom}) {
   const r_element = elements.map(n => {
     let selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
-                <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={roommsg}/>
+                <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={newMessages}/>
             </li>
   })
 

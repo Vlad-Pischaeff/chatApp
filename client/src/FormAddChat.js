@@ -43,7 +43,7 @@ export default function FormAddChat({forms, currUser}) {
 
       async function fetchAddRoom() {
         let rooms = await fetchRoom(data)
-        console.log('add rooms', rooms);
+        // console.log('add rooms', rooms);
         if (!rooms.error) {
           dispatchRooms({
             type: 'GET_ADDED_OWNER_ROOMS',

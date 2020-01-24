@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const WebSocket  = require('ws');
+const clients = new Set();
 require('dotenv').config()
 const PORT = process.env.REACT_APP_PORT || 3001
 
@@ -22,6 +23,7 @@ app.use(cors());
 require('./routes/routeUsers')(app);
 require('./routes/routeRooms')(app);
 require('./routes/routeMessages')(app);
+// require('./routes/routeWS')(app);
 
 async function start() {
   try {
@@ -39,6 +41,7 @@ async function start() {
     server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`)
     })
+
   } catch (e) {
       console.log('SERVER ERRORS', e)
   }
@@ -47,18 +50,34 @@ async function start() {
 start()
 
 wss.on('connection', (socket, req) => {
-  console.log('User connected', req.connection.remoteAddress)
+  // console.log('User connected', req.connection.remoteAddress, wss.clients.entries(), wss.clients.size, app.locals.clients)
 
+  let client = {}
   socket.on('message', (message) => {
     let data = JSON.parse(message)   
-
+    console.log('SERVER MESSAGE -- ', message)
     if (data['USER: SENDED MESSAGE']) {
-      wss.clients.forEach(function each(client) {
+      clients.forEach((client) => {
         let resp = JSON.stringify({'SERVER: UPDATE ROOM': data['USER: SENDED MESSAGE'].room_id})
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(resp);
+        client.socket.send(resp)
+      })
+    }
+    if (data['USER: LOGINED']) {
+      client.id = data['USER: LOGINED']._id
+      client.socket = socket
+      clients.add(client)           // add clients to new Set()
+    }
+    if (data['USER: OPEN DIALOG']) {
+      console.log('OPEN DIALOG', data['USER: OPEN DIALOG'])
+    }
+    if (data['USER: SENDED PRIV MSG']) {
+      let to =  data['USER: SENDED PRIV MSG'].to
+      for (let client of clients) {
+        if (client.id === to) {
+          // console.log('sended priv message to', to)
+          client.socket.send(JSON.stringify({'SERVER: SENDED PRIV MSG': data['USER: SENDED PRIV MSG']}))
         }
-      });
+      }
     }
   });
 

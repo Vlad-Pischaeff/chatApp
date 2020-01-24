@@ -1,17 +1,62 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import MessagesThumb from './MessagesThumb'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
 import FormFindedRooms from './FormFindedRooms'
 import FormChatRooms from './FormChatRooms'
+import FormChatMessages from './FormChatMessages'
 
-export default function FormChat({forms, rooms, messages, currUser, socket, currRoom}) {
+export default function FormChat({forms, rooms, messages, currUser, socket, currRoom, newMessages, dialog}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
   const [message, setMessage] = useState('')
-  const {dispatchLogin, dispatchMsgs} = useContext(Context)
+  const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
   const msg = useRef('')
+
+  useEffect(() => {
+    checkMessages(currRoom)
+  }, [])
+
+  socket.onmessage = (evt) => {
+    const message = JSON.parse(evt.data)
+    if (message['SERVER: UPDATE ROOM'] === currRoom._id) {
+      checkMessages(currRoom)
+    } else {
+      // add rooms id with new messages
+      let arr = [...newMessages, message['SERVER: UPDATE ROOM']]
+      dispatchNewMessages({
+        type: 'SET_NEW_MSGS',
+        payload: arr
+      })
+    }
+    if (message['SERVER: SENDED PRIV MSG']) {
+      // console.log('SERVER: USER SENDED PRIV MSG', message)
+      let arr = [...dialog, message['SERVER: SENDED PRIV MSG']]
+      dispatchDialog({
+        type: 'SET_NEW_DIALOG',
+        payload: arr
+      })
+    }
+  }
+
+  const checkMessages = (room) => {
+    let data = {
+      room_id: room._id,
+      method: 'check'
+    }
+    async function chkMsg() {
+      try {
+        let msgs = await fetchMsgs(data)
+        dispatchMsgs({
+          type: 'SET_CURRENT_MSGS',
+          payload: msgs
+        })
+      } catch(e) {
+        console.log('error', e)
+      }
+    }
+    chkMsg()
+  }
 
   const sendIO = (message) => {
     let req = JSON.stringify({'USER: SENDED MESSAGE': message})
@@ -75,14 +120,9 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       addMessage()
     }
   }
-
-  const m_element = [...messages]
-  const parsedMsgs = m_element.map(n => {
-    return  <li key={n._id}><MessagesThumb msg={n} user={currUser} /></li>
-  }) 
  
   return (
-    <div className={`row ${forms.chat}`}>
+    <div className={`row ${forms.chat}`} >
       <h4 className="center-align">My App</h4>
       <main className="card col s10 offset-s1 h-40rem" style={{padding: "0.5rem"}}>
         <section className="col s4 h-100">
@@ -96,7 +136,10 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
           </section>
           <section className="wrap h-85 h-msgs">
-            <FormChatRooms rooms={rooms} socket={socket} currUser={currUser} currRoom={currRoom} />
+            <FormChatRooms  rooms={rooms} 
+                            currUser={currUser} 
+                            currRoom={currRoom} 
+                            newMessages={newMessages}/>
           </section>
         </section>
 
@@ -112,10 +155,11 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
           </section>
             
           <section className="h-70 h-msgs">
-            <ul>
-              {parsedMsgs}
-            </ul>
-            <p className="curr-room-name">Current Room: <b>{currRoom.name}</b></p>
+            <FormChatMessages messages={messages} 
+                              currUser={currUser} 
+                              currRoom={currRoom} 
+                              dialog={dialog} 
+                              socket={socket}/>
           </section>
 
           <section className="h-wrap">
