@@ -1,4 +1,5 @@
 # chatApp
+```html
 <header style="	width: 100%;
 		height: 3rem;
 		line-height: 3rem;
@@ -11,3 +12,4 @@
 <div>
   <img src="./image.jpg" />
 </div>
+```
