@@ -124,8 +124,8 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   return (
     <div className={`row ${forms.chat}`} >
       <h4 className="center-align">My App</h4>
-      <main className="card col s10 offset-s1 h-40rem" style={{padding: "0.5rem"}}>
-        <section className="col s4 h-100">
+      <main className="card col s10 offset-s1 h-40rem  indigo lighten-5" style={{padding: "0.5rem"}}>
+        <section className="col s4 h-100  indigo lighten-5">
           <section className="h-wrap">
             <div className="input-field w-100">
               <input id="icon_prefix" type="text" className="validate" 
@@ -143,7 +143,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
           </section>
         </section>
 
-        <article className="col s8 h-100 ">
+        <article className="col s8 h-100  indigo lighten-5">
           <section className="h-15 h-wrap">
             <div className="input-field w-100">
               <input id="icon_prefix" type="text" className="validate"/>
