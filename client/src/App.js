@@ -22,7 +22,7 @@ export default function App() {
   const [dialog, dispatchDialog] = useReducer(dialogReducer, [])
   const [newMessages, dispatchNewMessages] = useReducer(newMsgsReducer, [])
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
-  const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom') || ''))
+  const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom')) || {})
   // const [socket, setSocket] = useState(new WebSocket(url))
   
 

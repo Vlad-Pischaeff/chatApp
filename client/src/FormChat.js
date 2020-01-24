@@ -14,12 +14,15 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   const msg = useRef('')
 
   useEffect(() => {
-    checkMessages(currRoom)
+    if (currRoom) {
+      checkMessages(currRoom)
+    }
   }, [])
 
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
-    if (message['SERVER: UPDATE ROOM'] === currRoom._id) {
+    let room = currRoom ? currRoom._id : 1
+    if (message['SERVER: UPDATE ROOM'] === room) {
       checkMessages(currRoom)
     } else {
       // add rooms id with new messages
@@ -150,7 +153,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
               <label htmlFor="icon_prefix">Search users</label>
             </div>
             <i className="material-icons mrgn-03">search</i>
-            <img className="user-avatar" src={currRoom.avatar} alt="current room" />
+            <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="current room" />
             <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             

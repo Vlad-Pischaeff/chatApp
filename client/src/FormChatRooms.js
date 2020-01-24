@@ -73,7 +73,9 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
 
   const elements = [...rooms]
   const r_element = elements.map(n => {
-    let selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
+    // let selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
+    let selected = ''
+    if (currRoom) selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
                 <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={newMessages}/>
             </li>

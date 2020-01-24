@@ -79,7 +79,7 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
         {parsedMsgs}
 
       </ul>
-      <p className="curr-room-name">Current Room: <b>{currRoom.name}</b></p>
+      <p className="curr-room-name">Current Room: <b>{currRoom ? currRoom.name : ''}</b></p>
       <div className={`d-wrap ${size}`} style={inlineStyle}>
         <header className="d-row">
           <div className="w-90"><b>Dialog</b></div>
