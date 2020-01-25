@@ -1,4 +1,9 @@
 # chatApp
-Chat app based on ReactJS, NodeJS, MongoDB, Websocket
+Chat app
+--------
+- ReactJS
+- NodeJS
+- MongoDB
+- Webcocket
 --------
 <img src="./image.jpg" />

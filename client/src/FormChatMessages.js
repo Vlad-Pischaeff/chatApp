@@ -90,11 +90,10 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
     <>
       <div  id="ul" ref={refMSGS}>
         <ul>
-
           {parsedMsgs}
-
         </ul>
       </div>
+
       <p className="curr-room-name">Current Room: <b>{currRoom ? currRoom.name : ''}</b></p>
       <div className={`d-wrap ${size}`} style={inlineStyle}>
         <header className="d-row">
