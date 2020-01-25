@@ -85,3 +85,12 @@
   position: relative;
   bottom: 4px;
 }
+.blink {
+  animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

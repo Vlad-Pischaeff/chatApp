@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
 import {Context} from './context'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
@@ -15,11 +15,13 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
     })
     checkMessages(item)
     // remove current room id from list of new messages
-    let arr = newMessages.filter(n => n !== item._id)
-    dispatchNewMessages({
-      type: 'SET_NEW_MSGS',
-      payload: arr
-    })
+    if (newMessages.length !== 0) {
+      let arr = newMessages.filter(n => n !== item._id)
+      dispatchNewMessages({
+        type: 'SET_NEW_MSGS',
+        payload: arr
+      })
+    }
   }
 
   const checkMessages = (room) => {

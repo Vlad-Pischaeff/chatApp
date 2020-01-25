@@ -22,9 +22,14 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
     let room = currRoom ? currRoom._id : 1
+
+    if (message["Hi there, I am a WebSocket server"]) {
+      console.log('"Hi there, I am a WebSocket server"')
+    }
+
     if (message['SERVER: UPDATE ROOM'] === room) {
       checkMessages(currRoom)
-    } else {
+    } else if (message['SERVER: UPDATE ROOM']) {
       // add rooms id with new messages
       let arr = [...newMessages, message['SERVER: UPDATE ROOM']]
       dispatchNewMessages({
@@ -32,6 +37,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
         payload: arr
       })
     }
+
     if (message['SERVER: SENDED PRIV MSG']) {
       // console.log('SERVER: USER SENDED PRIV MSG', message)
       let arr = [...dialog, message['SERVER: SENDED PRIV MSG']]
@@ -153,7 +159,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
               <label htmlFor="icon_prefix">Search users</label>
             </div>
             <i className="material-icons mrgn-03">search</i>
-            <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="current room" />
+            <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="" />
             <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             
