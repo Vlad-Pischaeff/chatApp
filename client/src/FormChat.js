@@ -12,12 +12,19 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   const [message, setMessage] = useState('')
   const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
   const msg = useRef('')
+  const wdw = useRef('')
 
   useEffect(() => {
     if (currRoom) {
       checkMessages(currRoom)
     }
   }, [])
+  
+  useEffect(() => {
+    let top = wdw.current.scrollTopMax
+    wdw.current.scrollTop = top
+    // console.log('pageYOffset', wdw.current.scrollTop, wdw.current, top, n)
+  }, [messages])
 
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
@@ -163,12 +170,12 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             
-          <section className="h-70 h-msgs">
+          <section className="h-70 h-msgs" ref={wdw}>
             <FormChatMessages messages={messages} 
                               currUser={currUser} 
                               currRoom={currRoom} 
                               dialog={dialog} 
-                              socket={socket}/>
+                              socket={socket} />
           </section>
 
           <section className="h-wrap">

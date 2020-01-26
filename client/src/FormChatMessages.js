@@ -10,7 +10,6 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
   const [privMsg, setPrivMsg] = useState('')
   const [privMsgs, setPrivMsgs] = useState([])
   const d_input = useRef('')
-  const refMSGS = useRef('')
   const {dispatchDialog} = useContext(Context)
   var inlineStyle = { top: top, left: left };
 
@@ -61,14 +60,10 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
 
   const m_element = [...messages]
   const parsedMsgs = m_element.map(n => {
-    // refMSGS.current.scrollTo(0,20);
-    // console.log('spisok', refMSGS.current.scrollTop, refMSGS.current.scrollHeight)
     return  <li key={n._id} onClick={(e) => showDialog(e, n)} >
               <MessagesThumb msg={n} user={currUser} />
             </li>
   }) 
-  
-
   
   const listDialog = privMsgs
     .map((n, i) => {
@@ -83,16 +78,12 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
                 <p className={`d-p ${padding}`}><b>{n.text}</b></p>
               </div>
   })
-
-  // console.log('spisok', refMSGS.current.offsetTop, refMSGS.current.id, refMSGS.current)
  
   return (
     <>
-      <div  id="ul" ref={refMSGS}>
         <ul>
           {parsedMsgs}
         </ul>
-      </div>
 
       <p className="curr-room-name">Current Room: <b>{currRoom ? currRoom.name : ''}</b></p>
       <div className={`d-wrap ${size}`} style={inlineStyle}>
