@@ -151,11 +151,13 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <i className="material-icons mrgn-03" onClick={searchRoom}>search</i>
             <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
           </section>
-          <section className="wrap h-85 h-msgs">
-            <FormChatRooms  rooms={rooms} 
-                            currUser={currUser} 
-                            currRoom={currRoom} 
-                            newMessages={newMessages}/>
+          <section className="h-85 w-100 wrap-h">
+            <section className="h-100 w-110 h-msgs">
+              <FormChatRooms  rooms={rooms} 
+                              currUser={currUser} 
+                              currRoom={currRoom} 
+                              newMessages={newMessages}/>
+            </section>
           </section>
         </section>
 
@@ -170,14 +172,15 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <img className="user-avatar" src={currUser.avatar} alt="current user" />
           </section>
             
-          <section className="h-70 h-msgs" ref={wdw}>
-            <FormChatMessages messages={messages} 
-                              currUser={currUser} 
-                              currRoom={currRoom} 
-                              dialog={dialog} 
-                              socket={socket} />
-          </section>
-
+          <section className="h-70 w-100 wrap-h">
+            <section className="h-100 w-105 h-msgs" ref={wdw}>
+              <FormChatMessages messages={messages} 
+                                currUser={currUser} 
+                                currRoom={currRoom} 
+                                dialog={dialog} 
+                                socket={socket} />
+            </section>
+          </section>  
           <section className="h-wrap">
             <div className="input-field w-90">
               <input id="icon_prefix" type="text" className="validate" ref={msg}

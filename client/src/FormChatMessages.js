@@ -5,13 +5,14 @@ var visavi_id = ''
 
 export default function FormChatMessages({messages, currUser, currRoom, dialog, socket}) {
   const [size, setSize] = useState('size-0')
-  const [top, setTop] = useState(0)
-  const [left, setLeft] = useState(0)
+  // const [top, setTop] = useState(0)
+  // const [left, setLeft] = useState(0)
+  const [position, setPosition] = useState({ top: 0, left:0 })
   const [privMsg, setPrivMsg] = useState('')
   const [privMsgs, setPrivMsgs] = useState([])
   const d_input = useRef('')
   const {dispatchDialog} = useContext(Context)
-  var inlineStyle = { top: top, left: left };
+  var inlineStyle = { top: position.top, left: position.left };
 
   useEffect(() => {
     setPrivMsgs(dialog)
@@ -28,8 +29,11 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
   const showDialog = (event, msg) => {
     if (msg.user_id !== currUser._id) {
       let c = event.target.getBoundingClientRect()
-      setTop(c.top - 60 + window.pageYOffset)
-      setLeft(c.left - 60)
+      // setTop(c.top - 60 + window.pageYOffset)
+      // setLeft(c.left - 60)
+      let y = c.top - 60 + window.pageYOffset
+      let x = c.left - 60
+      setPosition({ top: y, left: x })
       setSize('size-1')
       visavi_id = msg.user_id
     }

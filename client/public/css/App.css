@@ -102,6 +102,9 @@
 .h-15 { height: 14.4%; }
 .h-10 { height: 10%; }
 .wrap { overflow: auto; }
+.wrap-h { overflow: hidden; }
+.w-110 { width: 110%; }
+.w-105 { width: 105%; }
 .w-100 { width: 100%; }
 .w-90 { width: 90%; }
 .h-wrap {
