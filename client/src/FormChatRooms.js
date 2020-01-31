@@ -85,7 +85,7 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
 
 return (
   <>
-    <ul>
+    <ul className="m-ul">
       {r_element}
     </ul>
 

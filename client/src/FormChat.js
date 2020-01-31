@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useState, useContext, useRef, useEffect, useLayoutEffect} from 'react'
 import {Context} from './context'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
@@ -21,9 +21,12 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   }, [])
   
   useEffect(() => {
-    let top = wdw.current.scrollTopMax
-    wdw.current.scrollTop = top
-    // console.log('pageYOffset', wdw.current.scrollTop, wdw.current, top, n)
+    // wdw.current.scrollTop = wdw.current.scrollHeigh - wdw.current.clientHeigh
+    let li = document.querySelectorAll('.m-li')
+    let last = li.item(li.length - 1)
+    if (last) last.scrollIntoView({ 
+      behavior: 'smooth' 
+    })
   }, [messages])
 
   socket.onmessage = (evt) => {
@@ -136,7 +139,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       addMessage()
     }
   }
- 
+
   return (
     <div className={`row ${forms.chat}`} >
       <h4 className="center-align">My App</h4>
@@ -173,7 +176,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
           </section>
             
           <section className="h-70 w-100 wrap-h">
-            <section className="h-100 w-105 h-msgs" ref={wdw}>
+            <section className="h-100 w-105 h-msgs" ref={wdw} >
               <FormChatMessages messages={messages} 
                                 currUser={currUser} 
                                 currRoom={currRoom} 

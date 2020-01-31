@@ -64,7 +64,7 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
 
   const m_element = [...messages]
   const parsedMsgs = m_element.map(n => {
-    return  <li key={n._id} onClick={(e) => showDialog(e, n)} >
+    return  <li key={n._id} onClick={(e) => showDialog(e, n)} className="m-li">
               <MessagesThumb msg={n} user={currUser} />
             </li>
   }) 
@@ -82,10 +82,10 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
                 <p className={`d-p ${padding}`}><b>{n.text}</b></p>
               </div>
   })
- 
+  // console.log('chat messages')
   return (
     <>
-        <ul>
+        <ul className="m-ul">
           {parsedMsgs}
         </ul>
 
