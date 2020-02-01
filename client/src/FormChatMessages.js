@@ -5,14 +5,23 @@ var visavi_id = ''
 
 export default function FormChatMessages({messages, currUser, currRoom, dialog, socket}) {
   const [size, setSize] = useState('size-0')
-  // const [top, setTop] = useState(0)
-  // const [left, setLeft] = useState(0)
   const [position, setPosition] = useState({ top: 0, left:0 })
   const [privMsg, setPrivMsg] = useState('')
   const [privMsgs, setPrivMsgs] = useState([])
   const d_input = useRef('')
   const {dispatchDialog} = useContext(Context)
   var inlineStyle = { top: position.top, left: position.left };
+  const li = useRef('')
+
+  useEffect(() => {
+    // wdw.current.scrollTop = wdw.current.scrollHeigh - wdw.current.clientHeigh
+    // let lli = document.querySelectorAll('.m-li')
+    // let last = lli.item(lli.length - 1)
+    if (li.current) {
+      li.current.scrollIntoView({ behavior: 'smooth' })
+    }
+    // console.log('messages li', li, last, lli)
+  }, [messages])
 
   useEffect(() => {
     setPrivMsgs(dialog)
@@ -25,12 +34,10 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
       }
     }
   }, [dialog])
-
+  
   const showDialog = (event, msg) => {
     if (msg.user_id !== currUser._id) {
       let c = event.target.getBoundingClientRect()
-      // setTop(c.top - 60 + window.pageYOffset)
-      // setLeft(c.left - 60)
       let y = c.top - 60 + window.pageYOffset
       let x = c.left - 60
       setPosition({ top: y, left: x })
@@ -64,7 +71,7 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
 
   const m_element = [...messages]
   const parsedMsgs = m_element.map(n => {
-    return  <li key={n._id} onClick={(e) => showDialog(e, n)} className="m-li">
+    return  <li key={n._id} onClick={(e) => showDialog(e, n)} className="m-li" ref={li}>
               <MessagesThumb msg={n} user={currUser} />
             </li>
   }) 

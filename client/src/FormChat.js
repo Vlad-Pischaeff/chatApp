@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useContext, useRef, useEffect } from 'react'
 import {Context} from './context'
 import fetchRoom from './FormAddChatMiddleware'
 import fetchMsgs from './FormAddMsgsMiddleware'
@@ -13,21 +13,12 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
   const msg = useRef('')
   const wdw = useRef('')
-
+  
   useEffect(() => {
     if (currRoom) {
       checkMessages(currRoom)
     }
   }, [])
-  
-  useEffect(() => {
-    // wdw.current.scrollTop = wdw.current.scrollHeigh - wdw.current.clientHeigh
-    let li = document.querySelectorAll('.m-li')
-    let last = li.item(li.length - 1)
-    if (last) last.scrollIntoView({ 
-      behavior: 'smooth' 
-    })
-  }, [messages])
 
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
