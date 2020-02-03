@@ -14,13 +14,9 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
   const li = useRef('')
 
   useEffect(() => {
-    // wdw.current.scrollTop = wdw.current.scrollHeigh - wdw.current.clientHeigh
-    // let lli = document.querySelectorAll('.m-li')
-    // let last = lli.item(lli.length - 1)
     if (li.current) {
       li.current.scrollIntoView({ behavior: 'smooth' })
     }
-    // console.log('messages li', li, last, lli)
   }, [messages])
 
   useEffect(() => {
@@ -91,31 +87,33 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
   })
   // console.log('chat messages')
   return (
-    <>
+    <section className="h-70 w-100 wrap-h">
+      <section className="h-100 w-105 h-msgs">
         <ul className="m-ul">
           {parsedMsgs}
         </ul>
 
-      <p className="curr-room-name">Current Room: <b>{currRoom ? currRoom.name : ''}</b></p>
-      <div className={`d-wrap ${size}`} style={inlineStyle}>
-        <header className="d-row">
-          <div className="w-90"><b>Dialog</b></div>
-          <i className="material-icons" onClick={() => setSize('size-0')}>close</i>
-        </header>
-        <section style={{overflowY: 'auto'}}>
+        <p className="curr-room-name">Current Room: <b>{currRoom ? currRoom.name : ''}</b></p>
+        <div className={`d-wrap ${size}`} style={inlineStyle}>
+          <header className="d-row">
+            <div className="w-90"><b>Dialog</b></div>
+            <i className="material-icons" onClick={() => setSize('size-0')}>close</i>
+          </header>
+          <section style={{overflowY: 'auto'}}>
 
-          {listDialog}
+            {listDialog}
 
-        </section>
-        <footer className="d-row">
-          <input style={{height: '2rem', width: '90%'}} type="text"
-            onChange={event => setPrivMsg(event.target.value)} ref={d_input}
-            onKeyPress={sendPrivMsgByEnter}>
-          </input>
-          <i className="material-icons"
-            onClick={sendPrivMsg}>send</i>
-        </footer>
-      </div>
-    </>
+          </section>
+          <footer className="d-row">
+            <input style={{height: '2rem', width: '90%'}} type="text"
+              onChange={event => setPrivMsg(event.target.value)} ref={d_input}
+              onKeyPress={sendPrivMsgByEnter}>
+            </input>
+            <i className="material-icons"
+              onClick={sendPrivMsg}>send</i>
+          </footer>
+        </div>
+      </section>
+    </section>
   )
 }
