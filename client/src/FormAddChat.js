@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchRoom from './FormAddChatMiddleware'
+import {fetchRoom} from './FormMiddleware'
 require('dotenv').config()
 
 export default function FormAddChat({forms, currUser}) {

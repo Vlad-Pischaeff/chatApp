@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 import {Context} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
-import fetchRoom from './FormAddChatMiddleware'
+import {fetchRoom} from './FormMiddleware'
 
 export default function FormFindedRooms({forms, findedRooms, currUser}) {
   const {dispatchLogin, dispatchRooms} = useContext(Context)

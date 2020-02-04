@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react'
 import {Context} from './context'
-import fetchRoom from './FormAddChatMiddleware'
-import fetchMsgs from './FormAddMsgsMiddleware'
+import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
 export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) {
@@ -84,28 +83,30 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
   })
 
 return (
-  <>
-    <ul className="m-ul">
-      {r_element}
-    </ul>
+  <section className="h-85 w-100 wrap-h">
+    <section className="h-100 w-110 h-msgs">
+      <ul className="m-ul">
+        {r_element}
+      </ul>
 
-    {/* // <!-- Modal Structure --> */}
-    <div id="modal1" className="modal">
-      <div className="modal-content">
-        <h4>Do you want to unsubscribe from...</h4>
-        <p>{unfollowedRoom.name}</p>
+      {/* // <!-- Modal Structure --> */}
+      <div id="modal1" className="modal">
+        <div className="modal-content">
+          <h4>Do you want to unsubscribe from...</h4>
+          <p>{unfollowedRoom.name}</p>
+        </div>
+        <div className="modal-footer">
+          <a href="#!" className="modal-close waves-effect waves-green btn-flat">
+              No
+          </a>
+          <a href="#!" className="modal-close waves-effect waves-green btn-flat"
+            onClick={unfollowRoom}>
+              Agree
+          </a>
+        </div>
       </div>
-      <div className="modal-footer">
-        <a href="#!" className="modal-close waves-effect waves-green btn-flat">
-            No
-        </a>
-        <a href="#!" className="modal-close waves-effect waves-green btn-flat"
-          onClick={unfollowRoom}>
-            Agree
-        </a>
-      </div>
-    </div>
-    {/* // <!-- Modal Structure --> */}
-  </>
+      {/* // <!-- Modal Structure --> */}
+    </section>
+  </section>
   )
 }

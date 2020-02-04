@@ -17,6 +17,12 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
     if (li.current) {
       li.current.scrollIntoView({ behavior: 'smooth' })
     }
+  }, [])
+
+  useEffect(() => {
+    if (li.current) {
+      li.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   useEffect(() => {

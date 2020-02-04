@@ -1,7 +1,6 @@
 import React, {useState, useContext, useRef, useEffect } from 'react'
 import {Context} from './context'
-import fetchRoom from './FormAddChatMiddleware'
-import fetchMsgs from './FormAddMsgsMiddleware'
+import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import FormFindedRooms from './FormFindedRooms'
 import FormChatRooms from './FormChatRooms'
 import FormChatMessages from './FormChatMessages'
@@ -11,10 +10,7 @@ import MsgsNavBarTop from './MsgsNavBarTop'
 export default function FormChat({forms, rooms, messages, currUser, socket, currRoom, newMessages, dialog}) {
   const [roomName, setRoomName] = useState('')
   const [findedRooms, setFindedRooms] = useState('')
-  // const [message, setMessage] = useState('')
   const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
-  // const msg = useRef('')
-  // const wdw = useRef('')
   
   useEffect(() => {
     if (currRoom) {
@@ -70,11 +66,6 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
     chkMsg()
   }
 
-  // const sendIO = (message) => {
-  //   let req = JSON.stringify({'USER: SENDED MESSAGE': message})
-  //   socket.send(req)
-  // }
-
   const addRoom = () => {
     dispatchLogin({
       type: 'SHOW_ADDROOM',
@@ -101,38 +92,6 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
     }
   }
 
-  // const addMessage = () => {
-  //   let data = {
-  //     text: message,
-  //     user_id: currUser._id,
-  //     user_name: currUser.name,
-  //     user_avatar: currUser.avatar,
-  //     room_id: currRoom._id,
-  //     method: 'add'
-  //   }
-  //   async function addMsg() {
-  //     try {
-  //       let msgs = await fetchMsgs(data)
-  //       dispatchMsgs({
-  //         type: 'SET_CURRENT_MSGS',
-  //         payload: [...messages, msgs.msgs]
-  //       })
-  //       sendIO(msgs.msgs)
-  //     } catch(e) {
-  //       console.log('error', e)
-  //     }
-  //   }
-  //   addMsg()
-  //   msg.current.value = ''
-  //   setMessage('')
-  // }
-
-  // const sendMessage = (e) => {
-  //   if (e.key === 'Enter') {
-  //     addMessage()
-  //   }
-  // }
-
   return (
     <div className={`row ${forms.chat}`} >
       <h4 className="center-align">My App</h4>
@@ -147,51 +106,30 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
             <i className="material-icons mrgn-03" onClick={searchRoom}>search</i>
             <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
           </section>
-          <section className="h-85 w-100 wrap-h">
-            <section className="h-100 w-110 h-msgs">
-              <FormChatRooms  rooms={rooms} 
-                              currUser={currUser} 
-                              currRoom={currRoom} 
-                              newMessages={newMessages}/>
-            </section>
-          </section>
+
+          <FormChatRooms  rooms={rooms} 
+                          currUser={currUser} 
+                          currRoom={currRoom} 
+                          newMessages={newMessages}/>
+
         </section>
 
-        <article className="col s8 h-100 ">
-          {/* <section className="h-15 h-wrap">
-            <div className="input-field w-100">
-              <input id="icon_prefix" type="text" className="validate"/>
-              <label htmlFor="icon_prefix">Search users</label>
-            </div>
-            <i className="material-icons mrgn-03">search</i>
-            <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="" />
-            <img className="user-avatar" src={currUser.avatar} alt="current user" />
-          </section> */}
+        <section className="col s8 h-100 ">
+
           <MsgsNavBarTop currUser={currUser} 
                          currRoom={currRoom} />
-          {/* <section className="h-70 w-100 wrap-h"> */}
-            {/* <section className="h-100 w-105 h-msgs" > */}
+
           <FormChatMessages messages={messages} 
                             currUser={currUser} 
                             currRoom={currRoom} 
                             dialog={dialog} 
                             socket={socket} />
-            {/* </section> */}
-          {/* </section>   */}
-          {/* <section className="h-wrap">
-            <div className="input-field w-90">
-              <input id="icon_prefix" type="text" className="validate" ref={msg}
-                onChange = {(event) => setMessage(event.target.value)}
-                onKeyPress = {sendMessage}/>
-              <label htmlFor="icon_prefix">Send message</label>
-            </div>
-            <i className="material-icons prefix" onClick={addMessage}>send</i>
-          </section> */}
+
           <MsgsNavBarBottom messages={messages} 
                             currUser={currUser} 
                             currRoom={currRoom}
                             socket={socket} />
-        </article>
+        </section>
       </main>
 
       <FormFindedRooms forms={forms} findedRooms={findedRooms} currUser={currUser}/>

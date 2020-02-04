@@ -1,6 +1,6 @@
 import React, {useState, useRef, useContext } from 'react'
 import {Context} from './context'
-import fetchMsgs from './FormAddMsgsMiddleware'
+import {fetchMsgs} from './FormMiddleware'
 
 export default function MsgsNavBarBottom({ messages, currUser, socket, currRoom }) {
   const [message, setMessage] = useState('')

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm run start",
+    "client": "npm run start --prefix client",
     "server": "node index",
     "dev-server": "nodemon index",
     "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run client\"",

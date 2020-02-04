@@ -1,8 +1,6 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchUser from './FormMiddleware'
-import fetchRoom from './FormAddChatMiddleware'
-
+import {fetchUser, fetchRoom} from './FormMiddleware'
 
 export default function FormLogIn({forms, socket}) {
     const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')

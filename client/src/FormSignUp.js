@@ -1,6 +1,6 @@
 import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
-import fetchUser from './FormMiddleware'
+import {fetchUser} from './FormMiddleware'
 require('dotenv').config()
 
 export default function FormSignIn({forms}) {
