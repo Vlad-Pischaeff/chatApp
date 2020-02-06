@@ -1,33 +1,29 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import {fetchRoom, fetchRoomAvatars} from './FormMiddleware'
-require('dotenv').config()
+let chatroom = { name:'', description:'', avatar:'' }
+let roomavatars = []
 
 export default function FormAddChat({forms, currUser}) {
-  const [roomName, setRoomName] = useState('')
-  const [roomDescription, setRoomDescription] = useState('')
-  const [roomAvatar, setRoomAvatar] = useState('')
-  const [avatars, setAvatars] = useState([])
-  const [avatarClass, setAvatarClass] = useState([])
   const {dispatchLogin,dispatchRooms} = useContext(Context)
   const nameRef = useRef('')
   const descriptionRef = useRef('')
   const alertRef = useRef('')
 
   useEffect(() => {
-    fetchRoomAvatars().then(resp => setAvatars(resp))
+    fetchRoomAvatars().then(resp => roomavatars = resp)
   }, [])
 
-  const addRoom = () => {
-    if ((roomName.length === 0) || (roomDescription.length === 0)) {
+  const h_BtnAdd_onClick = () => {
+    if ((chatroom.name.length === 0) || (chatroom.description.length === 0)) {
       alertRef.current.innerHTML = 'Please fill required fields'
     } else {
       alertRef.current.innerHTML = ''
 
       let data = {
-        name: roomName,
-        description: roomDescription,
-        avatar: `./img/room/${roomAvatar}`,
+        name: chatroom.name,
+        description: chatroom.description,
+        avatar: chatroom.avatar,
         owner: {
           id: currUser._id,
           name: currUser.name
@@ -35,7 +31,7 @@ export default function FormAddChat({forms, currUser}) {
         method: 'add'
       }
 
-      async function fetchAddRoom() {
+      async function AddRoom() {
         let rooms = await fetchRoom(data)
         // console.log('add rooms', rooms);
         if (!rooms.error) {
@@ -43,46 +39,49 @@ export default function FormAddChat({forms, currUser}) {
             type: 'GET_ADDED_OWNER_ROOMS',
             payload: rooms.rooms
           })
-          closeDialog()
+          h_BtnClose_onClick()
         }
       }
 
       try {
-        fetchAddRoom()
+        AddRoom()
       } catch(err) {
         console.log(err)
       }
     }
   }
 
-  const closeDialog = () => {
+  const h_BtnClose_onClick = () => {
     dispatchLogin({
       type: 'HIDE_ADDROOM',
       payload: ''
     })
-    setRoomName('')
-    setRoomDescription('')
-    setRoomAvatar('')
-    setAvatarClass([])    
+    chatroom.name = ''
+    chatroom.description = ''
     nameRef.current.value = null
     descriptionRef.current.value = null
     nameRef.current.focus();
     descriptionRef.current.focus();
   }
-
-  const setClass = (n, index) => {
-    setRoomAvatar(n)
-    setAvatarClass(avatars.map((n, i) => {
-        return i === index ? 'border' : ''
-      }))
+  const h_Input_onChange = (event) => {
+    chatroom[event.target.name] = event.target.value
   }
 
-  const avatarsMap = avatars.map((n, i) => {
-    return  <div key={`${i}`} id={`roomavatar${i}`}  
-              onClick={() => setClass(n, i)}>
-              <img src={`./img/room/${n}`} className={`${avatarClass[i]}`} alt={n} />
+  const h_Div_onClick = (n, index)=> {
+    chatroom.avatar = `./img/room/${n}`
+    let nodeAvatars = document.querySelectorAll('.roomAvatars')
+    nodeAvatars.forEach((el, idx ) =>  {
+      idx === index ? el.className = "roomAvatars border" : el.className = "roomAvatars"
+    })
+  }
+
+  const avatarsMap = roomavatars.map((n, i) => {
+    return  <div key={`${i}`} onClick={() => h_Div_onClick(n, i)}>
+              <img src={`./img/room/${n}`} className='roomAvatars' alt={n} />
             </div>
   })
+
+console.log('Add room')
 
   return (
     <div className={`add-card-modal-bg ${forms.addroom}`}>
@@ -93,18 +92,18 @@ export default function FormAddChat({forms, currUser}) {
           <main className="card-content">
             
             <span className="card-title center-align">Enter Your new chat room credentials</span>
-            <div className="add-card-close" onClick={closeDialog}></div>
+            <div className="add-card-close" onClick={h_BtnClose_onClick}></div>
 
             <section className="input-field col s12">
-              <input id="roomname" type="text" data-length="20" ref={nameRef}
-                onChange = {event => setRoomName(event.target.value)}
+              <input id="roomname" type="text" data-length="20" ref={nameRef} name="name"
+                onChange = {h_Input_onChange}
                 onFocus = {() => alertRef.current.innerHTML = ''} />
               <label htmlFor="roomname">ChatRoom name</label>
             </section>
 
             <section className="input-field col s12">
-              <input type="text" id="roomdesc" className="validate" data-length="40" ref={descriptionRef}
-                onChange = {event => setRoomDescription(event.target.value)}
+              <input id="roomdesc" type="text" data-length="40" ref={descriptionRef} name="description"
+                onChange = {h_Input_onChange}
                 onFocus = {() => alertRef.current.innerHTML = ''} />
               <label htmlFor="roomdesc">ChatRoom description</label>
             </section>
@@ -117,9 +116,7 @@ export default function FormAddChat({forms, currUser}) {
 
             <footer className="card-action col s12 center-align" style={{marginBottom: "1rem"}}>
               <a href="#!" className="waves-effect waves-light btn-large" 
-                onClick = {addRoom}>
-                Add room
-              </a>
+                onClick = {h_BtnAdd_onClick}> Add room </a>
             </footer>
 
           </main>
