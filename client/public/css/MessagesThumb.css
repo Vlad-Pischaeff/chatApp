@@ -35,7 +35,7 @@
 }
 .my-wrap-msg {
   border-radius: 0.5rem 0 1.5rem 0;
-  background: rgb(252, 240, 209);
+  background: rgb(228, 246, 255);
 }
 .my-arrow {
   margin: 0;
@@ -46,7 +46,7 @@
   position: relative;
   border-width: 0 0 1rem 1rem;
   border-style: solid;
-  border-color: transparent transparent transparent rgb(252, 240, 209);
+  border-color: transparent transparent transparent rgb(228, 246, 255);
 }
 .my-time {
   color: grey;
@@ -67,7 +67,7 @@
 }
 .m-wrap-msg {
   border-radius: 0 0.5rem 0 1.5rem;
-  background: rgb(228, 246, 255);
+  background: rgb(252, 240, 209);
 }
 .m-arrow {
   margin: 0;
@@ -78,7 +78,7 @@
   position: relative;
   border-width: 1rem 0 0 1rem;
   border-style: solid;
-  border-color: rgb(228, 246, 255) transparent transparent transparent;
+  border-color: rgb(252, 240, 209) transparent transparent transparent;
 }
 .m-time {
   color: grey;

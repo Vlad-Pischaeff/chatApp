@@ -1,36 +1,37 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import {fetchUser, fetchRoom} from './FormMiddleware'
+let credentials = { name:'', password:'' }
 
 export default function FormLogIn({forms, socket}) {
-    const [userName, setUserName] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).name: '')
-    const [userPassword, setUserPassword] = useState(localStorage.getItem('savedUser') !== null ? JSON.parse(localStorage.getItem('savedUser')).password: '')
-    const [verify, setVerify] = useState(true)
     const {dispatchLogin, dispatchRooms, dispatchCurrUser} = useContext(Context)
     const alert = useRef('')
-    const remember = useRef('')
+    const checkbox = useRef('')
     const nameRef = useRef('')
     const passwordRef = useRef('')
 
     useEffect(() => {
-      if (localStorage.getItem('savedUser') === null ) {
-        localStorage.setItem('savedUser', JSON.stringify({name: '', password: ''})) 
+      let savedUser = JSON.parse(localStorage.getItem('savedUser'))
+      if (!savedUser) {
+        localStorage.setItem('savedUser', JSON.stringify(credentials)) 
+      } else {
+        credentials = savedUser
+        nameRef.current.value = credentials.name
+        passwordRef.current.value = credentials.password
       }
-      nameRef.current.value = userName
-      passwordRef.current.value = userPassword
     }, [])
 
-    const checkUser = () => {
+    const h_Btn_onClick = () => {
       const dataUser = {
-        name: userName,
-        password: userPassword,
+        name: credentials.name,
+        password: credentials.password,
         method: 'validate'
       }
 
       const dataRoom = {
         method: 'check'
       }
-
+      
       async function check() {
         let users = await fetchUser(dataUser)
         if (users.length !== 0) {
@@ -45,8 +46,7 @@ export default function FormLogIn({forms, socket}) {
             type: 'GET_OWNER_ROOMS',
             payload: rooms
           })
-          // fetch list of owner rooms
-          setVerify(true)
+          // fetch list of owner rooms        
           dispatchCurrUser({
             type: 'SET_CURRENT_USER',
             payload: users[0] 
@@ -54,26 +54,31 @@ export default function FormLogIn({forms, socket}) {
           let req = JSON.stringify({'USER: LOGINED': users[0]})
           socket.send(req)
          } else {
-          setVerify(false)
+          alert.current.innerHTML = 'No such user or password'
         }
       }
       check()
     }
 
-    const registerUser = () => {
+    const h_Signup_onClick = () => {
       dispatchLogin({
         type: 'OPEN_SIGNUP',
         payload: ''
       })
     }
 
-    const rememberUser = () => {
-      if (remember.current.checked === true) {
-          localStorage.setItem('savedUser', JSON.stringify({name: userName, password: userPassword}))
+    const h_Chck_onClick = () => {
+      if (checkbox.current.checked === true) {
+          localStorage.setItem('savedUser', JSON.stringify(credentials))
       }
     }
 
-    let alertText = verify ? '\xa0' : 'No such user or password'
+    const h_Input_onChange = (event) => {
+      credentials[event.target.name] = event.target.value
+      if (checkbox.current.checked) checkbox.current.click()
+    }
+
+    console.log('form login', credentials)
 
     return (
       <div className={`row container ${forms.login}`}>
@@ -85,26 +90,26 @@ export default function FormLogIn({forms, socket}) {
               <span className="card-title center-align">Enter Your credentials</span>
 
               <section className="input-field col s12">
-                <input type="text" id="username" className="validate" ref={nameRef}
-                  onChange = {event => setUserName(event.target.value)} 
+                <input type="text" id="username" className="validate" ref={nameRef} name="name"
+                  onChange = {h_Input_onChange} 
                   onFocus = {() => alert.current.innerHTML='&nbsp;'} />
                 <label htmlFor="username">Username</label>
               </section>
   
               <section className="input-field col s12">
-                <input type="password" id="password" className="validate" ref={passwordRef}
-                  onChange = {event => setUserPassword(event.target.value)} 
+                <input type="password" id="password" className="validate" ref={passwordRef} name="password"
+                  onChange = {h_Input_onChange} 
                   onFocus = {() => alert.current.innerHTML='&nbsp;'}
                   />
                 <label htmlFor="password">Password</label>
               </section>
   
               <footer className="col s12" style={{marginBottom: "1rem"}}>
-                <a href="#!" className="waves-effect waves-light btn-large left" onClick={checkUser}>
+                <a href="#!" className="waves-effect waves-light btn-large left" onClick={h_Btn_onClick}>
                   Log in
                 </a>
                 <label htmlFor="remember-me" className="right">
-                  <input type="checkbox" id="remember-me" ref={remember} onClick={rememberUser} />
+                  <input type="checkbox" id="remember-me" ref={checkbox} onClick={h_Chck_onClick} />
                   <span>Remember me</span>
                 </label>
               </footer>
@@ -112,9 +117,9 @@ export default function FormLogIn({forms, socket}) {
             </main>
   
             <div className="card-action col s12">
-              <p className="center-align red-text" ref={alert}>{alertText}</p>
+              <p className="center-align red-text" ref={alert}>{'\xa0'}</p>
               <p className="center-align">Not registered? <a href="#!" style={{cursor: "pointer"}} 
-                onClick={registerUser}>sign up</a></p>
+                onClick={h_Signup_onClick}>sign up</a></p>
             </div>
   
           </form>
