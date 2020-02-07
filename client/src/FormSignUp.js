@@ -69,12 +69,12 @@ export default function FormSignIn({forms}) {
     }
 
     const avatarsMap = avatars.map((n, i) => {
-      return  <div key={`${i}`} onClick={() => h_Div_onClick(n, i)}>
+      return  <div key={i} onClick={() => h_Div_onClick(n, i)}>
                 <img src={`./img/user/${n}`} className="userAvatars" alt="" />
               </div>
     })
 
-    console.log('form signup')
+    console.log('form signup', avatarsMap)
 
     return (
       <div className={`row container ${forms.signup}`}>

@@ -23,24 +23,18 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
     }
   }
 
-  const followRoom = () => {
-    async function fetchFollowRoom() {
-      let data = {
-        id: followedRooms,
-        user_id: currUser._id,
-        method: 'follow'
-      }
-      try {
-        var rooms = await fetchRoom(data)
-      } catch(e) {
-        console.log('follow error', e)
-      }
-      dispatchRooms({
-        type: 'GET_UPDATED_OWNER_ROOMS',
-        payload: rooms
-      })
+  const h_BtnFollow_onClick = () => {
+    let data = {
+      id: followedRooms,
+      user_id: currUser._id,
+      method: 'follow'
     }
-    fetchFollowRoom()
+    fetchRoom(data)
+      .then(res =>  dispatchRooms({
+                      type: 'GET_UPDATED_OWNER_ROOMS',
+                      payload: res
+                    })
+            )
     closeDialog()
   }
 
@@ -72,7 +66,7 @@ export default function FormFindedRooms({forms, findedRooms, currUser}) {
             </section>
     
             <footer className="card-action col s12 center-align" style={{"marginBottom": "1rem"}}>
-              <a href="#!" className="waves-effect waves-light btn-large" onClick={followRoom} >
+              <a href="#!" className="waves-effect waves-light btn-large" onClick={h_BtnFollow_onClick} >
                 Follow
               </a>
             </footer>

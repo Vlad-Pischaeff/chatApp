@@ -28,18 +28,12 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
       room_id: room._id,
       method: 'check'
     }
-    async function chkMsg() {
-      try {
-        let msgs = await fetchMsgs(data)
-        dispatchMsgs({
-          type: 'SET_CURRENT_MSGS',
-          payload: msgs
-        })
-      } catch(e) {
-        console.log('error', e)
-      }
-    }
-    chkMsg()
+    fetchMsgs(data)
+      .then(res =>  dispatchMsgs({
+                      type: 'SET_CURRENT_MSGS',
+                      payload: res
+                    })
+            )
   }
 
   const showModal = (event, room) => {
@@ -58,18 +52,12 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
       user_id: currUser._id,
       method: 'unfollow'
     }
-    async function fetchAddRoom() {
-      try {
-        let rooms = await fetchRoom(data)
-        dispatchRooms({
-          type: 'GET_UPDATED_OWNER_ROOMS',
-          payload: rooms
-        })
-      } catch(e) {
-        console.log('error', e)
-      }
-    }
-    fetchAddRoom()
+    fetchRoom(data)
+      .then(res => dispatchRooms({
+                    type: 'GET_UPDATED_OWNER_ROOMS',
+                    payload: res
+                  })
+            )
   }
 
   const elements = [...rooms]

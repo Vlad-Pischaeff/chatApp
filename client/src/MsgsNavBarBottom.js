@@ -1,9 +1,9 @@
-import React, {useState, useRef, useContext } from 'react'
+import React, { useRef, useContext } from 'react'
 import {Context} from './context'
 import {fetchMsgs} from './FormMiddleware'
+let message = ''
 
 export default function MsgsNavBarBottom({ messages, currUser, socket, currRoom }) {
-  const [message, setMessage] = useState('')
   const { dispatchMsgs } = useContext(Context)
   const msg = useRef('')
 
@@ -12,7 +12,7 @@ export default function MsgsNavBarBottom({ messages, currUser, socket, currRoom 
     socket.send(req)
   }
 
-  const addMessage = () => {
+  const h_BtnSend_onClick = () => {
     let data = {
       text: message,
       user_id: currUser._id,
@@ -21,38 +21,37 @@ export default function MsgsNavBarBottom({ messages, currUser, socket, currRoom 
       room_id: currRoom._id,
       method: 'add'
     }
-    async function addMsg() {
-      try {
-        let msgs = await fetchMsgs(data)
-        dispatchMsgs({
-          type: 'SET_CURRENT_MSGS',
-          payload: [...messages, msgs.msgs]
-        })
-        sendIO(msgs.msgs)
-      } catch(e) {
-        console.log('error', e)
-      }
-    }
-    addMsg()
+    fetchMsgs(data)
+      .then(res => {  dispatchMsgs({
+                        type: 'SET_CURRENT_MSGS',
+                        payload: [...messages, res.msgs]
+                      })
+                      sendIO(res.msgs)
+                    }
+            )
     msg.current.value = ''
-    setMessage('')
+    message = ''
   }
 
-  const sendMessage = (e) => {
+  const h_Input_onKeyPress = (e) => {
     if (e.key === 'Enter') {
-      addMessage()
+      h_BtnSend_onClick()
     }
+  }
+
+  const h_Input_onChange = (event) => {
+    message = event.target.value
   }
 
   return (
     <section className="h-wrap">
       <div className="input-field w-90">
         <input id="icon_prefix" type="text" className="validate" ref={msg}
-          onChange = {(event) => setMessage(event.target.value)}
-          onKeyPress = {sendMessage}/>
+          onChange = {h_Input_onChange}
+          onKeyPress = {h_Input_onKeyPress}/>
         <label htmlFor="icon_prefix">Send message</label>
       </div>
-      <i className="material-icons prefix" onClick={addMessage}>send</i>
+      <i className="material-icons prefix" onClick={h_BtnSend_onClick}>send</i>
     </section>
   )
 }

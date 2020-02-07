@@ -31,7 +31,6 @@ export default function FormLogIn({forms, socket}) {
       const dataRoom = {
         method: 'check'
       }
-      
       async function check() {
         let users = await fetchUser(dataUser)
         if (users.length !== 0) {

@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef, useEffect } from 'react'
+import React, {useContext, useEffect } from 'react'
 import {Context} from './context'
 import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import FormFindedRooms from './FormFindedRooms'
@@ -6,10 +6,10 @@ import FormChatRooms from './FormChatRooms'
 import FormChatMessages from './FormChatMessages'
 import MsgsNavBarBottom from './MsgsNavBarBottom'
 import MsgsNavBarTop from './MsgsNavBarTop'
+let roomName = ''
+let findedRooms = []
 
 export default function FormChat({forms, rooms, messages, currUser, socket, currRoom, newMessages, dialog}) {
-  const [roomName, setRoomName] = useState('')
-  const [findedRooms, setFindedRooms] = useState('')
   const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
   
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
     let room = currRoom ? currRoom._id : 1
 
     if (message["Hi there, I am a WebSocket server"]) {
-      console.log('"Hi there, I am a WebSocket server"')
+      console.log('WebSocket server is online...')
     }
     
     if (message['SERVER: UPDATE ROOM'] === room) {
@@ -52,44 +52,53 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       room_id: room._id,
       method: 'check'
     }
-    async function chkMsg() {
-      try {
-        let msgs = await fetchMsgs(data)
-        dispatchMsgs({
-          type: 'SET_CURRENT_MSGS',
-          payload: msgs
-        })
-      } catch(e) {
-        console.log('error', e)
-      }
-    }
-    chkMsg()
+    fetchMsgs(data)
+      // .then(res => msgs = res)
+      .then((res) => dispatchMsgs({
+                      type: 'SET_CURRENT_MSGS',
+                      payload: res
+                    })
+      )
+    // async function chkMsg() {
+    //   try {
+    //     let msgs = await fetchMsgs(data)
+    //     dispatchMsgs({
+    //       type: 'SET_CURRENT_MSGS',
+    //       payload: msgs
+    //     })
+    //   } catch(e) {
+    //     console.log('error', e)
+    //   }
+    // }
+    // chkMsg()
   }
 
-  const addRoom = () => {
+  const h_BtnAdd_onClick = () => {
     dispatchLogin({
-      type: 'SHOW_ADDROOM',
+      type: 'SHOW_h_BtnAdd_onClick',
       payload: ''
     })
   }
 
-  const searchRoom = () => {
+  const h_BtnSearch_onClick = () => {
     if (roomName !== '') {
-       const data = {
+      const data = {
         owner: currUser._id,
         name: roomName,
         method: 'search'
       }
-      async function search() {
-        const rooms = await fetchRoom(data)
-        setFindedRooms(rooms)
-      }
-      search()
-      dispatchLogin({
-        type: 'SHOW_FINDEDROOM',
-        payload: ''
-      })
+      fetchRoom(data)
+        .then(res => findedRooms = res)
+        .then(() => dispatchLogin({
+                      type: 'SHOW_FINDEDROOM',
+                      payload: ''
+                    })
+        )
     }
+  }
+
+  const h_Input_onChange = (event) => {
+    roomName = event.target.value
   }
 
   return (
@@ -99,12 +108,11 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
         <section className="col s4 h-100">
           <section className="h-wrap">
             <div className="input-field w-100">
-              <input id="icon_prefix" type="text" className="validate" 
-                onChange = {event => setRoomName(event.target.value)} />
+              <input id="icon_prefix" type="text" className="validate" onChange = {h_Input_onChange} />
               <label htmlFor="icon_prefix">Search chatroom</label>
             </div>
-            <i className="material-icons mrgn-03" onClick={searchRoom}>search</i>
-            <i className="material-icons mrgn-03" onClick={addRoom}>library_add</i>
+            <i className="material-icons mrgn-03" onClick={h_BtnSearch_onClick}>search</i>
+            <i className="material-icons mrgn-03" onClick={h_BtnAdd_onClick}>library_add</i>
           </section>
 
           <FormChatRooms  rooms={rooms} 
