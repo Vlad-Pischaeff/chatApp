@@ -23,11 +23,7 @@ export default function App() {
   const [newMessages, dispatchNewMessages] = useReducer(newMsgsReducer, [])
   const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
   const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom')) || {})
-  // const [socket, setSocket] = useState(new WebSocket(url))
-  
-
-  // console.log('STATE MSGS', messages)
-  
+    
   useEffect(() => {
     socket.onopen = () => {
       console.log('APP client connected', url, socket)
@@ -44,7 +40,6 @@ export default function App() {
         <FormSignUp forms={forms}/>
         <FormChat forms={forms} rooms={rooms} messages={messages} currUser={currUser} socket={socket} currRoom={currRoom} newMessages={newMessages} dialog={dialog}/>
         <FormAddChat forms={forms} currUser={currUser}/>
-        {/* <FormFindedRooms forms={forms}/> */}
     </Context.Provider>
   );
 }

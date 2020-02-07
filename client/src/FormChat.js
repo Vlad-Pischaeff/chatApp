@@ -13,10 +13,10 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
   const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
   
   useEffect(() => {
-    if (currRoom) {
+    if (currUser) {
       checkMessages(currRoom)
     }
-  }, [])
+  }, [currUser])
 
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
@@ -53,24 +53,11 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       method: 'check'
     }
     fetchMsgs(data)
-      // .then(res => msgs = res)
       .then((res) => dispatchMsgs({
                       type: 'SET_CURRENT_MSGS',
                       payload: res
                     })
       )
-    // async function chkMsg() {
-    //   try {
-    //     let msgs = await fetchMsgs(data)
-    //     dispatchMsgs({
-    //       type: 'SET_CURRENT_MSGS',
-    //       payload: msgs
-    //     })
-    //   } catch(e) {
-    //     console.log('error', e)
-    //   }
-    // }
-    // chkMsg()
   }
 
   const h_BtnAdd_onClick = () => {

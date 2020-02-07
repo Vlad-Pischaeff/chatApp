@@ -74,7 +74,7 @@ export default function FormSignIn({forms}) {
               </div>
     })
 
-    console.log('form signup', avatarsMap)
+    // console.log('form signup', avatarsMap)
 
     return (
       <div className={`row container ${forms.signup}`}>

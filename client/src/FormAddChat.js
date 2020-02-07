@@ -81,7 +81,7 @@ export default function FormAddChat({forms, currUser}) {
             </div>
   })
 
-console.log('Add room')
+// console.log('Add room')
 
   return (
     <div className={`add-card-modal-bg ${forms.addroom}`}>

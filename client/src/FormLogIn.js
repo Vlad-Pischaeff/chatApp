@@ -77,7 +77,7 @@ export default function FormLogIn({forms, socket}) {
       if (checkbox.current.checked) checkbox.current.click()
     }
 
-    console.log('form login', credentials)
+    // console.log('form login', credentials)
 
     return (
       <div className={`row container ${forms.login}`}>
