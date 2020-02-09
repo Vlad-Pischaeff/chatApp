@@ -1,6 +1,7 @@
 import React, {useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import {fetchUser, fetchUserAvatars} from './FormMiddleware'
+import MapUserAvatars from './MapUserAvatars'
 let credentials = { name: '', password: '', avatar: './img/user00.jpg' }
 let avatars = []
 
@@ -60,22 +61,6 @@ export default function FormSignIn({forms}) {
       credentials[event.target.name] = event.target.value
     }
 
-    const h_Div_onClick = (n, index) => {
-      credentials.avatar = `./img/user/${n}`
-      let nodeAvatars = document.querySelectorAll('.userAvatars')
-      nodeAvatars.forEach((el, idx ) =>  {
-        idx === index ? el.className = "userAvatars border" : el.className = "userAvatars"
-      })
-    }
-
-    const avatarsMap = avatars.map((n, i) => {
-      return  <div key={i} onClick={() => h_Div_onClick(n, i)}>
-                <img src={`./img/user/${n}`} className="userAvatars" alt="" />
-              </div>
-    })
-
-    // console.log('form signup', avatarsMap)
-
     return (
       <div className={`row container ${forms.signup}`}>
           <h4 className="center-align">My App</h4>
@@ -101,7 +86,7 @@ export default function FormSignIn({forms}) {
 
               <section className="col s12">
                 <div className="add-card-wrap-img">
-                  {avatarsMap}
+                  <MapUserAvatars avatars={avatars} credentials={credentials} />
                 </div>
               </section>
   

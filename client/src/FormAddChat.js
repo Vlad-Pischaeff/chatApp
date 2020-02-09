@@ -1,6 +1,7 @@
 import React, {useContext, useRef, useEffect} from 'react'
 import {Context} from './context'
 import {fetchRoom, fetchRoomAvatars} from './FormMiddleware'
+import MapRoomAvatars from './MapRoomAvatars'
 let chatroom = { name:'', description:'', avatar:'' }
 let roomavatars = []
 
@@ -31,23 +32,16 @@ export default function FormAddChat({forms, currUser}) {
         method: 'add'
       }
 
-      async function AddRoom() {
-        let rooms = await fetchRoom(data)
-        // console.log('add rooms', rooms);
-        if (!rooms.error) {
-          dispatchRooms({
-            type: 'GET_ADDED_OWNER_ROOMS',
-            payload: rooms.rooms
-          })
+      fetchRoom(data)
+        .then(res => {
+          if (!res.error) {
+            dispatchRooms({
+              type: 'GET_ADDED_OWNER_ROOMS',
+              payload: res.rooms
+            })
           h_BtnClose_onClick()
-        }
-      }
-
-      try {
-        AddRoom()
-      } catch(err) {
-        console.log(err)
-      }
+          }
+        })
     }
   }
 
@@ -63,25 +57,10 @@ export default function FormAddChat({forms, currUser}) {
     nameRef.current.focus();
     descriptionRef.current.focus();
   }
+
   const h_Input_onChange = (event) => {
     chatroom[event.target.name] = event.target.value
   }
-
-  const h_Div_onClick = (n, index)=> {
-    chatroom.avatar = `./img/room/${n}`
-    let nodeAvatars = document.querySelectorAll('.roomAvatars')
-    nodeAvatars.forEach((el, idx ) =>  {
-      idx === index ? el.className = "roomAvatars border" : el.className = "roomAvatars"
-    })
-  }
-
-  const avatarsMap = roomavatars.map((n, i) => {
-    return  <div key={i} onClick={() => h_Div_onClick(n, i)}>
-              <img src={`./img/room/${n}`} className='roomAvatars' alt={n} />
-            </div>
-  })
-
-// console.log('Add room')
 
   return (
     <div className={`add-card-modal-bg ${forms.addroom}`}>
@@ -110,7 +89,7 @@ export default function FormAddChat({forms, currUser}) {
 
             <section className="col s12">
               <div className="add-card-wrap-img">
-                {avatarsMap}
+                <MapRoomAvatars chatroom={chatroom} roomavatars={roomavatars} />
               </div>
             </section>
 

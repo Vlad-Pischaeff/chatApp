@@ -112,7 +112,7 @@
   align-items: center;
   justify-content: space-between;
 }
-i:hover {
+i:hover, .hover {
   cursor: pointer;
 }
 /* chat room styles */

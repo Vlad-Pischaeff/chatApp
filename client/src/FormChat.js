@@ -62,7 +62,7 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
 
   const h_BtnAdd_onClick = () => {
     dispatchLogin({
-      type: 'SHOW_h_BtnAdd_onClick',
+      type: 'SHOW_ADDROOM',
       payload: ''
     })
   }
