@@ -9,7 +9,7 @@ export default function MsgsNavBarTop({currUser, currRoom}) {
         <label htmlFor="icon_prefix">Search users</label>
       </div>
       <i className="material-icons mrgn-03">search</i>
-      <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="" />
+      <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="current room" />
       <img className="user-avatar" src={currUser.avatar} alt="current user" />
     </section>
   )
