@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 
 function fetchPOST (url) {
   return async function (data) {
@@ -20,10 +20,10 @@ function fetchGET (url) {
   }
 }
 
-const url = `http://${window.location.hostname}:${process.env.REACT_APP_PORT}`
+// const url = `http://${window.location.hostname}:${process.env.REACT_APP_PORT}`
 
-export const fetchRoom = fetchPOST(`${url}/api/rooms`)
-export const fetchMsgs = fetchPOST(`${url}/api/msgs`)
-export const fetchUser = fetchPOST(`${url}/api/users`)
-export const fetchRoomAvatars = fetchGET(`${url}/api/roomimg`)
-export const fetchUserAvatars = fetchGET(`${url}/api/userimg`)
+export const fetchRoom = fetchPOST('/api/rooms')
+export const fetchMsgs = fetchPOST('/api/msgs')
+export const fetchUser = fetchPOST('/api/users')
+export const fetchRoomAvatars = fetchGET('/api/roomimg')
+export const fetchUserAvatars = fetchGET('/api/userimg')

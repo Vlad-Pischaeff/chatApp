@@ -6,6 +6,7 @@ const WebSocket  = require('ws');
 const clients = new Set();
 require('dotenv').config()
 const PORT = process.env.REACT_APP_PORT || 3001
+// const PORT = 3001
 
 // IMPORT MODELS
 require('./models/users');
@@ -14,7 +15,7 @@ require('./models/messages');
 
 const app = express()
 const server = require('http').createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, path: "/ws" });
 
 app.use(bodyParser.json());
 app.use(cors());

@@ -12,7 +12,11 @@ import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
 require('dotenv').config()
-const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}`
+// const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+// let { host } = window.location
+// const url = `${protocolPrefix}//${host}/ws`
+// console.log('url', url, window.location)
+const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}/ws`
 var socket = new WebSocket(url)
 
 export default function App() {

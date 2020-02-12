@@ -57,6 +57,7 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
     message.data = Date.now()
     let req = JSON.stringify({'USER: SENDED PRIV MSG': message})
     socket.send(req)
+    // console.log('req', req, socket)
     let arr = [...dialog, message]
     dispatchDialog({
       type: 'SET_NEW_DIALOG',
