@@ -11,12 +11,13 @@ import FormLogIn from './FormLogIn'
 import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
-require('dotenv').config()
-// const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-// let { host } = window.location
-// const url = `${protocolPrefix}//${host}/ws`
+// require('dotenv').config()
+const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+let { host } = window.location
+const url = `${protocolPrefix}//${host}/ws`
+
+// const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}/ws`
 // console.log('url', url, window.location)
-const url = `ws://${window.location.hostname}:${process.env.REACT_APP_PORT}/ws`
 var socket = new WebSocket(url)
 
 export default function App() {
@@ -30,7 +31,7 @@ export default function App() {
     
   useEffect(() => {
     socket.onopen = () => {
-      console.log('APP client connected', url, socket)
+      console.log('APP client connected ... ', url, socket)
     }
   }, [])
 
