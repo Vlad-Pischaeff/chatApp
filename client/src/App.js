@@ -1,8 +1,8 @@
-import React, {useReducer, useEffect} from 'react'
+import React, {useReducer, useEffect, useState} from 'react'
 import {Context} from './context'
 import roomsReducer from './reducer1'
 import loginReducer from './reducer2'
-import userReducer from './reducer3'
+// import userReducer from './reducer3'
 import msgsReducer from './reducer4'
 import newMsgsReducer from './reducer6'
 import currRoomReducer from './reducer5'
@@ -26,7 +26,8 @@ export default function App() {
   const [messages, dispatchMsgs] = useReducer(msgsReducer, '')
   const [dialog, dispatchDialog] = useReducer(dialogReducer, [])
   const [newMessages, dispatchNewMessages] = useReducer(newMsgsReducer, [])
-  const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
+  // const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
+  const [currUser, setCurrUser] = useState('')
   const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom')) || {})
     
   useEffect(() => {
@@ -39,10 +40,12 @@ export default function App() {
     socket = new WebSocket(url)
   }
 
+  console.log('curr user', currUser)
+
   return (
-    <Context.Provider value={{dispatchLogin, dispatchRooms, dispatchMsgs, dispatchCurrUser, dispatchCurrRoom, dispatchNewMessages, dispatchDialog}}>
-        <FormLogIn forms={forms} socket={socket}/>
-        <FormSignUp forms={forms}/>
+    <Context.Provider value={{ forms, setCurrUser, dispatchLogin, dispatchRooms, dispatchMsgs, dispatchCurrRoom, dispatchNewMessages, dispatchDialog }}>
+        <FormLogIn socket={socket}/>
+        <FormSignUp />
         <FormChat forms={forms} rooms={rooms} messages={messages} currUser={currUser} socket={socket} currRoom={currRoom} newMessages={newMessages} dialog={dialog}/>
         <FormAddChat forms={forms} currUser={currUser}/>
     </Context.Provider>
