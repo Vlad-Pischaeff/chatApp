@@ -81,37 +81,3 @@ export default function FormLogIn({socket}) {
     </div>
   )
 }
-
-// function useFormInput(item, enabled) {
-//   const [value, setValue] = useState(localStorage.getItem(item) || '')
-
-//   const handlerChange = useCallback((e) => setValue(e.target.value), [])
-
-//   const handlerFocus = useCallback(() => setValue(''), [])
-
-//   useEffect(() => {
-//     (enabled) && localStorage.setItem(item, value)
-//   }, [value, enabled])
-
-//   return {
-//     value,
-//     onChange: handlerChange,
-//     onFocus: handlerFocus
-//   }
-// }
-
-// function useForms(payload) {
-//   const {dispatchLogin, dispatchRooms} = useContext(Context)
-  
-//   const openSignUp = () => dispatchLogin({ type: 'OPEN_SIGNUP', payload: '' })
-  
-//   const hideLogIn = () => dispatchLogin({ type: 'HIDE_LOGIN', payload: '' })
-
-//   const getUserRooms = (payload) => dispatchRooms({ type: 'GET_OWNER_ROOMS', payload: payload })
-
-//   return {
-//     openSignUp,
-//     hideLogIn,
-//     getUserRooms
-//   }
-// }

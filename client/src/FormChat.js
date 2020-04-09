@@ -1,22 +1,24 @@
-import React, {useContext, useEffect } from 'react'
-import {Context} from './context'
+import React, {useContext, useEffect} from 'react'
+import {Context, useFormInput, useForms} from './context'
 import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import FormFindedRooms from './FormFindedRooms'
 import FormChatRooms from './FormChatRooms'
 import FormChatMessages from './FormChatMessages'
 import MsgsNavBarBottom from './MsgsNavBarBottom'
 import MsgsNavBarTop from './MsgsNavBarTop'
-let roomName = ''
 let findedRooms = []
 
-export default function FormChat({forms, rooms, messages, currUser, socket, currRoom, newMessages, dialog}) {
-  const {dispatchLogin, dispatchMsgs, dispatchNewMessages, dispatchDialog} = useContext(Context)
-  
+export default function FormChat({socket, newMessages, dialog}) {
+  const {forms, rooms, currUser, currRoom, messages, setMessages, dispatchNewMessages, dispatchDialog} = useContext(Context)
+  const form = useForms()
+  const roomName = useFormInput('', false)
+
   useEffect(() => {
     if (currUser) {
       checkMessages(currRoom)
+      console.log('check current room', currRoom, currUser)
     }
-  }, [currUser])
+  }, [currUser, currRoom])
 
   socket.onmessage = (evt) => {
     const message = JSON.parse(evt.data)
@@ -53,39 +55,21 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
       method: 'check'
     }
     fetchMsgs(data)
-      .then((res) => dispatchMsgs({
-                      type: 'SET_CURRENT_MSGS',
-                      payload: res
-                    })
-      )
-  }
-
-  const h_BtnAdd_onClick = () => {
-    dispatchLogin({
-      type: 'SHOW_ADDROOM',
-      payload: ''
-    })
+      .then(res => setMessages(res))
   }
 
   const h_BtnSearch_onClick = () => {
-    if (roomName !== '') {
+    if (roomName.value) {
       const data = {
         owner: currUser._id,
-        name: roomName,
+        name: roomName.value,
         method: 'search'
       }
       fetchRoom(data)
         .then(res => findedRooms = res)
-        .then(() => dispatchLogin({
-                      type: 'SHOW_FINDEDROOM',
-                      payload: ''
-                    })
-        )
+        .then(form.openFindedRooms)
+        .catch(e => console.log('search rooms', e))
     }
-  }
-
-  const h_Input_onChange = (event) => {
-    roomName = event.target.value
   }
 
   return (
@@ -95,24 +79,20 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
         <section className="col s4 h-100">
           <section className="h-wrap">
             <div className="input-field w-100">
-              <input id="icon_prefix" type="text" className="validate" onChange = {h_Input_onChange} />
+              <input id="icon_prefix" type="text" className="validate" {...roomName} />
               <label htmlFor="icon_prefix">Search chatroom</label>
             </div>
             <i className="material-icons mrgn-03" onClick={h_BtnSearch_onClick}>search</i>
-            <i className="material-icons mrgn-03" onClick={h_BtnAdd_onClick}>library_add</i>
+            <i className="material-icons mrgn-03" onClick={form.openAddRoom}>library_add</i>
           </section>
 
-          <FormChatRooms  rooms={rooms} 
-                          currUser={currUser} 
-                          currRoom={currRoom} 
-                          newMessages={newMessages}/>
+          <FormChatRooms rooms={rooms} newMessages={newMessages}/>
 
         </section>
 
-        <section className="col s8 h-100 ">
+        <section className="col s8 h-100">
 
-          <MsgsNavBarTop currUser={currUser} 
-                         currRoom={currRoom} />
+          <MsgsNavBarTop />
 
           <FormChatMessages messages={messages} 
                             currUser={currUser} 
@@ -120,14 +100,11 @@ export default function FormChat({forms, rooms, messages, currUser, socket, curr
                             dialog={dialog} 
                             socket={socket} />
 
-          <MsgsNavBarBottom messages={messages} 
-                            currUser={currUser} 
-                            currRoom={currRoom}
-                            socket={socket} />
+          <MsgsNavBarBottom socket={socket} />
         </section>
       </main>
 
-      <FormFindedRooms forms={forms} findedRooms={findedRooms} currUser={currUser}/>
+      <FormFindedRooms findedRooms={findedRooms} />
 
     </div>
   )

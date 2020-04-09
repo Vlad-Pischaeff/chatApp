@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import {Context} from './context'
 
-export default function MsgsNavBarTop({currUser, currRoom}) {
+export default function MsgsNavBarTop() {
+const {currUser, currRoom} = useContext(Context)
 
   return (
     <section className="h-15 h-wrap">
@@ -9,8 +11,8 @@ export default function MsgsNavBarTop({currUser, currRoom}) {
         <label htmlFor="icon_prefix">Search users</label>
       </div>
       <i className="material-icons mrgn-03">search</i>
-      <img className="user-avatar" src={currRoom ? currRoom.avatar: ''} alt="current room" />
-      <img className="user-avatar" src={currUser.avatar} alt="current user" />
+      <img className="user-avatar" src={currRoom.avatar || ''} alt="" />
+      <img className="user-avatar" src={currUser.avatar || ''} alt="" />
     </section>
   )
 }

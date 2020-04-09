@@ -2,11 +2,11 @@ import React, {useContext, useRef, useEffect, useState} from 'react'
 import {Context, useFormInput, useForms} from './context'
 import {fetchUser, fetchUserAvatars} from './FormMiddleware'
 import MapUserAvatars from './MapUserAvatars'
-let credentials = { name: '', password: '', avatar: './img/user00.jpg' }
+let credentials = {avatar: './img/user00.jpg'}
 let avatars = []
 
 export default function FormSignIn() {
-  const {forms, setCurrUser, dispatchLogin, dispatchCurrUser} = useContext(Context)
+  const {forms, setCurrUser} = useContext(Context)
   const [isEnabledLS, setIsEnabledLS] = useState(false) //enable or disable LocalStorage savings
   const userName = useFormInput('userName', isEnabledLS)
   const userPass = useFormInput('userPass', isEnabledLS)
@@ -17,6 +17,12 @@ export default function FormSignIn() {
     fetchUserAvatars().then(resp => avatars = resp);
   }, [])
 
+  useEffect(() => {
+    (userName.value && userPass.value)
+      ? alert.current.innerHTML = '\xa0'
+      : alert.current.innerHTML = 'Incorrect name or password'
+  }, [userName, userPass] )
+
   const h_Btn_onClick = () => {
     let data = {
       name: userName.value,
@@ -24,37 +30,23 @@ export default function FormSignIn() {
       avatar: credentials.avatar,
       method: 'check'
     }
-    console.log('data', data)
     async function checkUser() {
-      let users = await fetchUser(data)
-        console.log('users', users)
-        if (users.length === 0) {
+      let users = await fetchUser(data)     // check user
+      if (users.length === 0) {             // if user not exists
         data.method = 'add'
         try {
-          //users = await fetchUser(data)
+          users = await fetchUser(data)     // try to add new user
         } catch(e) {
-          console.log('users', e)
+          console.log('add user error', e)
         }
-        // dispatchCurrUser({
-        //   type: 'SET_CURRENT_USER',
-        //   payload: users.users 
-        // })
-        setCurrUser(users.users)
-        // dispatchLogin({
-        //   type: 'HIDE_SIGNUP',
-        //   payload: ''
-        // })
-        form.hideSignUp()
+        setCurrUser(users.users)            // set new user as a "Current User" globally
+        form.hideSignUp()                   // hide "SignUp" window
       } else {
-        alert.current.innerHTML = 'Such user is already exists OR incorrect name or password'
+        alert.current.innerHTML = 'Such user is already exists'
       }
     }
 
-    if ((userName.value === '') || (userPass.value === '')) {
-      alert.current.innerHTML = 'Such user is already exists OR incorrect name or password'
-    } else {
-      checkUser()
-    }
+    if (userName.value && userPass.value ) checkUser()
   }
 
   return (

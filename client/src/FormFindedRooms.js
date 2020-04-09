@@ -1,17 +1,15 @@
 import React, {useState, useContext} from 'react'
-import {Context} from './context'
+import {Context, useForms} from './context'
 import ChatRoomThumb from './ChatRoomThumb'
 import {fetchRoom} from './FormMiddleware'
 
-export default function FormFindedRooms({forms, findedRooms, currUser}) {
-  const {dispatchLogin, dispatchRooms} = useContext(Context)
+export default function FormFindedRooms({findedRooms}) {
+  const {forms, currUser, dispatchRooms} = useContext(Context)
   const [followedRooms, setFollowedRooms] = useState([])
+  const form = useForms()
  
   const closeDialog = () => {
-    dispatchLogin({
-      type: 'HIDE_FINDEDROOM',
-      payload: ''
-    })
+    form.hideFindedRooms()
     setFollowedRooms([])
   }
   

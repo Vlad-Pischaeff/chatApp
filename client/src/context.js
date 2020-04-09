@@ -26,6 +26,14 @@ const useForms = (payload) => {
   const openSignUp = () => dispatchLogin({ type: 'OPEN_SIGNUP', payload: '' })
 
   const hideSignUp = () => dispatchLogin({ type: 'HIDE_SIGNUP', payload: '' })
+
+  const openFindedRooms = () => dispatchLogin({ type: 'OPEN_FINDEDROOM', payload: '' })
+
+  const hideFindedRooms = () => dispatchLogin({ type: 'HIDE_FINDEDROOM', payload: '' })
+  
+  const openAddRoom = () => dispatchLogin({ type: 'OPEN_ADDROOM', payload: '' })
+
+  const hideAddRoom = () => dispatchLogin({ type: 'HIDE_ADDROOM', payload: '' })
   
   const hideLogIn = () => dispatchLogin({ type: 'HIDE_LOGIN', payload: '' })
 
@@ -34,6 +42,10 @@ const useForms = (payload) => {
   return {
     openSignUp,
     hideSignUp,
+    openFindedRooms,
+    hideFindedRooms,
+    openAddRoom,
+    hideAddRoom,
     hideLogIn,
     getUserRooms
   }

@@ -21,18 +21,18 @@ export default function(state, action) {
       state.addroom = 'hide'
       return {...state}
 
-    case 'SHOW_ADDROOM':
+    case 'OPEN_ADDROOM':
       state.addroom = ''
-      return {...state}
-
-    case 'SHOW_FINDEDROOM':
-      state.findedroom = ''
       return {...state}
 
     case 'HIDE_FINDEDROOM':
       state.findedroom = 'hide'
       return {...state}
-  
+
+    case 'OPEN_FINDEDROOM':
+      state.findedroom = ''
+      return {...state}
+
     default:
       return state
   }

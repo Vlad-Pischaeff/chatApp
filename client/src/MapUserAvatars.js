@@ -7,7 +7,6 @@ export default function MapUserAvatars({avatars, credentials}) {
     nodeAvatars = document.querySelectorAll('.userAvatars')
   }, [avatars])
   
-
   const h_Div_onClick = (n, index) => {
     credentials.avatar = `./img/user/${n}`
     nodeAvatars.forEach((el, idx ) =>  {

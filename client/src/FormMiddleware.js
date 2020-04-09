@@ -1,4 +1,3 @@
-// require('dotenv').config()
 
 function fetchPOST (url) {
   return async function (data) {
@@ -19,8 +18,6 @@ function fetchGET (url) {
     return json;
   }
 }
-
-// const url = `http://${window.location.hostname}:${process.env.REACT_APP_PORT}`
 
 export const fetchRoom = fetchPOST('/api/rooms')
 export const fetchMsgs = fetchPOST('/api/msgs')

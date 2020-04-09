@@ -3,18 +3,17 @@ import {Context} from './context'
 import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
-export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) {
-  const {dispatchRooms, dispatchMsgs, dispatchCurrRoom, dispatchNewMessages} = useContext(Context)
+export default function FormChatRooms({rooms, newMessages}) {
+  const {currUser, currRoom, setCurrRoom, setMessages, dispatchRooms, dispatchNewMessages} = useContext(Context)
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
 
   const chooseElement = (item) => {
-    dispatchCurrRoom({
-      type: 'SET_CURRENT_ROOM',
-      payload: item
-    })
+    localStorage.setItem('currentRoom', JSON.stringify(item))
+    setCurrRoom(item)
+    console.log('current room', item)
     checkMessages(item)
-    // remove current room id from list of new messages
-    if (newMessages.length !== 0) {
+    
+    if (newMessages.length !== 0) {                     // check new messages in other rooms
       let arr = newMessages.filter(n => n !== item._id)
       dispatchNewMessages({
         type: 'SET_NEW_MSGS',
@@ -23,17 +22,13 @@ export default function FormChatRooms({rooms, currUser, currRoom, newMessages}) 
     }
   }
 
-  const checkMessages = (room) => {
+  const checkMessages = (room) => {     // check messages in room
     let data = {
       room_id: room._id,
       method: 'check'
     }
     fetchMsgs(data)
-      .then(res =>  dispatchMsgs({
-                      type: 'SET_CURRENT_MSGS',
-                      payload: res
-                    })
-            )
+      .then(res => setMessages(res))
   }
 
   const showModal = (event, room) => {
@@ -77,23 +72,23 @@ return (
         {r_element}
       </ul>
 
-      {/* // <!-- Modal Structure --> */}
-      <div id="modal1" className="modal">
-        <div className="modal-content">
-          <h4>Do you want to unsubscribe from...</h4>
-          <p>{unfollowedRoom.name}</p>
+      {/* <!-- Modal Structure --> */}
+        <div id="modal1" className="modal">
+          <div className="modal-content">
+            <h4>Do you want to unsubscribe from...</h4>
+            <p>{unfollowedRoom.name}</p>
+          </div>
+          <div className="modal-footer">
+            <a href="#!" className="modal-close waves-effect waves-green btn-flat">
+                No
+            </a>
+            <a href="#!" className="modal-close waves-effect waves-green btn-flat"
+              onClick={unfollowRoom}>
+                Agree
+            </a>
+          </div>
         </div>
-        <div className="modal-footer">
-          <a href="#!" className="modal-close waves-effect waves-green btn-flat">
-              No
-          </a>
-          <a href="#!" className="modal-close waves-effect waves-green btn-flat"
-            onClick={unfollowRoom}>
-              Agree
-          </a>
-        </div>
-      </div>
-      {/* // <!-- Modal Structure --> */}
+      {/* <!-- Modal Structure --> */}
     </section>
   </section>
   )
