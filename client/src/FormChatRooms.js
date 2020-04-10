@@ -58,7 +58,7 @@ export default function FormChatRooms() {
     let selected = ''
     if (currRoom) selected = n._id === currRoom._id ? 'r-wrap-selected' : ''
     return  <li key={n._id} onContextMenu={(e) => showModal(e, n)} onClick={() => chooseElement(n)}>
-                <ChatRoomThumb room={n} bg={selected} currUser={currUser} roommsg={newMessages}/>
+                <ChatRoomThumb room={n} bg={selected} />
             </li>
   })
 

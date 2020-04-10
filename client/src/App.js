@@ -14,7 +14,7 @@ const url = `${protocolPrefix}//${host}/ws`
 var socket = new WebSocket(url)
 
 export default function App() {
-  const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
+  const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom:'hide', findedroom:'hide'})
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
   const [messages, setMessages] = useState('')
   const [dialog, setDialog] = useState([])

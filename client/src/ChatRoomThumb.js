@@ -1,17 +1,19 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import {Context} from './context'
 
-export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
+export default function ChatRoomThumb({room, bg}) {
+  const {currUser, newMessages} = useContext(Context)
 
   const attr = room.owner.id === currUser._id 
                               ? `r-wrap r-wrap-bg-owner ${bg}` 
                               : `r-wrap r-wrap-bg-follow ${bg}`  
   const users = room.followers.length
-  // console.log('srvroom', roommsg)
-  let cnt = 'hide'
+
+  let hidden = 'hide'
   let count = 0
-  if ((roommsg.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected')) {
-    count = roommsg.filter(n => n === room._id).length
-    cnt = ''
+  if ((newMessages.indexOf(room._id) !== -1) && (bg !== 'r-wrap-selected')) {
+    count = newMessages.filter(n => n === room._id).length
+    hidden = ''
   }
 
   return (
@@ -27,8 +29,8 @@ export default function ChatRoomThumb({room, bg, currUser, roommsg}) {
         <span>{users}</span>
       </div>
       <div className="r-msgs green-text text-darken-3 blink">
-        <i className={`tiny material-icons ${cnt}`}>send</i>
-        <span className={cnt}>{count}</span>
+        <i className={`tiny material-icons ${hidden}`}>send</i>
+        <span className={hidden}>{count}</span>
       </div>
     </div>
   )
