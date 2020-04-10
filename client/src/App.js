@@ -1,12 +1,8 @@
 import React, {useReducer, useEffect, useState} from 'react'
 import {Context} from './context'
+import {fetchMsgs} from './FormMiddleware'
 import roomsReducer from './reducer1'
 import loginReducer from './reducer2'
-// import userReducer from './reducer3'
-// import msgsReducer from './reducer4'
-// import currRoomReducer from './reducer5'
-import newMsgsReducer from './reducer6'
-import dialogReducer from './reducer7'
 import FormLogIn from './FormLogIn'
 import FormSignUp from './FormSignUp'
 import FormChat from './FormChat'
@@ -20,13 +16,10 @@ var socket = new WebSocket(url)
 export default function App() {
   const [forms, dispatchLogin] = useReducer(loginReducer, {login:'', signup:'hide', chat:'hide', addroom: 'hide', findedroom:'hide'})
   const [rooms, dispatchRooms] = useReducer(roomsReducer, '')
-  // const [messages, dispatchMsgs] = useReducer(msgsReducer, '')
   const [messages, setMessages] = useState('')
-  const [dialog, dispatchDialog] = useReducer(dialogReducer, [])
-  const [newMessages, dispatchNewMessages] = useReducer(newMsgsReducer, [])
-  // const [currUser, dispatchCurrUser] = useReducer(userReducer, '')
+  const [dialog, setDialog] = useState([])
+  const [newMessages, setNewMessages] = useState([])
   const [currUser, setCurrUser] = useState({})
-  // const [currRoom, dispatchCurrRoom] = useReducer(currRoomReducer, JSON.parse(localStorage.getItem('currentRoom')) || {})
   const [currRoom, setCurrRoom] = useState(JSON.parse(localStorage.getItem('currentRoom')) || {})
   
   useEffect(() => {
@@ -35,26 +28,59 @@ export default function App() {
     }
   }, [])
 
+  useEffect(() => {
+      checkMessages(currRoom)
+  }, [currRoom])
+
+  const checkMessages = (room) => {
+    let data = {
+      room_id: room._id,
+      method: 'check'
+    }
+    fetchMsgs(data)
+      .then(res => setMessages(res))
+  }
+
   socket.onclose = () => {
     socket = new WebSocket(url)
   }
 
-  console.log('curr user', currUser)
+  socket.onmessage = (evt) => {
+    const message = JSON.parse(evt.data)
+    let room = currRoom ? currRoom._id : 1
+
+    if (message["Hi there, I am a WebSocket server"]) {
+      console.log('WebSocket server is online...')
+    }
+    
+    if (message['SERVER: UPDATE ROOM'] === room) {
+      checkMessages(currRoom)
+    } else if (message['SERVER: UPDATE ROOM']) {
+      // add rooms id with new messages
+      let arr = [...newMessages, message['SERVER: UPDATE ROOM']]
+      setNewMessages(arr)
+    }
+
+    if (message['SERVER: SENDED PRIV MSG']) {
+      // console.log('SERVER: USER SENDED PRIV MSG', message)
+      let arr = [...dialog, message['SERVER: SENDED PRIV MSG']]
+      setDialog(arr)
+    }
+  }
 
   return (
-    <Context.Provider value={{ forms, rooms, currUser, currRoom, messages, 
+    <Context.Provider value={{ forms, rooms, currUser, currRoom, messages, newMessages, socket, dialog,
                               setMessages,
+                              setNewMessages,
                               setCurrUser,
                               setCurrRoom, 
                               dispatchLogin, 
                               dispatchRooms, 
-                              dispatchNewMessages, 
-                              dispatchDialog }}>
-      <FormLogIn socket={socket}/>
+                              setDialog }}>
+      <FormLogIn />
       <FormSignUp />
-      <FormChat socket={socket} newMessages={newMessages} dialog={dialog}/>
-      <FormAddChat forms={forms} currUser={currUser}/>
+      <FormChat />
+      <FormAddChat />
     </Context.Provider>
   );
 }
-

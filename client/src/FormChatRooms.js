@@ -3,8 +3,8 @@ import {Context} from './context'
 import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
-export default function FormChatRooms({rooms, newMessages}) {
-  const {currUser, currRoom, setCurrRoom, setMessages, dispatchRooms, dispatchNewMessages} = useContext(Context)
+export default function FormChatRooms() {
+  const {rooms, currUser, currRoom, setCurrRoom, setMessages, newMessages, setNewMessages, dispatchRooms} = useContext(Context)
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
 
   const chooseElement = (item) => {
@@ -13,12 +13,9 @@ export default function FormChatRooms({rooms, newMessages}) {
     console.log('current room', item)
     checkMessages(item)
     
-    if (newMessages.length !== 0) {                     // check new messages in other rooms
+    if (newMessages.length !== 0) {     // check new messages in other rooms
       let arr = newMessages.filter(n => n !== item._id)
-      dispatchNewMessages({
-        type: 'SET_NEW_MSGS',
-        payload: arr
-      })
+      setNewMessages(arr)
     }
   }
 

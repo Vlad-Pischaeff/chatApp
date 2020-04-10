@@ -1,9 +1,9 @@
-import React, { useRef, useContext, useState, useEffect } from 'react'
+import React, { useRef, useContext, useState, useEffect, useCallback } from 'react'
 import {Context} from './context'
 import {fetchMsgs} from './FormMiddleware'
 
-export default function MsgsNavBarBottom({socket}) {
-  const {setMessages, currRoom, currUser, messages} = useContext(Context)
+export default function MsgsNavBarBottom() {
+  const {setMessages, currRoom, currUser, messages, socket} = useContext(Context)
   const message = useMsgInput('', () => setIsReady(true))
   const [isReady, setIsReady] = useState(false)
   const imgRef = useRef('')
@@ -57,11 +57,11 @@ export default function MsgsNavBarBottom({socket}) {
 function useMsgInput(initState, fn) {
   const [value, setValue] = useState(initState)
 
-  const handleChange = e => setValue(e.target.value)
+  const handleChange = useCallback(e => setValue(e.target.value))
 
-  const handleKeyPress = e => (e.key === 'Enter') && fn()
+  const handleKeyPress = useCallback(e => (e.key === 'Enter') && fn())
 
-  const handleFocus = () => setValue('')
+  const handleFocus = useCallback(() => setValue(''))
 
   return {
     value,

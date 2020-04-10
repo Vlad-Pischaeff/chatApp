@@ -3,13 +3,13 @@ import {Context} from './context'
 import MessagesThumb from './MessagesThumb'
 var visavi_id = ''
 
-export default function FormChatMessages({messages, currUser, currRoom, dialog, socket}) {
+export default function FormChatMessages() {
   const [size, setSize] = useState('size-0')
   const [position, setPosition] = useState({ top: 0, left:0 })
   const [privMsg, setPrivMsg] = useState('')
   const [privMsgs, setPrivMsgs] = useState([])
   const d_input = useRef('')
-  const {dispatchDialog} = useContext(Context)
+  const {socket, dialog, currUser, currRoom, messages, setDialog} = useContext(Context)
   var inlineStyle = { top: position.top, left: position.left };
   const li = useRef('')
 
@@ -59,10 +59,7 @@ export default function FormChatMessages({messages, currUser, currRoom, dialog, 
     socket.send(req)
     // console.log('req', req, socket)
     let arr = [...dialog, message]
-    dispatchDialog({
-      type: 'SET_NEW_DIALOG',
-      payload: arr
-    })
+    setDialog(arr)
     d_input.current.value = ''
   }
 

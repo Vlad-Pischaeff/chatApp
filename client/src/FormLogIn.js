@@ -2,11 +2,11 @@ import React, {useContext, useRef, useState} from 'react'
 import {Context, useFormInput, useForms} from './context'
 import {fetchUser, fetchRoom} from './FormMiddleware'
 
-export default function FormLogIn({socket}) {
+export default function FormLogIn() {
   const [isEnabledLS, setIsEnabledLS] = useState(false) //enable or disable LocalStorage savings
   const userName = useFormInput('userName', isEnabledLS)
   const userPass = useFormInput('userPass', isEnabledLS)
-  const {setCurrUser, forms} = useContext(Context)
+  const {setCurrUser, forms, socket} = useContext(Context)
   const form = useForms()
   const alert = useRef('')
 

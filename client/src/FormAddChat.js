@@ -1,29 +1,34 @@
-import React, {useContext, useRef, useEffect} from 'react'
-import {Context} from './context'
+import React, {useContext, useRef, useEffect, useState} from 'react'
+import {Context, useFormInput, useForms} from './context'
 import {fetchRoom, fetchRoomAvatars} from './FormMiddleware'
 import MapRoomAvatars from './MapRoomAvatars'
 let chatroom = { name:'', description:'', avatar:'' }
 let roomavatars = []
 
-export default function FormAddChat({forms, currUser}) {
-  const {dispatchLogin,dispatchRooms} = useContext(Context)
-  const nameRef = useRef('')
-  const descriptionRef = useRef('')
+export default function FormAddChat() {
+  const {forms, currUser, dispatchRooms} = useContext(Context)
+  const roomName = useFormInput('', false)
+  const roomDesc = useFormInput('', false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const form = useForms()
   const alertRef = useRef('')
 
   useEffect(() => {
     fetchRoomAvatars().then(resp => roomavatars = resp)
   }, [])
 
-  const h_BtnAdd_onClick = () => {
-    if ((chatroom.name.length === 0) || (chatroom.description.length === 0)) {
-      alertRef.current.innerHTML = 'Please fill required fields'
-    } else {
+  useEffect(() => {
+    if (roomName.value && roomDesc.value) {
+      setIsCorrect(true)
       alertRef.current.innerHTML = ''
+    } 
+  }, [roomName.value, roomDesc.value])
 
+  const h_BtnAdd_onClick = () => {
+    if (isCorrect) {
       let data = {
-        name: chatroom.name,
-        description: chatroom.description,
+        name: roomName.value,
+        description: roomDesc.value,
         avatar: chatroom.avatar,
         owner: {
           id: currUser._id,
@@ -39,27 +44,18 @@ export default function FormAddChat({forms, currUser}) {
               type: 'GET_ADDED_OWNER_ROOMS',
               payload: res.rooms
             })
-          h_BtnClose_onClick()
+            h_BtnClose_onClick()
           }
         })
+    } else {
+      alertRef.current.innerHTML = 'Please fill required fields'
     }
   }
 
   const h_BtnClose_onClick = () => {
-    dispatchLogin({
-      type: 'HIDE_ADDROOM',
-      payload: ''
-    })
-    chatroom.name = ''
-    chatroom.description = ''
-    nameRef.current.value = null
-    descriptionRef.current.value = null
-    nameRef.current.focus();
-    descriptionRef.current.focus();
-  }
-
-  const h_Input_onChange = (event) => {
-    chatroom[event.target.name] = event.target.value
+    form.hideAddRoom()
+    roomName.onFocus()    // clear value
+    roomDesc.onFocus()    // clear value
   }
 
   return (
@@ -74,16 +70,14 @@ export default function FormAddChat({forms, currUser}) {
             <div className="add-card-close" onClick={h_BtnClose_onClick}></div>
 
             <section className="input-field col s12">
-              <input id="roomname" type="text" data-length="20" ref={nameRef} name="name"
-                onChange = {h_Input_onChange}
-                onFocus = {() => alertRef.current.innerHTML = ''} />
+              <input id="roomname" type="text" data-length="20" name="name"
+                {...roomName} />
               <label htmlFor="roomname">ChatRoom name</label>
             </section>
 
             <section className="input-field col s12">
-              <input id="roomdesc" type="text" data-length="40" ref={descriptionRef} name="description"
-                onChange = {h_Input_onChange}
-                onFocus = {() => alertRef.current.innerHTML = ''} />
+              <input id="roomdesc" type="text" data-length="40" name="description"
+                {...roomDesc} />
               <label htmlFor="roomdesc">ChatRoom description</label>
             </section>
 
