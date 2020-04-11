@@ -57,11 +57,11 @@ export default function MsgsNavBarBottom() {
 function useMsgInput(initState, fn) {
   const [value, setValue] = useState(initState)
 
-  const handleChange = useCallback(e => setValue(e.target.value))
+  const handleChange = useCallback(e => setValue(e.target.value), [])
 
-  const handleKeyPress = useCallback(e => (e.key === 'Enter') && fn())
+  const handleKeyPress = useCallback(e => (e.key === 'Enter') && fn(), [])
 
-  const handleFocus = useCallback(() => setValue(''))
+  const handleFocus = useCallback(() => setValue(''), [])
 
   return {
     value,

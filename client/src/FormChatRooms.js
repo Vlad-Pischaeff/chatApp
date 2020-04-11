@@ -1,18 +1,17 @@
 import React, {useState, useContext} from 'react'
-import {Context} from './context'
+import {Context, useForms} from './context'
 import {fetchRoom, fetchMsgs} from './FormMiddleware'
 import ChatRoomThumb from './ChatRoomThumb'
 
 export default function FormChatRooms() {
-  const {rooms, currUser, currRoom, setCurrRoom, setMessages, newMessages, setNewMessages, dispatchRooms} = useContext(Context)
+  const {rooms, currUser, currRoom, setCurrRoom, setMessages, newMessages, setNewMessages} = useContext(Context)
+  const form = useForms()
   const [unfollowedRoom, setUnfollowedRoom] = useState('')
 
   const chooseElement = (item) => {
     localStorage.setItem('currentRoom', JSON.stringify(item))
     setCurrRoom(item)
-    console.log('current room', item)
     checkMessages(item)
-    
     if (newMessages.length !== 0) {     // check new messages in other rooms
       let arr = newMessages.filter(n => n !== item._id)
       setNewMessages(arr)
@@ -45,11 +44,7 @@ export default function FormChatRooms() {
       method: 'unfollow'
     }
     fetchRoom(data)
-      .then(res => dispatchRooms({
-                    type: 'GET_UPDATED_OWNER_ROOMS',
-                    payload: res
-                  })
-            )
+      .then(res => form.getUpdatedUserRooms(res))
   }
 
   const elements = [...rooms]

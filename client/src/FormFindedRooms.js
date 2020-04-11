@@ -4,7 +4,7 @@ import ChatRoomThumb from './ChatRoomThumb'
 import {fetchRoom} from './FormMiddleware'
 
 export default function FormFindedRooms({findedRooms}) {
-  const {forms, currUser, dispatchRooms} = useContext(Context)
+  const {forms, currUser} = useContext(Context)
   const [followedRooms, setFollowedRooms] = useState([])
   const form = useForms()
  
@@ -28,11 +28,7 @@ export default function FormFindedRooms({findedRooms}) {
       method: 'follow'
     }
     fetchRoom(data)
-      .then(res =>  dispatchRooms({
-                      type: 'GET_UPDATED_OWNER_ROOMS',
-                      payload: res
-                    })
-            )
+      .then(res => form.getUpdatedUserRooms(res))
     closeDialog()
   }
 

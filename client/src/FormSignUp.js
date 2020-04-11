@@ -46,7 +46,7 @@ export default function FormSignIn() {
       }
     }
 
-    if (userName.value && userPass.value ) checkUser()
+    if (userName.value && userPass.value) checkUser()
   }
 
   return (

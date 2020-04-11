@@ -35,7 +35,7 @@ export default function FormLogIn() {
         alert.current.innerHTML = 'No such user or password'
       }
     }
-    check()
+    if (userName.value && userPass.value) check()
   }
 
   return (

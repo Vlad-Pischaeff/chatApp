@@ -38,6 +38,7 @@ const useForms = (payload) => {
   const hideLogIn = () => dispatchLogin({ type: 'HIDE_LOGIN', payload: '' })
 
   const getUserRooms = (payload) => dispatchRooms({ type: 'GET_OWNER_ROOMS', payload: payload })
+  const getUpdatedUserRooms = (payload) => dispatchRooms({ type: 'GET_UPDATED_OWNER_ROOMS', payload: payload })
 
   return {
     openSignUp,
@@ -47,7 +48,8 @@ const useForms = (payload) => {
     openAddRoom,
     hideAddRoom,
     hideLogIn,
-    getUserRooms
+    getUserRooms,
+    getUpdatedUserRooms
   }
 }
 
