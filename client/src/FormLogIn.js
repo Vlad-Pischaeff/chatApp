@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useContext, useRef, useState, useEffect} from 'react'
 import {Context, useFormInput, useForms} from './context'
 import {fetchUser, fetchRoom} from './FormMiddleware'
 
@@ -6,9 +6,19 @@ export default function FormLogIn() {
   const [isEnabledLS, setIsEnabledLS] = useState(false) //enable or disable LocalStorage savings
   const userName = useFormInput('userName', isEnabledLS)
   const userPass = useFormInput('userPass', isEnabledLS)
+  const [disabled, setDisabled] = useState('disabled')
   const {setCurrUser, forms, socket} = useContext(Context)
   const form = useForms()
   const alert = useRef('')
+
+  useEffect(() => {
+    if (!userName.value || !userPass.value) {
+      alert.current.innerHTML = '\xa0'
+      setDisabled('disabled')
+    } else {
+      setDisabled('')
+    }
+  }, [userName.value, userPass.value])
 
   const h_Btn_onClick = () => {
     const dataUser = {
@@ -16,11 +26,9 @@ export default function FormLogIn() {
       password: userPass.value,
       method: 'validate'
     }
-
     const dataRoom = {
       method: 'check'
     }
-
     async function check() {
       let users = await fetchUser(dataUser)
       if (users.length !== 0) {               // if user exists
@@ -60,7 +68,8 @@ export default function FormLogIn() {
             </section>
 
             <footer className="col s12" style={{marginBottom: "1rem"}}>
-              <a href="#!" className="waves-effect waves-light btn-large left" onClick={h_Btn_onClick}>
+              <a href="#!" className={`waves-effect waves-light btn-large left ${disabled}`} 
+                 onClick={h_Btn_onClick}>
                 Log in
               </a>
               <label htmlFor="remember-me" className="right">

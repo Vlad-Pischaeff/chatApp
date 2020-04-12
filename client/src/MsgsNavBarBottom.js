@@ -20,8 +20,7 @@ export default function MsgsNavBarBottom() {
       }
       fetchMsgs(data)
         .then(res => { setMessages([...messages, res.msgs])
-                       sendIO(res.msgs) }
-              )
+                       sendIO(res.msgs) })
         .catch(e => console.log('messages error', e))
       message.onFocus()   // clear input field
       setIsReady(false)

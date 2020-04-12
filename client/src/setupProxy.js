@@ -1,8 +1,6 @@
-// require('dotenv').config()
+require('dotenv').config()
 const proxy = require('http-proxy-middleware')
-const url = `${process.env.REACT_APP_HOST}:3001`
-
-// console.log('proxy--', url, process.env );
+const url = `0.0.0.0:${process.env.REACT_APP_PORT}`
 
 module.exports = function(app) {
   // app.use('/ws',(req, res, next) => {
