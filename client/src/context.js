@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react'
+import React, {useState, useEffect, useCallback, useContext, useMemo} from 'react'
 
 const Context = React.createContext()
 
@@ -38,19 +38,13 @@ const useForms = (payload) => {
   const getUpdatedUserRooms = (payload) => dispatchRooms({ type: 'GET_UPDATED_OWNER_ROOMS', payload: payload })
   const getAddedUserRooms = (payload) => dispatchRooms({ type: 'GET_ADDED_OWNER_ROOMS', payload: payload })
 
-
-  return {
-    openSignUp,
-    hideSignUp,
-    openFindedRooms,
-    hideFindedRooms,
-    openAddRoom,
-    hideAddRoom,
-    hideLogIn,
-    getUserRooms,
-    getUpdatedUserRooms,
-    getAddedUserRooms
-  }
+  const value = useMemo(() => ({  openSignUp, hideSignUp,
+                                  openFindedRooms, hideFindedRooms,
+                                  openAddRoom, hideAddRoom,
+                                  hideLogIn,
+                                  getUserRooms, getUpdatedUserRooms, getAddedUserRooms
+                                }), [])
+  return value
 }
 
 export {Context, useFormInput, useForms}

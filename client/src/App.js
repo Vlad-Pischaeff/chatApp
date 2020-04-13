@@ -9,7 +9,7 @@ import FormChat from './FormChat'
 import FormAddChat from './FormAddChat'
 
 const protocolPrefix = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-let { host } = window.location
+let {host} = window.location
 const url = `${protocolPrefix}//${host}/ws`
 var socket = new WebSocket(url)
 

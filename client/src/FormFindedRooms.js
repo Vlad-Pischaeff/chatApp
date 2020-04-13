@@ -35,7 +35,7 @@ export default function FormFindedRooms({findedRooms}) {
   const elements = [...findedRooms]
 
   const element = elements.map(n => {
-    let bg = (followedRooms.indexOf(n._id) === -1 ) 
+    let bg = (followedRooms.indexOf(n._id) === -1) 
               ? 'r-wrap' 
               : 'r-wrap r-wrap-bg'
   

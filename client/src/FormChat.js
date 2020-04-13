@@ -24,6 +24,7 @@ export default function FormChat() {
         .then(res => findedRooms = res)
         .then(form.openFindedRooms)
         .catch(e => console.log('search rooms', e))
+      roomName.onFocus()
     }
   }
 
