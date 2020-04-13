@@ -1,12 +1,13 @@
 import React, {useContext, useRef, useEffect, useState} from 'react'
 import {Context, useFormInput, useForms} from './context'
 import {fetchRoom, fetchRoomAvatars} from './FormMiddleware'
-import MapRoomAvatars from './MapRoomAvatars'
-let chatroom = { name:'', description:'', avatar:'' }
+import MapImages from './MapImages'
+let chatroom = { avatar:'' }
 let roomavatars = []
+let roomNodes = []
 
 export default function FormAddChat() {
-  const {forms, currUser, dispatchRooms} = useContext(Context)
+  const {forms, currUser} = useContext(Context)
   const roomName = useFormInput('', false)
   const roomDesc = useFormInput('', false)
   const [isCorrect, setIsCorrect] = useState(false)
@@ -15,6 +16,7 @@ export default function FormAddChat() {
 
   useEffect(() => {
     fetchRoomAvatars().then(resp => roomavatars = resp)
+    roomNodes = document.querySelector('.roomImages').childNodes
   }, [])
 
   useEffect(() => {
@@ -40,10 +42,7 @@ export default function FormAddChat() {
       fetchRoom(data)
         .then(res => {
           if (!res.error) {
-            dispatchRooms({
-              type: 'GET_ADDED_OWNER_ROOMS',
-              payload: res.rooms
-            })
+            form.getAddedUserRooms(res.rooms)
             h_BtnClose_onClick()
           }
         })
@@ -82,8 +81,8 @@ export default function FormAddChat() {
             </section>
 
             <section className="col s12">
-              <div className="add-card-wrap-img">
-                <MapRoomAvatars chatroom={chatroom} roomavatars={roomavatars} />
+              <div className="add-card-wrap-img roomImages">
+                <MapImages nodes={roomNodes} avatars={roomavatars} value={chatroom} item="room" />
               </div>
             </section>
 

@@ -24,21 +24,20 @@ const useForms = (payload) => {
   const {dispatchLogin, dispatchRooms} = useContext(Context)
   
   const openSignUp = () => dispatchLogin({ type: 'OPEN_SIGNUP', payload: '' })
-
   const hideSignUp = () => dispatchLogin({ type: 'HIDE_SIGNUP', payload: '' })
 
   const openFindedRooms = () => dispatchLogin({ type: 'OPEN_FINDEDROOM', payload: '' })
-
   const hideFindedRooms = () => dispatchLogin({ type: 'HIDE_FINDEDROOM', payload: '' })
   
   const openAddRoom = () => dispatchLogin({ type: 'OPEN_ADDROOM', payload: '' })
-
   const hideAddRoom = () => dispatchLogin({ type: 'HIDE_ADDROOM', payload: '' })
   
   const hideLogIn = () => dispatchLogin({ type: 'HIDE_LOGIN', payload: '' })
 
   const getUserRooms = (payload) => dispatchRooms({ type: 'GET_OWNER_ROOMS', payload: payload })
   const getUpdatedUserRooms = (payload) => dispatchRooms({ type: 'GET_UPDATED_OWNER_ROOMS', payload: payload })
+  const getAddedUserRooms = (payload) => dispatchRooms({ type: 'GET_ADDED_OWNER_ROOMS', payload: payload })
+
 
   return {
     openSignUp,
@@ -49,7 +48,8 @@ const useForms = (payload) => {
     hideAddRoom,
     hideLogIn,
     getUserRooms,
-    getUpdatedUserRooms
+    getUpdatedUserRooms,
+    getAddedUserRooms
   }
 }
 

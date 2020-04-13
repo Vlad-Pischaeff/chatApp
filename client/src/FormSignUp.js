@@ -1,9 +1,10 @@
 import React, {useContext, useRef, useEffect, useState} from 'react'
 import {Context, useFormInput, useForms} from './context'
 import {fetchUser, fetchUserAvatars} from './FormMiddleware'
-import MapUserAvatars from './MapUserAvatars'
+import MapImages from './MapImages'
 let credentials = {avatar: './img/user00.jpg'}
 let avatars = []
+let userNodes = []
 
 export default function FormSignIn() {
   const {forms, setCurrUser} = useContext(Context)
@@ -14,7 +15,8 @@ export default function FormSignIn() {
   const alert = useRef('')
   
   useEffect(() => {
-    fetchUserAvatars().then(resp => avatars = resp);
+    fetchUserAvatars().then(resp => avatars = resp)
+    userNodes = document.querySelector('.userImages').childNodes
   }, [])
 
   useEffect(() => {
@@ -71,8 +73,8 @@ export default function FormSignIn() {
             </section>
 
             <section className="col s12">
-              <div className="add-card-wrap-img">
-                <MapUserAvatars avatars={avatars} credentials={credentials} />
+              <div className="add-card-wrap-img userImages">
+                <MapImages nodes={userNodes} avatars={avatars} value={credentials} item="user"/>
               </div>
             </section>
 
