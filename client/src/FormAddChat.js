@@ -4,7 +4,6 @@ import {fetchRoom, fetchRoomAvatars} from './FormMiddleware'
 import MapImages from './MapImages'
 let chatroom = { avatar:'' }
 let roomavatars = []
-let roomNodes = []
 
 export default function FormAddChat() {
   const {forms, currUser} = useContext(Context)
@@ -16,7 +15,6 @@ export default function FormAddChat() {
 
   useEffect(() => {
     fetchRoomAvatars().then(resp => roomavatars = resp)
-    roomNodes = document.querySelector('.roomImages').childNodes
   }, [])
 
   useEffect(() => {
@@ -81,9 +79,7 @@ export default function FormAddChat() {
             </section>
 
             <section className="col s12">
-              <div className="add-card-wrap-img roomImages">
-                <MapImages nodes={roomNodes} avatars={roomavatars} value={chatroom} item="room" />
-              </div>
+                <MapImages avatars={roomavatars} value={chatroom} item="room" />
             </section>
 
             <footer className="card-action col s12 center-align" style={{marginBottom: "1rem"}}>

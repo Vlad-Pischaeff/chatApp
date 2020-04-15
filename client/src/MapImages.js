@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-export default function MapImages({nodes, avatars, value, item}) {
+export default function MapImages({avatars, value, item}) {
+  const imgRef = useRef('')
+  let nodes = imgRef.current.childNodes
 
   const handleClick = (n, index) => {
     value.avatar = `./img/${item}/${n}`
@@ -15,8 +17,8 @@ export default function MapImages({nodes, avatars, value, item}) {
   })
 
   return (
-    <>
+    <div className="add-card-wrap-img" ref={imgRef}>
       {avatarsMap}
-    </>
+    </div>
   )
 }

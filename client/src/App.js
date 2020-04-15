@@ -29,7 +29,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-      checkMessages(currRoom)
+    checkMessages(currRoom)
   }, [currRoom])
 
   const checkMessages = (room) => {

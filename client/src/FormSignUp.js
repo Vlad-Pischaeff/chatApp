@@ -4,7 +4,6 @@ import {fetchUser, fetchUserAvatars} from './FormMiddleware'
 import MapImages from './MapImages'
 let credentials = {avatar: './img/user00.jpg'}
 let avatars = []
-let userNodes = []
 
 export default function FormSignIn() {
   const {forms, setCurrUser} = useContext(Context)
@@ -16,14 +15,13 @@ export default function FormSignIn() {
   
   useEffect(() => {
     fetchUserAvatars().then(resp => avatars = resp)
-    userNodes = document.querySelector('.userImages').childNodes
   }, [])
 
   useEffect(() => {
     (userName.value && userPass.value)
       ? alert.current.innerHTML = '\xa0'
       : alert.current.innerHTML = 'Incorrect name or password'
-  }, [userName, userPass] )
+  }, [userName, userPass])
 
   const h_Btn_onClick = () => {
     let data = {
@@ -73,9 +71,7 @@ export default function FormSignIn() {
             </section>
 
             <section className="col s12">
-              <div className="add-card-wrap-img userImages">
-                <MapImages nodes={userNodes} avatars={avatars} value={credentials} item="user"/>
-              </div>
+                <MapImages avatars={avatars} value={credentials} item="user"/>
             </section>
 
             <footer className="col s12" style={{margin: "1rem 0"}}>
