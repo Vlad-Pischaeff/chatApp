@@ -6,7 +6,7 @@ let credentials = {avatar: './img/user00.jpg'}
 let avatars = []
 
 export default function FormSignIn() {
-  const {forms, setCurrUser} = useContext(Context)
+  const {setCurrUser, forms, socket} = useContext(Context)
   const [isEnabledLS, setIsEnabledLS] = useState(false) //enable or disable LocalStorage savings
   const userName = useFormInput('userName', isEnabledLS)
   const userPass = useFormInput('userPass', isEnabledLS)
@@ -40,6 +40,8 @@ export default function FormSignIn() {
           console.log('add user error', e)
         }
         setCurrUser(users.users)            // set new user as a "Current User" globally
+        let req = JSON.stringify({'USER: LOGINED': users[0]})
+        socket.send(req)
         form.hideSignUp()                   // hide "SignUp" window
       } else {
         alert.current.innerHTML = 'Such user is already exists'
